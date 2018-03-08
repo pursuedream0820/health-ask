@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebeu.ask.dao.mapper.UserMapper">
+
+    <!--<insert id="add" parameterType="com.example.entity.User">-->
+        <!--insert into user (id,name) values (#{id},#{name},#{age})-->
+    <!--</insert>-->
+
+    <!--<update id="update" parameterType="com.example.entity.User">-->
+        <!--update user set-->
+        <!--<if test="name != null and name != ''"> name = #{name}</if>-->
+        <!--<if test="age != null "> age = #{age}</if>-->
+    <!--</update>-->
+
+    <!--<delete id="delete" parameterType="string">-->
+        <!--delete from user where id=#{id}-->
+    <!--</delete>-->
+
+    <select id="get" parameterType="java.lang.Integer" resultType="com.hebeu.ask.model.User">
+        select id,name from user where id=#{id}
+    </select>
+</mapper>

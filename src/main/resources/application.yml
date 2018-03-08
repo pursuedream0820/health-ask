@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: health-ask
+#服务端口
+server:
+  port: 8888
+
+# 自定义属性，可以在Controller中读取
+application:
+  hello: Hello Angel From application
+
+#日志输出路径
+logging:
+  path: ${app.log.path:${user.home}/health_ask/logs}

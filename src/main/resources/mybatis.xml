@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 全局配置 -->
+    <settings>
+        <!--允许 JDBC 支持自动生成主键-->
+        <setting name="useGeneratedKeys" value="false"/>
+        <!--是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典
+   Java 属性名 aColumn 的类似映射。 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <!--给包名取别名,在mapper文件中引用包名时就直接用别名就可了-->
+    <typeAliases>
+
+        <!--批量定义别名,一般常用批量定义别名比较方便
+        指定包名，mybatis会自动扫描指定包名中的类自动定义别名，别名就是类名（首字母大小写都可以）-->
+        <package name="com.hebeu.ask.model"/>
+    </typeAliases>
+</configuration>
