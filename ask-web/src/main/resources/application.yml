@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: health-ask
+#服务端口
+server:
+  port: 8888
+
+# 自定义属性，可以在Controller中读取
+application:
+  hello: Hello Angel From application
+
+#日志输出路径
+logging:
+  path: ${app.log.path:${user.home}/health_ask/logs}
+
+
+#数据库相关配置
+#spring:
+#  datasource:
+#    url: jjdbc:mysql://47.94.251.186:3306/health_ask?useUnicode=true&amp;characterEncoding=UTF-8
+#    username: root
+#    password: uAiqwVwjJ8-i
+#    driver-class-name: com.mysql.jdbc.Driver
