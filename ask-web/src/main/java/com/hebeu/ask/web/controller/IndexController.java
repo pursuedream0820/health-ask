@@ -1,6 +1,7 @@
 package com.hebeu.ask.web.controller;
 
-import com.hebeu.ask.service.view.UserService;
+import com.hebeu.ask.seo.index.Indexer;
+import com.hebeu.ask.seo.search.Searcher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,12 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     @Autowired
-    private UserService userService;
+    private Searcher searcher;
+
+    @Autowired
+    private Indexer indexer;
 
     @RequestMapping(path = "index")
     public String index(){
         log.info("开始访问主页");
-        log.info("查询数据库结果："+userService.getUser(1).getName());
+        log.info("开始创建索引");
+        indexer.createQuestionIndex();
+        searcher.searchQuestion("搜索引擎");
         return "view/layout/public";
     }
 }

@@ -25,6 +25,16 @@
             <groupId>com.hebeu.ask</groupId>
             <artifactId>ask-model</artifactId>
         </dependency>
+        <!--工具模块-->
+        <dependency>
+            <groupId>com.hebeu.ask</groupId>
+            <artifactId>ask-util</artifactId>
+        </dependency>
+        <!--搜索引擎模块-->
+        <dependency>
+            <groupId>com.hebeu.ask</groupId>
+            <artifactId>ask-seo</artifactId>
+        </dependency>
 
         <!--spring boot启动-->
         <dependency>
@@ -76,7 +86,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.1.43</version>
+            <version>${fastjson.version}</version>
         </dependency>
 
         <!--lombox插件，可通过注解简化代码写法-->

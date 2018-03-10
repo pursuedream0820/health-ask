@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hebeu.ask.dao.AuthenticationMapper" >
+  <resultMap id="BaseResultMap" type="com.hebeu.ask.model.po.Authentication" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="SMALLINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="city" property="city" jdbcType="SMALLINT" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="id_card_image" property="idCardImage" jdbcType="VARCHAR" />
+    <result column="skill" property="skill" jdbcType="VARCHAR" />
+    <result column="skill_image" property="skillImage" jdbcType="VARCHAR" />
+    <result column="failed_reason" property="failedReason" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hebeu.ask.model.po.Authentication" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, category_id, real_name, province, title, gender, city, id_card, id_card_image, 
+    skill, skill_image, failed_reason, status, created_at, updated_at
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.hebeu.ask.model.po.AuthenticationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ask_authentications
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hebeu.ask.model.po.AuthenticationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ask_authentications
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ask_authentications
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ask_authentications
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hebeu.ask.model.po.AuthenticationExample" >
+    delete from ask_authentications
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hebeu.ask.model.po.Authentication" >
+    insert into ask_authentications (user_id, category_id, real_name, 
+      province, title, gender, 
+      city, id_card, id_card_image, 
+      skill, skill_image, failed_reason, 
+      status, created_at, updated_at, 
+      description)
+    values (#{userId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, 
+      #{province,jdbcType=SMALLINT}, #{title,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, 
+      #{city,jdbcType=SMALLINT}, #{idCard,jdbcType=VARCHAR}, #{idCardImage,jdbcType=VARCHAR}, 
+      #{skill,jdbcType=VARCHAR}, #{skillImage,jdbcType=VARCHAR}, #{failedReason,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
+      #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hebeu.ask.model.po.Authentication" >
+    insert into ask_authentications
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="idCardImage != null" >
+        id_card_image,
+      </if>
+      <if test="skill != null" >
+        skill,
+      </if>
+      <if test="skillImage != null" >
+        skill_image,
+      </if>
+      <if test="failedReason != null" >
+        failed_reason,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=SMALLINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=SMALLINT},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardImage != null" >
+        #{idCardImage,jdbcType=VARCHAR},
+      </if>
+      <if test="skill != null" >
+        #{skill,jdbcType=VARCHAR},
+      </if>
+      <if test="skillImage != null" >
+        #{skillImage,jdbcType=VARCHAR},
+      </if>
+      <if test="failedReason != null" >
+        #{failedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hebeu.ask.model.po.AuthenticationExample" resultType="java.lang.Integer" >
+    select count(*) from ask_authentications
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ask_authentications
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.categoryId != null" >
+        category_id = #{record.categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.realName != null" >
+        real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=SMALLINT},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=TINYINT},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=SMALLINT},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardImage != null" >
+        id_card_image = #{record.idCardImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skill != null" >
+        skill = #{record.skill,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skillImage != null" >
+        skill_image = #{record.skillImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.failedReason != null" >
+        failed_reason = #{record.failedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.createdAt != null" >
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null" >
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ask_authentications
+    set user_id = #{record.userId,jdbcType=INTEGER},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      real_name = #{record.realName,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=SMALLINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=TINYINT},
+      city = #{record.city,jdbcType=SMALLINT},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      id_card_image = #{record.idCardImage,jdbcType=VARCHAR},
+      skill = #{record.skill,jdbcType=VARCHAR},
+      skill_image = #{record.skillImage,jdbcType=VARCHAR},
+      failed_reason = #{record.failedReason,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ask_authentications
+    set user_id = #{record.userId,jdbcType=INTEGER},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      real_name = #{record.realName,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=SMALLINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=TINYINT},
+      city = #{record.city,jdbcType=SMALLINT},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      id_card_image = #{record.idCardImage,jdbcType=VARCHAR},
+      skill = #{record.skill,jdbcType=VARCHAR},
+      skill_image = #{record.skillImage,jdbcType=VARCHAR},
+      failed_reason = #{record.failedReason,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebeu.ask.model.po.Authentication" >
+    update ask_authentications
+    <set >
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=SMALLINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=SMALLINT},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardImage != null" >
+        id_card_image = #{idCardImage,jdbcType=VARCHAR},
+      </if>
+      <if test="skill != null" >
+        skill = #{skill,jdbcType=VARCHAR},
+      </if>
+      <if test="skillImage != null" >
+        skill_image = #{skillImage,jdbcType=VARCHAR},
+      </if>
+      <if test="failedReason != null" >
+        failed_reason = #{failedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hebeu.ask.model.po.Authentication" >
+    update ask_authentications
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      real_name = #{realName,jdbcType=VARCHAR},
+      province = #{province,jdbcType=SMALLINT},
+      title = #{title,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      city = #{city,jdbcType=SMALLINT},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      id_card_image = #{idCardImage,jdbcType=VARCHAR},
+      skill = #{skill,jdbcType=VARCHAR},
+      skill_image = #{skillImage,jdbcType=VARCHAR},
+      failed_reason = #{failedReason,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebeu.ask.model.po.Authentication" >
+    update ask_authentications
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      real_name = #{realName,jdbcType=VARCHAR},
+      province = #{province,jdbcType=SMALLINT},
+      title = #{title,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      city = #{city,jdbcType=SMALLINT},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      id_card_image = #{idCardImage,jdbcType=VARCHAR},
+      skill = #{skill,jdbcType=VARCHAR},
+      skill_image = #{skillImage,jdbcType=VARCHAR},
+      failed_reason = #{failedReason,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

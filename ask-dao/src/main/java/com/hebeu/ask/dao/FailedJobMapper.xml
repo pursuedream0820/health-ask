@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hebeu.ask.dao.FailedJobMapper" >
+  <resultMap id="BaseResultMap" type="com.hebeu.ask.model.po.FailedJob" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="failed_at" property="failedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hebeu.ask.model.po.FailedJobWithBLOBs" extends="BaseResultMap" >
+    <result column="connection" property="connection" jdbcType="LONGVARCHAR" />
+    <result column="queue" property="queue" jdbcType="LONGVARCHAR" />
+    <result column="payload" property="payload" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, failed_at
+  </sql>
+  <sql id="Blob_Column_List" >
+    connection, queue, payload
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.hebeu.ask.model.po.FailedJobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ask_failed_jobs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hebeu.ask.model.po.FailedJobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ask_failed_jobs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ask_failed_jobs
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ask_failed_jobs
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hebeu.ask.model.po.FailedJobExample" >
+    delete from ask_failed_jobs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hebeu.ask.model.po.FailedJobWithBLOBs" >
+    insert into ask_failed_jobs (id, failed_at, connection, 
+      queue, payload)
+    values (#{id,jdbcType=INTEGER}, #{failedAt,jdbcType=TIMESTAMP}, #{connection,jdbcType=LONGVARCHAR}, 
+      #{queue,jdbcType=LONGVARCHAR}, #{payload,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hebeu.ask.model.po.FailedJobWithBLOBs" >
+    insert into ask_failed_jobs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="failedAt != null" >
+        failed_at,
+      </if>
+      <if test="connection != null" >
+        connection,
+      </if>
+      <if test="queue != null" >
+        queue,
+      </if>
+      <if test="payload != null" >
+        payload,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="failedAt != null" >
+        #{failedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="connection != null" >
+        #{connection,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="queue != null" >
+        #{queue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="payload != null" >
+        #{payload,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hebeu.ask.model.po.FailedJobExample" resultType="java.lang.Integer" >
+    select count(*) from ask_failed_jobs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ask_failed_jobs
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.failedAt != null" >
+        failed_at = #{record.failedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.connection != null" >
+        connection = #{record.connection,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.queue != null" >
+        queue = #{record.queue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.payload != null" >
+        payload = #{record.payload,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ask_failed_jobs
+    set id = #{record.id,jdbcType=INTEGER},
+      failed_at = #{record.failedAt,jdbcType=TIMESTAMP},
+      connection = #{record.connection,jdbcType=LONGVARCHAR},
+      queue = #{record.queue,jdbcType=LONGVARCHAR},
+      payload = #{record.payload,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ask_failed_jobs
+    set id = #{record.id,jdbcType=INTEGER},
+      failed_at = #{record.failedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebeu.ask.model.po.FailedJobWithBLOBs" >
+    update ask_failed_jobs
+    <set >
+      <if test="failedAt != null" >
+        failed_at = #{failedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="connection != null" >
+        connection = #{connection,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="queue != null" >
+        queue = #{queue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="payload != null" >
+        payload = #{payload,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hebeu.ask.model.po.FailedJobWithBLOBs" >
+    update ask_failed_jobs
+    set failed_at = #{failedAt,jdbcType=TIMESTAMP},
+      connection = #{connection,jdbcType=LONGVARCHAR},
+      queue = #{queue,jdbcType=LONGVARCHAR},
+      payload = #{payload,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebeu.ask.model.po.FailedJob" >
+    update ask_failed_jobs
+    set failed_at = #{failedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

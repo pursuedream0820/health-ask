@@ -14,10 +14,20 @@
     </parent>
 
     <dependencies>
+        <!--dao层模块-->
         <dependency>
             <groupId>com.hebeu.ask</groupId>
             <artifactId>ask-dao</artifactId>
-            <version>1.0</version>
+        </dependency>
+        <!--模型层模块-->
+        <dependency>
+            <groupId>com.hebeu.ask</groupId>
+            <artifactId>ask-model</artifactId>
+        </dependency>
+        <!--工具模块-->
+        <dependency>
+            <groupId>com.hebeu.ask</groupId>
+            <artifactId>ask-util</artifactId>
         </dependency>
 
         <dependency>

@@ -12,6 +12,8 @@
         <module>ask-service</module>
         <module>ask-dao</module>
         <module>ask-model</module>
+        <module>ask-seo</module>
+        <module>ask-util</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -32,20 +34,23 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!--Java版本号-->
         <java.version>1.8</java.version>
+        <module.version>1.0</module.version>
         <!--mapper-spring版本号 -->
         <mybatis-spring-boot-starter.version>1.3.1</mybatis-spring-boot-starter.version>
         <!--Java连接MySQL 版本号-->
         <mysql-connector-java.version>5.1.25</mysql-connector-java.version>
         <!--commons-dbcp版本号-->
         <commons-dbcp.version>1.2.2</commons-dbcp.version>
-        <!--lucene-core 版本号-->
-        <lucene-core.version>7.2.1</lucene-core.version>
-        <!--lucene-analyzers-common 版本号-->
-        <lucene-analyzers-common.version>7.2.1</lucene-analyzers-common.version>
-        <!--lucene-highlighter 版本号-->
-        <lucene-highlighter.version>7.2.1</lucene-highlighter.version>
+        <!--lucene 版本号-->
+        <lucene.version>7.2.1</lucene.version>
+        <!--ikanalyzer中文分词工具版本号-->
+        <ikanalyzer.version>2012_u6</ikanalyzer.version>
         <!--druid 版本号-->
         <druid.version>1.1.6</druid.version>
+        <!--lombok 版本号-->
+        <lombok.version>1.16.20</lombok.version>
+        <!--fastjson 版本号-->
+        <fastjson.version>1.1.43</fastjson.version>
     </properties>
 
     <dependencyManagement>
@@ -53,22 +58,32 @@
             <dependency>
                 <groupId>com.hebeu.ask</groupId>
                 <artifactId>ask-web</artifactId>
-                <version>1.0</version>
+                <version>${module.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.hebeu.ask</groupId>
                 <artifactId>ask-service</artifactId>
-                <version>1.0</version>
+                <version>${module.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.hebeu.ask</groupId>
                 <artifactId>ask-dao</artifactId>
-                <version>1.0</version>
+                <version>${module.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.hebeu.ask</groupId>
                 <artifactId>ask-model</artifactId>
-                <version>1.0</version>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hebeu.ask</groupId>
+                <artifactId>ask-util</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hebeu.ask</groupId>
+                <artifactId>ask-seo</artifactId>
+                <version>${module.version}</version>
             </dependency>
 
             <!--lombox插件，可通过注解简化代码写法-->
@@ -76,7 +91,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <optional>true</optional>
-                <version>1.16.20</version>
+                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

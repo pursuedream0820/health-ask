@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hebeu.ask.dao.UserDataMapper" >
+  <resultMap id="BaseResultMap" type="com.hebeu.ask.model.po.UserData" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="coins" property="coins" jdbcType="INTEGER" />
+    <result column="credits" property="credits" jdbcType="INTEGER" />
+    <result column="registered_at" property="registeredAt" jdbcType="TIMESTAMP" />
+    <result column="last_visit" property="lastVisit" jdbcType="TIMESTAMP" />
+    <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+    <result column="questions" property="questions" jdbcType="INTEGER" />
+    <result column="articles" property="articles" jdbcType="INTEGER" />
+    <result column="answers" property="answers" jdbcType="INTEGER" />
+    <result column="adoptions" property="adoptions" jdbcType="INTEGER" />
+    <result column="supports" property="supports" jdbcType="INTEGER" />
+    <result column="followers" property="followers" jdbcType="INTEGER" />
+    <result column="views" property="views" jdbcType="INTEGER" />
+    <result column="email_status" property="emailStatus" jdbcType="TINYINT" />
+    <result column="mobile_status" property="mobileStatus" jdbcType="TINYINT" />
+    <result column="authentication_status" property="authenticationStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, coins, credits, registered_at, last_visit, last_login_ip, questions, articles, 
+    answers, adoptions, supports, followers, views, email_status, mobile_status, authentication_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hebeu.ask.model.po.UserDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ask_user_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ask_user_data
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ask_user_data
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hebeu.ask.model.po.UserDataExample" >
+    delete from ask_user_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hebeu.ask.model.po.UserData" >
+    insert into ask_user_data (user_id, coins, credits, 
+      registered_at, last_visit, last_login_ip, 
+      questions, articles, answers, 
+      adoptions, supports, followers, 
+      views, email_status, mobile_status, 
+      authentication_status)
+    values (#{userId,jdbcType=INTEGER}, #{coins,jdbcType=INTEGER}, #{credits,jdbcType=INTEGER}, 
+      #{registeredAt,jdbcType=TIMESTAMP}, #{lastVisit,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, 
+      #{questions,jdbcType=INTEGER}, #{articles,jdbcType=INTEGER}, #{answers,jdbcType=INTEGER}, 
+      #{adoptions,jdbcType=INTEGER}, #{supports,jdbcType=INTEGER}, #{followers,jdbcType=INTEGER}, 
+      #{views,jdbcType=INTEGER}, #{emailStatus,jdbcType=TINYINT}, #{mobileStatus,jdbcType=TINYINT}, 
+      #{authenticationStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hebeu.ask.model.po.UserData" >
+    insert into ask_user_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="coins != null" >
+        coins,
+      </if>
+      <if test="credits != null" >
+        credits,
+      </if>
+      <if test="registeredAt != null" >
+        registered_at,
+      </if>
+      <if test="lastVisit != null" >
+        last_visit,
+      </if>
+      <if test="lastLoginIp != null" >
+        last_login_ip,
+      </if>
+      <if test="questions != null" >
+        questions,
+      </if>
+      <if test="articles != null" >
+        articles,
+      </if>
+      <if test="answers != null" >
+        answers,
+      </if>
+      <if test="adoptions != null" >
+        adoptions,
+      </if>
+      <if test="supports != null" >
+        supports,
+      </if>
+      <if test="followers != null" >
+        followers,
+      </if>
+      <if test="views != null" >
+        views,
+      </if>
+      <if test="emailStatus != null" >
+        email_status,
+      </if>
+      <if test="mobileStatus != null" >
+        mobile_status,
+      </if>
+      <if test="authenticationStatus != null" >
+        authentication_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="coins != null" >
+        #{coins,jdbcType=INTEGER},
+      </if>
+      <if test="credits != null" >
+        #{credits,jdbcType=INTEGER},
+      </if>
+      <if test="registeredAt != null" >
+        #{registeredAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastVisit != null" >
+        #{lastVisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null" >
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="questions != null" >
+        #{questions,jdbcType=INTEGER},
+      </if>
+      <if test="articles != null" >
+        #{articles,jdbcType=INTEGER},
+      </if>
+      <if test="answers != null" >
+        #{answers,jdbcType=INTEGER},
+      </if>
+      <if test="adoptions != null" >
+        #{adoptions,jdbcType=INTEGER},
+      </if>
+      <if test="supports != null" >
+        #{supports,jdbcType=INTEGER},
+      </if>
+      <if test="followers != null" >
+        #{followers,jdbcType=INTEGER},
+      </if>
+      <if test="views != null" >
+        #{views,jdbcType=INTEGER},
+      </if>
+      <if test="emailStatus != null" >
+        #{emailStatus,jdbcType=TINYINT},
+      </if>
+      <if test="mobileStatus != null" >
+        #{mobileStatus,jdbcType=TINYINT},
+      </if>
+      <if test="authenticationStatus != null" >
+        #{authenticationStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hebeu.ask.model.po.UserDataExample" resultType="java.lang.Integer" >
+    select count(*) from ask_user_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ask_user_data
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.coins != null" >
+        coins = #{record.coins,jdbcType=INTEGER},
+      </if>
+      <if test="record.credits != null" >
+        credits = #{record.credits,jdbcType=INTEGER},
+      </if>
+      <if test="record.registeredAt != null" >
+        registered_at = #{record.registeredAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastVisit != null" >
+        last_visit = #{record.lastVisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLoginIp != null" >
+        last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.questions != null" >
+        questions = #{record.questions,jdbcType=INTEGER},
+      </if>
+      <if test="record.articles != null" >
+        articles = #{record.articles,jdbcType=INTEGER},
+      </if>
+      <if test="record.answers != null" >
+        answers = #{record.answers,jdbcType=INTEGER},
+      </if>
+      <if test="record.adoptions != null" >
+        adoptions = #{record.adoptions,jdbcType=INTEGER},
+      </if>
+      <if test="record.supports != null" >
+        supports = #{record.supports,jdbcType=INTEGER},
+      </if>
+      <if test="record.followers != null" >
+        followers = #{record.followers,jdbcType=INTEGER},
+      </if>
+      <if test="record.views != null" >
+        views = #{record.views,jdbcType=INTEGER},
+      </if>
+      <if test="record.emailStatus != null" >
+        email_status = #{record.emailStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.mobileStatus != null" >
+        mobile_status = #{record.mobileStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.authenticationStatus != null" >
+        authentication_status = #{record.authenticationStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ask_user_data
+    set user_id = #{record.userId,jdbcType=INTEGER},
+      coins = #{record.coins,jdbcType=INTEGER},
+      credits = #{record.credits,jdbcType=INTEGER},
+      registered_at = #{record.registeredAt,jdbcType=TIMESTAMP},
+      last_visit = #{record.lastVisit,jdbcType=TIMESTAMP},
+      last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      questions = #{record.questions,jdbcType=INTEGER},
+      articles = #{record.articles,jdbcType=INTEGER},
+      answers = #{record.answers,jdbcType=INTEGER},
+      adoptions = #{record.adoptions,jdbcType=INTEGER},
+      supports = #{record.supports,jdbcType=INTEGER},
+      followers = #{record.followers,jdbcType=INTEGER},
+      views = #{record.views,jdbcType=INTEGER},
+      email_status = #{record.emailStatus,jdbcType=TINYINT},
+      mobile_status = #{record.mobileStatus,jdbcType=TINYINT},
+      authentication_status = #{record.authenticationStatus,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebeu.ask.model.po.UserData" >
+    update ask_user_data
+    <set >
+      <if test="coins != null" >
+        coins = #{coins,jdbcType=INTEGER},
+      </if>
+      <if test="credits != null" >
+        credits = #{credits,jdbcType=INTEGER},
+      </if>
+      <if test="registeredAt != null" >
+        registered_at = #{registeredAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastVisit != null" >
+        last_visit = #{lastVisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null" >
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="questions != null" >
+        questions = #{questions,jdbcType=INTEGER},
+      </if>
+      <if test="articles != null" >
+        articles = #{articles,jdbcType=INTEGER},
+      </if>
+      <if test="answers != null" >
+        answers = #{answers,jdbcType=INTEGER},
+      </if>
+      <if test="adoptions != null" >
+        adoptions = #{adoptions,jdbcType=INTEGER},
+      </if>
+      <if test="supports != null" >
+        supports = #{supports,jdbcType=INTEGER},
+      </if>
+      <if test="followers != null" >
+        followers = #{followers,jdbcType=INTEGER},
+      </if>
+      <if test="views != null" >
+        views = #{views,jdbcType=INTEGER},
+      </if>
+      <if test="emailStatus != null" >
+        email_status = #{emailStatus,jdbcType=TINYINT},
+      </if>
+      <if test="mobileStatus != null" >
+        mobile_status = #{mobileStatus,jdbcType=TINYINT},
+      </if>
+      <if test="authenticationStatus != null" >
+        authentication_status = #{authenticationStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebeu.ask.model.po.UserData" >
+    update ask_user_data
+    set coins = #{coins,jdbcType=INTEGER},
+      credits = #{credits,jdbcType=INTEGER},
+      registered_at = #{registeredAt,jdbcType=TIMESTAMP},
+      last_visit = #{lastVisit,jdbcType=TIMESTAMP},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      questions = #{questions,jdbcType=INTEGER},
+      articles = #{articles,jdbcType=INTEGER},
+      answers = #{answers,jdbcType=INTEGER},
+      adoptions = #{adoptions,jdbcType=INTEGER},
+      supports = #{supports,jdbcType=INTEGER},
+      followers = #{followers,jdbcType=INTEGER},
+      views = #{views,jdbcType=INTEGER},
+      email_status = #{emailStatus,jdbcType=TINYINT},
+      mobile_status = #{mobileStatus,jdbcType=TINYINT},
+      authentication_status = #{authenticationStatus,jdbcType=TINYINT}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>
