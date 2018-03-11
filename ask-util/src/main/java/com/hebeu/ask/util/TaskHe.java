@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * Desc   : 任务工具类
  **/
 @Service
-public class TaskHelper {
+public class TaskHe {
 
     @Value("${task.switch:false}")
     private static boolean taskSwitch;

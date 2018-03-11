@@ -14,6 +14,7 @@
         <module>ask-model</module>
         <module>ask-seo</module>
         <module>ask-util</module>
+        <module>ask-spider</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -83,6 +84,11 @@
             <dependency>
                 <groupId>com.hebeu.ask</groupId>
                 <artifactId>ask-seo</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hebeu.ask</groupId>
+                <artifactId>ask-spider</artifactId>
                 <version>${module.version}</version>
             </dependency>
 

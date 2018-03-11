@@ -30,6 +30,11 @@
             <groupId>com.hebeu.ask</groupId>
             <artifactId>ask-seo</artifactId>
         </dependency>
+        <!--爬虫模块-->
+        <dependency>
+            <groupId>com.hebeu.ask</groupId>
+            <artifactId>ask-spider</artifactId>
+        </dependency>
 
         <!--spring boot启动-->
         <dependency>

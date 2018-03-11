@@ -14,6 +14,10 @@ logging:
   path: ${app.log.path:${user.home}/health_ask/logs}
 
 
+# 定时任务开关
+task:
+  switch: false
+
 #数据库相关配置
 #spring:
 #  datasource:
