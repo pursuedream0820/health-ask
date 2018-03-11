@@ -64,7 +64,7 @@
         </dependency>
         <!--中文分词工具-->
         <dependency>
-            <groupId>com.janeluo</groupId>
+            <groupId>com.hebeu.ask</groupId>
             <artifactId>ikanalyzer</artifactId>
             <version>${ikanalyzer.version}</version>
         </dependency>

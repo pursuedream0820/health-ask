@@ -44,7 +44,7 @@
         <!--lucene 版本号-->
         <lucene.version>7.2.1</lucene.version>
         <!--ikanalyzer中文分词工具版本号-->
-        <ikanalyzer.version>2012_u6</ikanalyzer.version>
+        <ikanalyzer.version>2012_FF</ikanalyzer.version>
         <!--druid 版本号-->
         <druid.version>1.1.6</druid.version>
         <!--lombok 版本号-->

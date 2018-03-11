@@ -16,6 +16,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +52,6 @@ public class Indexer {
             QuestionExample.Criteria criteria = questionExample.createCriteria();
             criteria.andIdIsNotNull();
             List<Question> questionList = questionMapper.selectByExampleWithBLOBs(questionExample);
-//            System.out.println(questionList.get(0).getDescription()+questionList.get(0).getTitle());
 
             for (Question question : questionList) {
                 Document document = new Document();
@@ -123,7 +123,7 @@ public class Indexer {
             Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPathEnum.getPath()));
             //创建标准分词对象
             //TODO 后期改成中文分词，自定义分词器
-            Analyzer analyzer = new StandardAnalyzer();
+            Analyzer analyzer = new IKAnalyzer(true);
             IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
             indexWriter = new IndexWriter(directory, indexWriterConfig);
         } catch (IOException e) {

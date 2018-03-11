@@ -15,6 +15,7 @@ import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.stereotype.Component;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.nio.file.FileSystems;
 
@@ -39,10 +40,10 @@ public class Searcher {
             // 3、根据IndexReader创建IndexSearch
             IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
             // 4、创建搜索的Query
-            Analyzer analyzer = new StandardAnalyzer();
+//            Analyzer analyzer = new StandardAnalyzer();
 
             // 使用IK分词
-//            Analyzer analyzer = new IKAnalyzer(true);
+            Analyzer analyzer = new IKAnalyzer(true);
 
             // 简单的查询，创建Query表示搜索域为content包含keyWord的文档
 //            Query query = new QueryParser("content", analyzer).parse(keyWord);
