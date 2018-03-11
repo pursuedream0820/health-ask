@@ -6,7 +6,6 @@ import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.po.QuestionExample;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
@@ -77,7 +76,7 @@ public class Indexer {
      *
      * @param indexPathEnum 索引地址枚举
      */
-    public static void clearIndex(IndexPathEnum indexPathEnum) {
+    public void clearIndex(IndexPathEnum indexPathEnum) {
         IndexWriter indexWriter = getIndexWriter(indexPathEnum);
         if (indexWriter == null) {
             log.warn("获取到IndexWriter对象为空，停止清空索引操作");

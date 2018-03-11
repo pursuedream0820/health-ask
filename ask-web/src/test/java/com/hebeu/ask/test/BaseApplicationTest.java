@@ -1,6 +1,7 @@
 package com.hebeu.ask.test;
 
 import com.hebeu.ask.web.application.HealthAskApplication;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,11 +16,13 @@ import org.springframework.test.context.junit4.SpringRunner;
  **/
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = HealthAskApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
 public class BaseApplicationTest {
     private long startTime;
 
     @Before
     public void setUp() {
+        log.info("测试开始---------------");
         startTime = System.currentTimeMillis();
     }
     @Test
@@ -29,7 +32,8 @@ public class BaseApplicationTest {
 
     @After
     public void tearDown() {
-        System.out.println("耗时：" + (System.currentTimeMillis() - startTime));
+        log.info("测试结束---------------");
+        log.info("耗时：{} s" , (System.currentTimeMillis() - startTime)/1000);
     }
 
 }

@@ -21,6 +21,6 @@ public class SearchTest extends BaseApplicationTest {
     @Test
     public void test(){
         indexer.createQuestionIndex();
-        searcher.searchQuestion("怎么");
+        searcher.searchQuestion("建立");
     }
 }

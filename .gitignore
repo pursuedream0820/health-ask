@@ -24,3 +24,7 @@ nbdist/
 .nb-gradle/
 
 .mvn/
+
+
+###  搜索引擎生成的索引文件  ###
+ask-seo/src/main/resources/*
