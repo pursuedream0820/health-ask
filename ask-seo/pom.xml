@@ -12,12 +12,6 @@
     <artifactId>ask-seo</artifactId>
 
     <dependencies>
-        <!--模型层模块-->
-        <dependency>
-            <groupId>com.hebeu.ask</groupId>
-            <artifactId>ask-model</artifactId>
-        </dependency>
-
         <!--dao层模块-->
         <dependency>
             <groupId>com.hebeu.ask</groupId>

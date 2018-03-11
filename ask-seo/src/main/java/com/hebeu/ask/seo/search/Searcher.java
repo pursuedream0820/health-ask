@@ -3,19 +3,19 @@ package com.hebeu.ask.seo.search;
 import com.hebeu.ask.model.enums.IndexPathEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.search.*;
-import org.apache.lucene.search.highlight.*;
+import org.apache.lucene.search.highlight.Highlighter;
+import org.apache.lucene.search.highlight.QueryScorer;
+import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.stereotype.Component;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import java.io.StringReader;
 import java.nio.file.FileSystems;
 
 /**

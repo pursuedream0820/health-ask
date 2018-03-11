@@ -19,10 +19,10 @@
             <groupId>com.hebeu.ask</groupId>
             <artifactId>ask-dao</artifactId>
         </dependency>
-        <!--模型层模块-->
+        <!--seo模块-->
         <dependency>
             <groupId>com.hebeu.ask</groupId>
-            <artifactId>ask-model</artifactId>
+            <artifactId>ask-seo</artifactId>
         </dependency>
         <!--工具模块-->
         <dependency>
