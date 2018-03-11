@@ -28,3 +28,6 @@ nbdist/
 
 ###  搜索引擎生成的索引文件  ###
 ask-seo/src/main/resources/*
+
+###  部署文件 ###
+deploy.sh
