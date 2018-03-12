@@ -52,6 +52,12 @@
         <lombok.version>1.16.20</lombok.version>
         <!--fastjson 版本号-->
         <fastjson.version>1.1.43</fastjson.version>
+        <!--WebMagic爬虫框架 版本号-->
+        <webmagic.version>0.7.3</webmagic.version>
+        <!--guava 版本号-->
+        <guava.version>19.0</guava.version>
+        <!--mybatis 分页插件 版本号-->
+        <pagehelper.version>4.1.6</pagehelper.version>
     </properties>
 
     <dependencyManagement>
