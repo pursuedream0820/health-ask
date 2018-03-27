@@ -157,7 +157,7 @@ public class BaiduSpiderProcessor implements PageProcessor {
         Selectable selectable = page.getHtml();
 
         String title = selectable.xpath("//*/span[@class=\"ask-title\"]/text()").get();
-        log.info("问题title:{}", title);
+        log.debug("问题title:{}", title);
 
         String author = selectable.xpath("//*/a[@alog-action=\"qb-ask-uname\"]/text()").get();
         log.debug("作者 author：{}" , author);
