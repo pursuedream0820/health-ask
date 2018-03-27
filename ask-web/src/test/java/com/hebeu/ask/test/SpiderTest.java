@@ -1,6 +1,6 @@
 package com.hebeu.ask.test;
 
-import com.hebeu.ask.spider.processor.QihuSpiderProcessor;
+import com.hebeu.ask.spider.processor.BaiduSpiderProcessor;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SpiderTest  extends BaseApplicationTest{
 
     @Autowired
-    private QihuSpiderProcessor qihuSpiderProcessor;
+    private BaiduSpiderProcessor qihuSpiderProcessor;
 
     @Test
     public void test(){

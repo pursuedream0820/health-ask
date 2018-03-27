@@ -9,9 +9,13 @@ server:
 application:
   hello: Hello Angel From application
 
-#日志输出路径
+#日志输出配置
 logging:
   path: ${app.log.path:${user.home}/health_ask/logs}
+#  pattern:
+#    console: "[%d] %-5level %msg%n"
+  level:
+    com.hebeu.ask.spider.processor: debug
 
 
 # 定时任务开关

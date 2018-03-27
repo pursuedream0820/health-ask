@@ -1,6 +1,6 @@
 package com.hebeu.ask.web.task;
 
-import com.hebeu.ask.spider.processor.QihuSpiderProcessor;
+import com.hebeu.ask.spider.processor.BaiduSpiderProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,12 +18,18 @@ public class SpiderTask {
     private TaskHelper taskHelper;
 
     @Autowired
-    private QihuSpiderProcessor qihuSpiderProcessor;
+    private BaiduSpiderProcessor baiduSpiderProcessor;
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    /**
+     * 每天0点开始执行定时任务
+     */
+    @Scheduled(cron = "0 0 0 0/1 * ?")
     public void spider(){
+        if (!taskHelper.taskSwitch()){
+            return;
+        }
         log.info("开始执行定时任务");
-        qihuSpiderProcessor.doRun();
+        baiduSpiderProcessor.doRun();
         log.info("执行定时任务结束");
     }
 }

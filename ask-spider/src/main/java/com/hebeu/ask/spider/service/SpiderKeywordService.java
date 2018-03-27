@@ -4,8 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.hebeu.ask.dao.SpiderKeywordMapper;
 import com.hebeu.ask.model.po.SpiderKeyword;
 import com.hebeu.ask.model.po.SpiderKeywordExample;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author : chenDeHua
@@ -42,6 +45,10 @@ public class SpiderKeywordService {
         SpiderKeywordExample spiderKeywordExample = new SpiderKeywordExample();
         SpiderKeywordExample.Criteria criteria = spiderKeywordExample.createCriteria();
         criteria.andCrawlStatusEqualTo(0);
+        List<SpiderKeyword> spiderKeywordList = spiderKeywordMapper.selectByExample(spiderKeywordExample);
+        if (CollectionUtils.isEmpty(spiderKeywordList)){
+            return null;
+        }
         return spiderKeywordMapper.selectByExample(spiderKeywordExample).get(0);
 
     }
