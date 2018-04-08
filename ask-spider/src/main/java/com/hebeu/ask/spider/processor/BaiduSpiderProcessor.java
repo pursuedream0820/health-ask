@@ -170,23 +170,6 @@ public class BaiduSpiderProcessor implements PageProcessor {
         content = (content == null ? "" : content);
         log.debug("问题content:{}", content);
 
-//        if (!CollectionUtils.isEmpty(authorNodes) && authorNodes.size() >= 3) {
-//            author = authorNodes.get(0).xpath("span/text()").get();
-//            author = (StringUtils.isEmpty(author) ? ANONYMOUS_USER : author).trim();
-//            date = authorNodes.get(1).xpath("span/text()").get().trim();
-//            String strAnswers = authorNodes.get(2).xpath("span/text()").get();
-//            int index = strAnswers.indexOf("个回答");
-//            if (index >= 0) {
-//                strAnswers = strAnswers.substring(0, index);
-//            }
-//            try {
-//                answers = Integer.parseInt(strAnswers);
-//            } catch (Exception e) {
-//
-//            }
-//        }
-
-
 
         if (!StringUtils.isEmpty(author) && !StringUtils.isEmpty(content) && !StringUtils.isEmpty(title)) {
 
