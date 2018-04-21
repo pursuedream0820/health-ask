@@ -5,6 +5,7 @@ import com.hebeu.ask.seo.search.Searcher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -25,11 +26,12 @@ public class IndexController {
     private Indexer indexer;
 
     @RequestMapping(path = "index")
-    public String index(){
+    public String index(Model model){
         log.info("开始访问主页");
         log.info("开始创建索引");
         indexer.createQuestionIndex();
         searcher.searchQuestion("搜索引擎");
+        model.addAttribute("hello","232323");
         return "view/layout/public";
     }
 }
