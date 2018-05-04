@@ -3,58 +3,58 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class User {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 用户名*/
     private String name;
 
-    /** */
+    /** 用户email*/
     private String email;
 
-    /** */
+    /** 用户手机号*/
     private String mobile;
 
-    /** */
+    /** 用户密码*/
     private String password;
 
-    /** */
+    /** 性别*/
     private Byte gender;
 
-    /** */
+    /** 生日*/
     private Date birthday;
 
-    /** */
+    /** 省份*/
     private Short province;
 
-    /** */
+    /** 城市*/
     private Short city;
 
-    /** */
+    /** 标题*/
     private String title;
 
-    /** */
+    /** 用户二维码*/
     private String qrcode;
 
-    /** */
+    /** 状态*/
     private Byte status;
 
-    /** */
+    /** 网址通知*/
     private String siteNotifications;
 
-    /** */
+    /** email通知*/
     private String emailNotifications;
 
-    /** */
+    /** 记住我*/
     private String rememberToken;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
-    /** */
+    /** 用户描述*/
     private String description;
 
     public Integer getId() {

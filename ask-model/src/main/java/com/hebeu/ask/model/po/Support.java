@@ -3,25 +3,25 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Support {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** sessionId*/
     private String sessionId;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 支持表id*/
     private Integer supportableId;
 
-    /** */
+    /** 支持表类型*/
     private String supportableType;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

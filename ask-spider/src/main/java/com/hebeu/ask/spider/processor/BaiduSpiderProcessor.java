@@ -47,6 +47,7 @@ public class BaiduSpiderProcessor implements PageProcessor {
     private SpiderKeywordService spiderKeywordService;
 
 
+
     @Override
     public void process(Page page) {
         // 得到爬取网页地址
@@ -210,6 +211,18 @@ public class BaiduSpiderProcessor implements PageProcessor {
         }
 
         log.info("已完成爬取 url: " + page.getRequest().getUrl());
+    }
+
+
+
+    public void initDao(){
+        if (spiderKeywordService == null) {
+            this.spiderKeywordService = ApplicationContextUtil.getBean(SpiderKeywordService.class);
+        }
+
+
+
+
     }
 
 

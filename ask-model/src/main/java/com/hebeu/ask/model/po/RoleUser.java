@@ -3,19 +3,19 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class RoleUser {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 权限id*/
     private Integer roleId;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

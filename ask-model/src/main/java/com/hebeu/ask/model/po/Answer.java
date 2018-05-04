@@ -3,43 +3,43 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Answer {
-    /** */
+    /** 主键ID*/
     private Integer id;
 
-    /** */
+    /** 问题标题*/
     private String questionTitle;
 
-    /** */
+    /** 问题标题*/
     private Integer questionId;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 支持数*/
     private Integer supports;
 
-    /** */
+    /** 反对数*/
     private Integer oppositions;
 
-    /** */
+    /** 评论数*/
     private Integer comments;
 
     /** */
     private Byte device;
 
-    /** */
+    /** 回答状态*/
     private Byte status;
 
-    /** */
+    /** 采纳时间*/
     private Date adoptedAt;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
-    /** */
+    /** 回答内容*/
     private String content;
 
     public Integer getId() {

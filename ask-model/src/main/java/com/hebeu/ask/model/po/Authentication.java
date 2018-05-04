@@ -3,52 +3,52 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Authentication {
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 分类id*/
     private Integer categoryId;
 
-    /** */
+    /** 用户真实姓名*/
     private String realName;
 
-    /** */
+    /** 省份id*/
     private Short province;
 
-    /** */
+    /** 个人标签*/
     private String title;
 
-    /** */
+    /** 性别*/
     private Byte gender;
 
-    /** */
+    /** 城市id*/
     private Short city;
 
-    /** */
+    /** 身份证号*/
     private String idCard;
 
-    /** */
+    /** 身份证图片地址*/
     private String idCardImage;
 
-    /** */
+    /** 技能*/
     private String skill;
 
-    /** */
+    /** 技能图片*/
     private String skillImage;
 
-    /** */
+    /** 失败原因*/
     private String failedReason;
 
-    /** */
+    /** 认证状态*/
     private Byte status;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
-    /** */
+    /** 个人描述*/
     private String description;
 
     public Integer getUserId() {

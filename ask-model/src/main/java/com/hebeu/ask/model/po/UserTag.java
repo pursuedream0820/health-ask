@@ -27,10 +27,10 @@ public class UserTag {
     /** */
     private Integer adoptions;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

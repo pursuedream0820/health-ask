@@ -30,10 +30,10 @@ public class Notification {
     /** */
     private Byte isRead;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     /** */

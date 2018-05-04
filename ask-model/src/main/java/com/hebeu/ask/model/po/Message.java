@@ -3,31 +3,31 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Message {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 来源用户id*/
     private Integer fromUserId;
 
-    /** */
+    /** 发送用户id*/
     private Integer toUserId;
 
-    /** */
+    /** 是否阅读*/
     private Byte isRead;
 
-    /** */
+    /** 来源删除*/
     private Byte fromDeleted;
 
-    /** */
+    /** 被删除*/
     private Byte toDeleted;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
-    /** */
+    /** 消息内容*/
     private String content;
 
     public Integer getId() {

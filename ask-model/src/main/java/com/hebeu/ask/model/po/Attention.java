@@ -3,22 +3,22 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Attention {
-    /** */
+    /** 主键第*/
     private Integer id;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 关注源id*/
     private Integer sourceId;
 
-    /** */
+    /** 源类型*/
     private String sourceType;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

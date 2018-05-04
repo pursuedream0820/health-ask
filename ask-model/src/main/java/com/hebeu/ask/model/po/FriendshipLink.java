@@ -3,28 +3,28 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class FriendshipLink {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 链接名称*/
     private String name;
 
-    /** */
+    /** 标语*/
     private String slogan;
 
-    /** */
+    /** 链接地址*/
     private String url;
 
-    /** */
+    /** 链接排序*/
     private Short sort;
 
-    /** */
+    /** 状态*/
     private Byte status;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

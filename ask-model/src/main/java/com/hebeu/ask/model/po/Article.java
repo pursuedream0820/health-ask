@@ -3,49 +3,49 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Article {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 标识语*/
     private String logo;
 
-    /** */
+    /** 分类id*/
     private Integer categoryId;
 
-    /** */
+    /** 文章标题*/
     private String title;
 
-    /** */
+    /** 文章摘要*/
     private String summary;
 
-    /** */
+    /** 查看数*/
     private Integer views;
 
-    /** */
+    /** 收藏数*/
     private Integer collections;
 
-    /** */
+    /** 评论数*/
     private Integer comments;
 
-    /** */
+    /** 支持数*/
     private Integer supports;
 
-    /** */
+    /** 文章状态*/
     private Byte status;
 
     /** */
     private Byte device;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
-    /** */
+    /** 文章内容*/
     private String content;
 
     public Integer getId() {

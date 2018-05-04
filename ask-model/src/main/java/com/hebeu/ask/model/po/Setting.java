@@ -1,10 +1,10 @@
 package com.hebeu.ask.model.po;
 
 public class Setting {
-    /** */
+    /** 设置名称*/
     private String name;
 
-    /** */
+    /** 设置值*/
     private String value;
 
     public String getName() {

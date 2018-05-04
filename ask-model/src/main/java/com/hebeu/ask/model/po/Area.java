@@ -1,16 +1,16 @@
 package com.hebeu.ask.model.po;
 
 public class Area {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 地区名*/
     private String name;
 
-    /** */
+    /** 上级地区id*/
     private Short parentId;
 
-    /** */
+    /** 地区级别*/
     private Byte grade;
 
     public Integer getId() {

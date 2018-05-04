@@ -3,37 +3,37 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Doing {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 动作标识*/
     private String action;
 
-    /** */
+    /** 动态源id*/
     private Integer sourceId;
 
-    /** */
+    /** 动态源类型*/
     private String sourceType;
 
-    /** */
+    /** 项目*/
     private String subject;
 
-    /** */
+    /** 动态内容*/
     private String content;
 
-    /** */
+    /** 关联id*/
     private Integer referId;
 
-    /** */
+    /** 关联用户id*/
     private Integer referUserId;
 
-    /** */
+    /** 关联内容*/
     private String referContent;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
     public Integer getId() {

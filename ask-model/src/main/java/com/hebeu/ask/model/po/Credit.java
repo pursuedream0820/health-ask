@@ -3,28 +3,28 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Credit {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 动作标识*/
     private String action;
 
-    /** */
+    /** 积分源id*/
     private Integer sourceId;
 
-    /** */
+    /** 积分源项目*/
     private String sourceSubject;
 
-    /** */
+    /** 金币数*/
     private Integer coins;
 
-    /** */
+    /** 积分数*/
     private Integer credits;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
     public Integer getId() {

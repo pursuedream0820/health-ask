@@ -3,25 +3,25 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Collections {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 收藏源id*/
     private Integer sourceId;
 
-    /** */
+    /** 收藏源类型*/
     private String sourceType;
 
-    /** */
+    /** 科目*/
     private String subject;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

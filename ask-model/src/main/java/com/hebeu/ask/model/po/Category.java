@@ -3,40 +3,40 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Category {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 父类id*/
     private Integer parentId;
 
-    /** */
+    /** 级别*/
     private Integer grade;
 
-    /** */
+    /** 分类名称*/
     private String name;
 
-    /** */
+    /** 分类icon图标*/
     private String icon;
 
-    /** */
+    /** 分类目录*/
     private String slug;
 
-    /** */
+    /** 类型*/
     private String type;
 
     /** */
     private Integer sort;
 
-    /** */
+    /** 角色id*/
     private String roleId;
 
-    /** */
+    /** 分类状态*/
     private Short status;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

@@ -3,28 +3,28 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Recommendation {
-    /** */
+    /** 主键ID*/
     private Integer id;
 
-    /** */
+    /** 项目*/
     private String subject;
 
-    /** */
+    /** url*/
     private String url;
 
-    /** */
+    /** logo*/
     private String logo;
 
-    /** */
+    /** 排序*/
     private Byte sort;
 
-    /** */
+    /** 状态*/
     private Byte status;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

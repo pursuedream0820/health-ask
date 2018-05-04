@@ -3,25 +3,25 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Permission {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 权限名*/
     private String name;
 
-    /** */
+    /** 权限目录*/
     private String slug;
 
-    /** */
+    /** 权限描述*/
     private String description;
 
-    /** */
+    /** 权限模型*/
     private String model;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

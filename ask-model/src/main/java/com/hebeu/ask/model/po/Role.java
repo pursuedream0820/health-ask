@@ -3,25 +3,25 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Role {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 角色名*/
     private String name;
 
-    /** */
+    /** 角色目录*/
     private String slug;
 
-    /** */
+    /** 角色描述*/
     private String description;
 
-    /** */
+    /** 角色级别*/
     private Integer level;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
     public Integer getId() {

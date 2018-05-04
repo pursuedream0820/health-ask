@@ -3,37 +3,37 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Comment {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 评论源id*/
     private Integer sourceId;
 
-    /** */
+    /** 评论源类型*/
     private String sourceType;
 
-    /** */
+    /** 被评论用户id*/
     private Integer toUserId;
 
-    /** */
+    /** 评论状态*/
     private Byte status;
 
-    /** */
+    /** 评论支持数*/
     private Integer supports;
 
     /** */
     private Byte device;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
-    /** */
+    /** 评论内容*/
     private String content;
 
     public Integer getId() {

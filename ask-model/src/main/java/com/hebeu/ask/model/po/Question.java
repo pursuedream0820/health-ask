@@ -3,52 +3,52 @@ package com.hebeu.ask.model.po;
 import java.util.Date;
 
 public class Question {
-    /** */
+    /** 主键id*/
     private Integer id;
 
-    /** */
+    /** 用户id*/
     private Integer userId;
 
-    /** */
+    /** 分类id*/
     private Integer categoryId;
 
-    /** */
+    /** 问题title*/
     private String title;
 
-    /** */
+    /** 问题价格*/
     private Short price;
 
-    /** */
+    /** 是否隐藏*/
     private Byte hide;
 
-    /** */
+    /** 回答数*/
     private Integer answers;
 
-    /** */
+    /** 查看数*/
     private Integer views;
 
-    /** */
+    /** 关注数*/
     private Integer followers;
 
-    /** */
+    /** 收藏数*/
     private Integer collections;
 
-    /** */
+    /** 评论数*/
     private Integer comments;
 
     /** */
     private Byte device;
 
-    /** */
+    /** 问题状态*/
     private Byte status;
 
-    /** */
+    /** 创建时间*/
     private Date createdAt;
 
-    /** */
+    /** 更新时间*/
     private Date updatedAt;
 
-    /** */
+    /** 问题描述*/
     private String description;
 
     public Integer getId() {
