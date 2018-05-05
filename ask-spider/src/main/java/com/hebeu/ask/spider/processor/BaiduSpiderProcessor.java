@@ -2,13 +2,18 @@ package com.hebeu.ask.spider.processor;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.hebeu.ask.dao.*;
+import com.hebeu.ask.model.po.Answer;
 import com.hebeu.ask.model.po.SpiderKeyword;
+import com.hebeu.ask.model.po.SpiderTag;
+import com.hebeu.ask.model.po.User;
 import com.hebeu.ask.spider.model.CrawlStatusEnum;
-import com.hebeu.ask.spider.service.SpiderKeywordService;
+import com.hebeu.ask.spider.service.*;
 import com.hebeu.ask.spider.util.ApplicationContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.codecraft.webmagic.*;
@@ -16,9 +21,14 @@ import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Selectable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author : chenDeHua
@@ -46,10 +56,24 @@ public class BaiduSpiderProcessor implements PageProcessor {
     @Autowired
     private SpiderKeywordService spiderKeywordService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private QuestionService questionService;
+
+    @Autowired
+    private SpiderLogService spiderLogService;
+
+    @Autowired
+    private AnswerService answerService;
 
 
     @Override
     public void process(Page page) {
+        // 初始化service
+        this.initService();
+
         // 得到爬取网页地址
         String pageUrl = page.getUrl().get();
         log.info("开始爬取网址 pageUrl:{}", pageUrl);
@@ -161,66 +185,129 @@ public class BaiduSpiderProcessor implements PageProcessor {
         log.debug("问题title:{}", title);
 
         String author = selectable.xpath("//*/a[@alog-action=\"qb-ask-uname\"]/text()").get();
-        log.debug("作者 author：{}" , author);
+        author = StringUtils.isEmpty(author) ? ANONYMOUS_USER : author;
+        log.debug("作者 author：{}", author);
 
-        String answers = selectable.xpath("//*/dev[@class=\"hd line other-hd\"]/h2/text()").get();
-        answers = answers == null ? "0" : answers;
+        String answers = selectable.xpath("//*/div[@class=\"hd line other-hd\"]/h2/text()").get();
+        answers = StringUtils.isEmpty(answers) ? "0" : "0";
         log.debug("回答数 answers:{}", answers);
 
         String content = selectable.xpath("//*/span[@class=\"con\"]/text()").get();
-        content = (content == null ? "" : content);
+        content = StringUtils.isEmpty(content) ? "" : content;
         log.debug("问题content:{}", content);
+
+        String price = selectable.xpath("//*/span[@class=\"ask-wealth\"]/em/text()").get();
+        price = StringUtils.isEmpty(price) ? "0" : price;
+        log.debug("问题积分：price:{}", price);
+
+
+        // TODO 浏览次数获取不到，后期再研究原因
+        String views = getViews(selectable.xpath("//*/span[contains(@class, \"browse-times\")]/text()").get());
+        views = StringUtils.isEmpty(views) ? "0" : views;
+        log.debug("问题浏览次数：views:{}", views);
 
 
         if (!StringUtils.isEmpty(author) && !StringUtils.isEmpty(content) && !StringUtils.isEmpty(title)) {
 
-//            List<AskSpiderTag> tags = this.findTags(title, content, bizType);
-//            if (!CollectionUtils.isEmpty(tags)) {
+            //Step 1: 存用户信息，并拿到id
+            Integer authorId = userService.insertOrUpdateUser(author);
+
+            log.debug("保存的用户id：authorId:{}", authorId);
+            //Step 2: 存文章信息并拿到id
+            //先判断文章是否已经存在
+            Integer questionId = questionService.isExistQuestionByTitle(title);
+
+            log.debug("文章questionId：{}", questionId);
+            boolean exists = questionId != null;
+            if (!exists) {
+                log.debug("开始保存问题，questionTitle：{}", title);
+                questionId = questionService.saveQuestion(title, content, answers, categoryId, price, views);
+
+                //向 ask_doing表插入数据
+//                this.increaseQuestionCount(authorId);
+            }
+            // Step 3: 存文章——url——记录
+            if (!exists) {
+                spiderLogService.saveSpiderLog(questionId, page.getUrl().get(), "百度知道");
+            }
+//            //Step 4: 存文章--KEYWORD--对应关系 (一篇文章可能有多个keyword，后面可以洗keyword为tag)
+//            this.saveQuestionKeywordRel(questionId, keyword);
+
+            //Step 5: 存回答
+            if (!exists) {
+                this.saveAnswers(questionId, page);
+            }
 //
-//                //Step 1: 存用户信息，并拿到id
-//                int authorId = this.insertOrUpdateUser(author);
+//            //Step 6: 存相关问题（文章ID对应title) 并继续爬取相关问题
+//            this.saveRelatedQuestions(questionId, page);
 //
-//                //Step 2: 存文章信息并拿到id
-//                //先判断文章是否已经存在
-//                int questionId = this.queryQuestion(title, bizType);
-//                boolean exists = questionId > 0;
-//                if (!exists) {
-//                    questionId = this.saveQuestion(authorId, title, content, author, bizType, date, answers, categoryId);
-//
-//                    //向 ask_doing表插入数据
-//                    this.increaseQuestionCount(authorId);
-//                }
-//                //Step 3: 存文章——url——记录
-//                if (!exists) {
-//                    this.saveSpiderLog(questionId, page.getUrl().get(), "360问答");
-//                }
-//                //Step 4: 存文章--KEYWORD--对应关系 (一篇文章可能有多个keyword，后面可以洗keyword为tag)
-//                this.saveQuestionKeywordRel(questionId, keyword);
-//
-//                //Step 5: 存回答
-//                if (!exists) {
-//                    this.saveAnswers(questionId, page);
-//                }
-//
-//                //Step 6: 存相关问题（文章ID对应title) 并继续爬取相关问题
-//                this.saveRelatedQuestions(questionId, page);
-//
-//                //Step 7: 存文章id和tag的关系
-//                this.saveQuestionTagRel(questionId, tags);
-//            }
+//            //Step 7: 存文章id和tag的关系
+//            this.saveQuestionTagRel(questionId, tags);
+
         }
 
         log.info("已完成爬取 url: " + page.getRequest().getUrl());
     }
 
+    /**
+     * 保存问题答案
+     *
+     * @param questionId 问题id
+     * @param page       问题网页
+     */
+    private void saveAnswers(Integer questionId, Page page) {
+        List<Selectable> selectables = page.getHtml().xpath("//*/div[contains(@class, \"bd answer\")]").nodes();
+        if (CollectionUtils.isEmpty(selectables)) {
+            return;
+        }
+        log.debug("回答数量为：{}", selectables.size());
+
+        for (Selectable selectable : selectables) {
+            String author = selectable.xpath("//*/div[contains(@class, \"user-name\")]/text()").toString();
+            author = (author == null ? ANONYMOUS_USER : author);
+            Integer authorId = userService.insertOrUpdateUser(author);
+            log.debug("作者author：{}, authorId :{}", author, authorId);
+            String content = selectable.xpath("//*/span[@class=\"con\"]/text()").get();
+            log.debug("答案内容：content:{}", content);
+            //只保存有内容的问题
+            if (!StringUtils.isEmpty(author) && !StringUtils.isEmpty(content)) {
+                String date = selectable.xpath("//*/span[contains(@class, \"pos-time\")]/text()").get();
+
+                Answer answer = new Answer();
+                answer.setAdoptedAt(parseDate(date, "yyyy-MM-dd", "发布于"));
+                log.debug("发布时间：{}", answer.getAdoptedAt());
+                answer.setQuestionId(questionId);
+                answer.setUserId(authorId);
+                answer.setContent(content);
+                answerService.saveAnswer(answer);
+            }
+        }
+
+    }
 
 
-    public void initDao(){
+    /**
+     * 初始化service
+     */
+    public void initService() {
         if (spiderKeywordService == null) {
             this.spiderKeywordService = ApplicationContextUtil.getBean(SpiderKeywordService.class);
         }
+        if (questionService == null) {
+            this.questionService = ApplicationContextUtil.getBean(QuestionService.class);
+        }
 
+        if (userService == null) {
+            this.userService = ApplicationContextUtil.getBean(UserService.class);
+        }
 
+        if (spiderLogService == null) {
+            this.spiderLogService = ApplicationContextUtil.getBean(SpiderLogService.class);
+        }
+
+        if (answerService == null){
+            this.answerService = ApplicationContextUtil.getBean(AnswerService.class);
+        }
 
 
     }
@@ -254,6 +341,46 @@ public class BaiduSpiderProcessor implements PageProcessor {
                 .addRequest(request)
                 .run();
 
+    }
+
+    /**
+     * 得到浏览次数数值
+     *
+     * @param viewsStr 浏览次数字符串
+     * @return 返回浏览次数数值
+     */
+    private String getViews(String viewsStr) {
+        if (StringUtils.isEmpty(viewsStr)) {
+            return "0";
+        }
+        String regEx = "[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(viewsStr);
+        return m.replaceAll("").trim();
+    }
+
+
+    /**
+     * 时间转换
+     *
+     * @param dateStr
+     * @param pattern
+     * @param replaceStr
+     * @return
+     * @throws ParseException
+     */
+    private Date parseDate(String dateStr, String pattern, String replaceStr) {
+        if (StringUtils.isEmpty(dateStr)) {
+            return new Date();
+        }
+        dateStr = dateStr.replaceAll(replaceStr, "").trim();
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        try {
+            return sdf.parse(dateStr);
+        } catch (ParseException e) {
+            log.error("时间转换异常", e);
+            return new Date();
+        }
     }
 
 }

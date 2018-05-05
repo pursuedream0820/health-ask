@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SpiderTest  extends BaseApplicationTest{
 
     @Autowired
-    private BaiduSpiderProcessor qihuSpiderProcessor;
+    private BaiduSpiderProcessor baiduSpiderProcessor;
 
     @Test
     public void test(){
-        qihuSpiderProcessor.doRun();
+        baiduSpiderProcessor.doRun();
     }
 }

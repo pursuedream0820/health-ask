@@ -22,23 +22,36 @@ public class QuestionService {
 
     /**
      * 通过文章标题判断是否存在文章
+     *
      * @param title 文章标题
      * @return 返回是否存在布尔值
      */
-    public boolean isExistQuestionByTitle(String title) {
+    public Integer isExistQuestionByTitle(String title) {
         QuestionExample questionExample = new QuestionExample();
         QuestionExample.Criteria criteria = questionExample.createCriteria();
         criteria.andTitleEqualTo(title);
         List<Question> questionList = questionMapper.selectByExample(questionExample);
 
         if (CollectionUtils.isEmpty(questionList)) {
-            return false;
+            return null;
         }
-        return true;
+        return questionList.get(0).getId();
 
     }
 
 
+    public Integer saveQuestion(String title, String content, String answers, Integer categoryId, String price, String views) {
+        Question question = new Question();
+        question.setTitle(title);
+        question.setDescription(content);
+        question.setCategoryId(categoryId);
+        question.setAnswers(Integer.valueOf(answers));
+        question.setPrice(Short.valueOf(price));
+        question.setViews(Integer.valueOf(views));
+        questionMapper.insertSelective(question);
+
+        return question.getId();
+    }
 
 
 }
