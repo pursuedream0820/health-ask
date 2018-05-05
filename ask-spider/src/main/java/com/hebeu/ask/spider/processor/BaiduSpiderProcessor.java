@@ -179,7 +179,13 @@ public class BaiduSpiderProcessor implements PageProcessor {
         String keyword = page.getRequest().getExtra("keyword").toString();
         int categoryId = Integer.parseInt(page.getRequest().getExtra("categoryId").toString());
 
-        Selectable selectable = page.getHtml();
+        List<Selectable> selectables = page.getHtml().xpath("//*/div[@id=\"wgt-ask\"]").nodes();
+        if (CollectionUtils.isEmpty(selectables)){
+            log.warn("问题为空");
+            return;
+        }
+
+        Selectable selectable = selectables.get(0);
 
         String title = selectable.xpath("//*/span[@class=\"ask-title\"]/text()").get();
         log.debug("问题title:{}", title);
@@ -202,12 +208,12 @@ public class BaiduSpiderProcessor implements PageProcessor {
 
 
         // TODO 浏览次数获取不到，后期再研究原因
-        String views = getViews(selectable.xpath("//*/span[contains(@class, \"browse-times\")]/text()").get());
+        String views = getViews(selectable.xpath("//*/span[@class=\"browse-times\"]/text()").get());
         views = StringUtils.isEmpty(views) ? "0" : views;
         log.debug("问题浏览次数：views:{}", views);
 
 
-        if (!StringUtils.isEmpty(author) && !StringUtils.isEmpty(content) && !StringUtils.isEmpty(title)) {
+        if (!StringUtils.isEmpty(author) && !StringUtils.isEmpty(title)) {
 
             //Step 1: 存用户信息，并拿到id
             Integer authorId = userService.insertOrUpdateUser(author);
