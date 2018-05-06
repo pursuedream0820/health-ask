@@ -25,7 +25,7 @@ public class IndexController {
     @Autowired
     private Indexer indexer;
 
-    @RequestMapping(path = "index")
+    @RequestMapping(path = "public")
     public String index(Model model){
         log.info("开始访问主页");
         log.info("开始创建索引");

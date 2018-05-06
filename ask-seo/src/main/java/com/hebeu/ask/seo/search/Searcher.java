@@ -1,6 +1,7 @@
 package com.hebeu.ask.seo.search;
 
 import com.hebeu.ask.model.enums.IndexPathEnum;
+import com.hebeu.ask.model.vo.SearchResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : chenDeHua
@@ -28,9 +31,11 @@ import java.nio.file.FileSystems;
 @Slf4j
 public class Searcher {
 
-    public void searchQuestion(String keywords){
+    public List<SearchResultVo> searchQuestion(String keywords){
 
         DirectoryReader directoryReader = null;
+        List<SearchResultVo> searchResultVoList = new ArrayList<>();
+
         try {
             // 1、创建Directory
             Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(IndexPathEnum.QUESTION_INDEX_PATH.getPath()));
@@ -50,7 +55,7 @@ public class Searcher {
 
             // 5、根据searcher搜索并且返回TopDocs
             // 搜索前100条结果
-            TopDocs topDocs = indexSearcher.search(multiFieldQuery, 100);
+            TopDocs topDocs = indexSearcher.search(multiFieldQuery, 1000);
             log.info("共找到匹配处：" + topDocs.totalHits);
             // 6、根据TopDocs获取ScoreDoc对象
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
@@ -69,9 +74,18 @@ public class Searcher {
 
                 // 10、根据Document对象获取需要的值
                 String title = document.get("title");
-                log.info("问题标题，title:{}",title);
-                log.info("问题描述，description:{}",document.get("description"));
-                log.info("标题高亮，titleHighlighter:{}",highlighter.getBestFragment(analyzer, "title", title));
+                log.debug("问题id，id:{}", document.get("id"));
+                log.debug("问题标题，title:{}",title);
+                log.debug("问题描述，description:{}",document.get("description"));
+                log.debug("标题高亮，titleHighlighter:{}",highlighter.getBestFragment(analyzer, "title", title));
+
+                SearchResultVo searchResultVo =  SearchResultVo.builder()
+                        .id(Integer.valueOf(document.get("id")))
+                        .title(document.get("title"))
+                        .description(document.get("description"))
+                        .titleHighlighter(document.get("titleHighlighter"))
+                        .build();
+                searchResultVoList.add(searchResultVo);
             }
         } catch (Exception e) {
             log.error("搜索异常", e);
@@ -84,6 +98,8 @@ public class Searcher {
                 log.error("关闭directoryReader对象异常", e);
             }
         }
+
+        return searchResultVoList;
 
     }
 
