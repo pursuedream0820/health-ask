@@ -25,7 +25,6 @@ public class IndexController {
     @Autowired
     private Indexer indexer;
 
-    @RequestMapping(path = "public")
     public String index(Model model){
         log.info("开始访问主页");
         log.info("开始创建索引");
@@ -33,5 +32,11 @@ public class IndexController {
         searcher.searchQuestion("搜索引擎");
         model.addAttribute("hello","232323");
         return "view/layout/public";
+    }
+
+    @RequestMapping(path = "index")
+    public String index(){
+
+        return "view/home/index";
     }
 }
