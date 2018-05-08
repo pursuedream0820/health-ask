@@ -2,13 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>搜索 - 第   页</title>
+    <title>搜索 - 第<th:block th:text="${pageNum}"></th:block>页</title>
     <th:block th:replace="view/layout/public :: public-css"/>
-    <script>
-        function replace(str) {
-            return str.replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-        }
-    </script>
 </head>
 
 <body>
@@ -20,14 +15,18 @@
             <div class="row">
                 <div class="container">
                     <ul class="search-category nav nav-pills">
-                        <li class="active"></li><li><a href="javascript:void (0)">问答</a></li>
+                        <li class="active"></li>
+                        <li><a href="javascript:void (0)">问答</a></li>
                         <li class="active"><a href="javascript:void (0)">文章</a></li>
-                        <li class="active"></li><li><a href="javascript:void (0)">标签</a></li>
-                        <li class="active"></li><li><a href="javascript:void (0)">用户</a></li>
+                        <li class="active"></li>
+                        <li><a href="javascript:void (0)">标签</a></li>
+                        <li class="active"></li>
+                        <li><a href="javascript:void (0)">用户</a></li>
                     </ul>
                     <form action="/search" class="row" method="GET">
                         <div class="col-md-9">
-                            <input class="input-lg form-control" type="text" name="keywords" th:value="${keywords}" placeholder="输入关键字搜索">
+                            <input class="input-lg form-control" type="text" name="keywords" th:value="${keywords}"
+                                   placeholder="输入关键字搜索">
                         </div>
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-primary btn-lg btn-block">搜索</button>
@@ -37,14 +36,17 @@
             </div>
             <div class="row">
                 <div class="col-md-9 main search-result">
-                    <h3 class="h5 mt0">找到约 <strong>****</strong> 条结果</h3>
-                    <section class="widget-question" th:each="result : ${resultList}">
+                    <h3 class="h5 mt0">找到约 <strong th:text="${count}">0</strong> 条结果</h3>
+                    <section class="widget-question" th:each="question : ${questionList}">
                         <h2 class="h4">
-                            <span class="label label-success pull-left mr-5" th:if="${result.status == 2}">解决</span>
-                            <a href="javascript:void (0)" target="_blank" th:utext="${result.titleHighlighter}"></a>
+                            <span class="label label-success pull-left mr-5" th:if="${question.status == 2}">解决</span>
+                            <a th:href="@{'/detail?id='+ ${question.id}}" target="_blank" th:utext="${question.titleHighlighter}"></a>
                         </h2>
-                        <p class="excerpt" th:utext="${result.descHighlighter}"></p>
+                        <p class="excerpt" th:utext="${question.descHighlighter}"></p>
                     </section>
+
+                    <!--分页-->
+                    <th:block th:utext="${pageHtml}"></th:block>
                 </div>
 
                 <div class="col-md-3 side">

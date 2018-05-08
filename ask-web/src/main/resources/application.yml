@@ -17,6 +17,8 @@ logging:
   level:
     com.hebeu.ask.spider.processor: debug
     com.hebeu.ask.seo.search: debug
+    com.hebeu.ask.web.controller: debug
+    com.hebeu.ask.service.view: debug
 
 
 # 定时任务开关

@@ -18,11 +18,6 @@ public class SearchTest extends BaseApplicationTest {
     @Autowired
     private Indexer indexer;
 
-    @Test
-    public void test() {
-
-        searcher.searchQuestion("胃肠疾病");
-    }
 
     @Test
     public void createIndex() {
