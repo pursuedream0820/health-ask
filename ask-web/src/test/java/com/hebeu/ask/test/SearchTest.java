@@ -18,9 +18,9 @@ public class SearchTest extends BaseApplicationTest {
     @Autowired
     private Indexer indexer;
 
+
     @Test
-    public void test(){
+    public void createIndex() {
         indexer.createQuestionIndex();
-        searcher.searchQuestion("建立");
     }
 }

@@ -1,7 +1,10 @@
 package com.hebeu.ask.model.po;
 
+import lombok.ToString;
+
 import java.util.Date;
 
+@ToString
 public class Question {
     /** 主键id*/
     private Integer id;
@@ -19,7 +22,7 @@ public class Question {
     private Short price;
 
     /** 是否隐藏*/
-    private Byte hide;
+    private Integer hide;
 
     /** 回答数*/
     private Integer answers;
@@ -37,13 +40,16 @@ public class Question {
     private Integer comments;
 
     /** */
-    private Byte device;
+    private Integer device;
 
     /** 问题状态*/
-    private Byte status;
+    private Integer status;
 
     /** 创建时间*/
     private Date createdAt;
+
+    /** 创建时间字符串**/
+    private String createTime;
 
     /** 更新时间*/
     private Date updatedAt;
@@ -91,11 +97,11 @@ public class Question {
         this.price = price;
     }
 
-    public Byte getHide() {
+    public Integer getHide() {
         return hide;
     }
 
-    public void setHide(Byte hide) {
+    public void setHide(Integer hide) {
         this.hide = hide;
     }
 
@@ -139,19 +145,19 @@ public class Question {
         this.comments = comments;
     }
 
-    public Byte getDevice() {
+    public Integer getDevice() {
         return device;
     }
 
-    public void setDevice(Byte device) {
+    public void setDevice(Integer device) {
         this.device = device;
     }
 
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -161,6 +167,14 @@ public class Question {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdatedAt() {

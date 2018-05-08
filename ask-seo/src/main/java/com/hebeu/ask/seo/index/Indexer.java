@@ -57,6 +57,7 @@ public class Indexer {
                 document.add(new Field("id", String.valueOf(question.getId()), TextField.TYPE_STORED));
                 document.add(new Field("title", question.getTitle(), TextField.TYPE_STORED));
                 document.add(new Field("description", question.getDescription(), TextField.TYPE_STORED));
+                document.add(new Field("status",String.valueOf(question.getStatus()), TextField.TYPE_STORED));
                 indexWriter.addDocument(document);
             }
         } catch (Exception e) {
