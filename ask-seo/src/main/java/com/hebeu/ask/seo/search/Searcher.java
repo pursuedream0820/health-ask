@@ -3,6 +3,7 @@ package com.hebeu.ask.seo.search;
 import com.hebeu.ask.model.enums.IndexPathEnum;
 import com.hebeu.ask.model.vo.SearchResultVo;
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
