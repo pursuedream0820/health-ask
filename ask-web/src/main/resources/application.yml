@@ -16,6 +16,7 @@ logging:
 #    console: "[%d] %-5level %msg%n"
   level:
     com.hebeu.ask.spider.processor: debug
+    com.hebeu.ask.seo.search: debug
 
 
 # 定时任务开关

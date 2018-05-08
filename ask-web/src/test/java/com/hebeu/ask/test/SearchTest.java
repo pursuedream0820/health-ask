@@ -19,8 +19,13 @@ public class SearchTest extends BaseApplicationTest {
     private Indexer indexer;
 
     @Test
-    public void test(){
+    public void test() {
+
+        searcher.searchQuestion("胃肠疾病");
+    }
+
+    @Test
+    public void createIndex() {
         indexer.createQuestionIndex();
-        searcher.searchQuestion("建立");
     }
 }

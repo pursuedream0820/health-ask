@@ -3,6 +3,7 @@ package com.hebeu.ask.model.vo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author : chenDeHua
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
+@ToString
 public class SearchResultVo {
 
     /** 问题id*/
@@ -25,5 +27,11 @@ public class SearchResultVo {
 
     /** 标题高亮*/
     private String titleHighlighter;
+
+    /** 问题描述高亮*/
+    private String descHighlighter;
+
+    /** 问题状态*/
+    private Integer status;
 
 }

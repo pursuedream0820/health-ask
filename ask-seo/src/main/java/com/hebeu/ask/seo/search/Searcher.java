@@ -3,6 +3,7 @@ package com.hebeu.ask.seo.search;
 import com.hebeu.ask.model.enums.IndexPathEnum;
 import com.hebeu.ask.model.vo.SearchResultVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -31,7 +32,7 @@ import java.util.List;
 @Slf4j
 public class Searcher {
 
-    public List<SearchResultVo> searchQuestion(String keywords){
+    public List<SearchResultVo> searchQuestion(String keywords) {
 
         DirectoryReader directoryReader = null;
         List<SearchResultVo> searchResultVoList = new ArrayList<>();
@@ -62,10 +63,16 @@ public class Searcher {
             log.info("共找到匹配文档数：" + scoreDocs.length);
 
             // 7、把搜索记录中的关键字段设置高亮显示样式
-            QueryScorer scorer = new QueryScorer(multiFieldQuery, "title");
-            SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter("<span style=\"background:red\">", "</span>");
-            Highlighter highlighter = new Highlighter(htmlFormatter, scorer);
-            highlighter.setTextFragmenter(new SimpleSpanFragmenter(scorer));
+            QueryScorer titleScorer = new QueryScorer(multiFieldQuery, "title");
+            QueryScorer descScorer = new QueryScorer(multiFieldQuery, "description");
+
+            SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter("<em>", "</em>");
+
+            Highlighter titleHighlighter = new Highlighter(htmlFormatter, titleScorer);
+            titleHighlighter.setTextFragmenter(new SimpleSpanFragmenter(titleScorer));
+
+            Highlighter descHighlighter = new Highlighter(htmlFormatter, descScorer);
+            descHighlighter.setTextFragmenter(new SimpleSpanFragmenter(descScorer));
 
             // 8、遍历搜索结果记录
             for (ScoreDoc scoreDoc : scoreDocs) {
@@ -73,18 +80,29 @@ public class Searcher {
                 Document document = indexSearcher.doc(scoreDoc.doc);
 
                 // 10、根据Document对象获取需要的值
+                String id = document.get("id");
                 String title = document.get("title");
-                log.debug("问题id，id:{}", document.get("id"));
-                log.debug("问题标题，title:{}",title);
-                log.debug("问题描述，description:{}",document.get("description"));
-                log.debug("标题高亮，titleHighlighter:{}",highlighter.getBestFragment(analyzer, "title", title));
+                String description = document.get("description");
+                String status = document.get("status");
+                String titleHighlight = titleHighlighter.getBestFragment(analyzer, "title", title);
+                String descHighlight = descHighlighter.getBestFragment(analyzer, "description", document.get("description"));
 
-                SearchResultVo searchResultVo =  SearchResultVo.builder()
-                        .id(Integer.valueOf(document.get("id")))
-                        .title(document.get("title"))
-                        .description(document.get("description"))
-                        .titleHighlighter(document.get("titleHighlighter"))
+                log.debug("问题id，id:{}", document.get("id"));
+                log.debug("问题标题，title:{}", title);
+                log.debug("问题描述，description:{}", description);
+                log.debug("标题高亮，titleHighlighter:{}", titleHighlight);
+                log.debug("标题描述高亮：descHighlighter:{}", descHighlight);
+                log.debug("问题状态，status：{}", status);
+
+                SearchResultVo searchResultVo = SearchResultVo.builder()
+                        .id(Integer.valueOf(id))
+                        .title(title)
+                        .description(description)
+                        .titleHighlighter(StringUtils.isEmpty(titleHighlight) ? title : titleHighlight)
+                        .descHighlighter(StringUtils.isEmpty(descHighlight) ? description : descHighlight)
+                        .status(Integer.valueOf(status))
                         .build();
+                log.debug("搜索结果对象：{}", searchResultVo.toString());
                 searchResultVoList.add(searchResultVo);
             }
         } catch (Exception e) {
