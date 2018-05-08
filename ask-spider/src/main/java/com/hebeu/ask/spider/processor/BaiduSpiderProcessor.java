@@ -2,21 +2,20 @@ package com.hebeu.ask.spider.processor;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.hebeu.ask.dao.*;
 import com.hebeu.ask.model.po.Answer;
 import com.hebeu.ask.model.po.SpiderKeyword;
-import com.hebeu.ask.model.po.SpiderTag;
-import com.hebeu.ask.model.po.User;
 import com.hebeu.ask.spider.model.CrawlStatusEnum;
 import com.hebeu.ask.spider.service.*;
 import com.hebeu.ask.spider.util.ApplicationContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.codecraft.webmagic.*;
+import us.codecraft.webmagic.Page;
+import us.codecraft.webmagic.Request;
+import us.codecraft.webmagic.Site;
+import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Selectable;
@@ -120,14 +119,14 @@ public class BaiduSpiderProcessor implements PageProcessor {
             log.info("keyword:{};keywordId:{};categoryId:{}", keyword, keywordId, categoryId);
             int index = pageUrl.indexOf("pn=");
 
-            // 最大页码值 TODO 后期再修改
-            int maxPageNum = 10;
+            // 最大页码值 ，此值是表示从多少条开始查 TODO 后期再修改
+            int maxPageNum = 1000;
             if (index >= 0) {
                 int pageNum = Integer.parseInt(pageUrl.substring(index + 3));
                 if (pageNum == 0) {
 
                     spiderKeywordService.updateCrawlStatusById(keywordId, CrawlStatusEnum.ING_CRAWLED.getCode());
-                    String url = "https://zhidao.baidu.com/search?word=" + keyword + "&pn=" + (pageNum + 1);
+                    String url = "https://zhidao.baidu.com/search?word=" + keyword + "&pn=" + (pageNum + 10);
                     Request request = new Request(url);
                     request.setExtras(extras);
                     page.addTargetRequest(request);
@@ -151,7 +150,7 @@ public class BaiduSpiderProcessor implements PageProcessor {
                     request.setExtras(data);
                     page.addTargetRequest(request);
                 } else {
-                    String url = "https://zhidao.baidu.com/search?word=" + keyword + "&pn=" + (pageNum + 1);
+                    String url = "https://zhidao.baidu.com/search?word=" + keyword + "&pn=" + (pageNum + 10);
                     Request request = new Request(url);
                     request.setExtras(extras);
                     page.addTargetRequest(request);
@@ -194,6 +193,7 @@ public class BaiduSpiderProcessor implements PageProcessor {
         author = StringUtils.isEmpty(author) ? ANONYMOUS_USER : author;
         log.debug("作者 author：{}", author);
 
+        // TODO 回答数后期待修改
         String answers = selectable.xpath("//*/div[@class=\"hd line other-hd\"]/h2/text()").get();
         answers = StringUtils.isEmpty(answers) ? "0" : "0";
         log.debug("回答数 answers:{}", answers);
@@ -205,13 +205,6 @@ public class BaiduSpiderProcessor implements PageProcessor {
         String price = selectable.xpath("//*/span[@class=\"ask-wealth\"]/em/text()").get();
         price = StringUtils.isEmpty(price) ? "0" : price;
         log.debug("问题积分：price:{}", price);
-
-
-        // TODO 浏览次数获取不到，后期再研究原因
-        String views = getViews(selectable.xpath("//*/span[@class=\"browse-times\"]/text()").get());
-        views = StringUtils.isEmpty(views) ? "0" : views;
-        log.debug("问题浏览次数：views:{}", views);
-
 
         if (!StringUtils.isEmpty(author) && !StringUtils.isEmpty(title)) {
 
@@ -227,7 +220,7 @@ public class BaiduSpiderProcessor implements PageProcessor {
             boolean exists = questionId != null;
             if (!exists) {
                 log.debug("开始保存问题，questionTitle：{}", title);
-                questionId = questionService.saveQuestion(title, content, answers, categoryId, price, views);
+                questionId = questionService.saveQuestion(title, content, answers, categoryId, price, authorId);
 
                 //向 ask_doing表插入数据
 //                this.increaseQuestionCount(authorId);

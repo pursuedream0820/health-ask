@@ -40,14 +40,25 @@ public class QuestionService {
     }
 
 
-    public Integer saveQuestion(String title, String content, String answers, Integer categoryId, String price, String views) {
+    /**
+     * 保存问题
+     *
+     * @param title      标题
+     * @param content    内容
+     * @param answers    回答数
+     * @param categoryId 分类id
+     * @param price      积分
+     * @param userId     用户id
+     * @return 返回问题id
+     */
+    public Integer saveQuestion(String title, String content, String answers, Integer categoryId, String price, Integer userId) {
         Question question = new Question();
         question.setTitle(title);
         question.setDescription(content);
         question.setCategoryId(categoryId);
         question.setAnswers(Integer.valueOf(answers));
         question.setPrice(Short.valueOf(price));
-        question.setViews(Integer.valueOf(views));
+        question.setUserId(userId);
         questionMapper.insertSelective(question);
 
         return question.getId();
