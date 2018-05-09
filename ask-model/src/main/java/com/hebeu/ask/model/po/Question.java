@@ -48,9 +48,6 @@ public class Question {
     /** 创建时间*/
     private Date createdAt;
 
-    /** 创建时间字符串**/
-    private String createTime;
-
     /** 更新时间*/
     private Date updatedAt;
 
@@ -167,14 +164,6 @@ public class Question {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
     }
 
     public Date getUpdatedAt() {
