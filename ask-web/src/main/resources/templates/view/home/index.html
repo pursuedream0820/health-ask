@@ -9,8 +9,8 @@
 <th:block th:replace="view/layout/public :: header"/>
 
 <div class="wrap">
-    <div class="jumbotron text-center">
-        <h4>现在加入Tipask问答网，一起记录站长的世界<a class="btn btn-primary ml-10" href="javascript:void(0)" role="button">立即注册</a> <a class="btn btn-default ml-5" href="javascript:void(0)" role="button">用户登录</a></h4>
+    <div class="jumbotron text-center" th:unless="${session.authc}">
+        <h4>现在加入HealthAsk问答网，一起记录站长的世界 <a class="btn btn-primary ml-10" href="/register" role="button">立即注册</a> <a class="btn btn-default ml-5" href="/login" role="button">用户登录</a></h4>
     </div>
     <div class="container">
         <div class="row mt-10">

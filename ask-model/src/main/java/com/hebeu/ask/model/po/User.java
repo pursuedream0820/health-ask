@@ -1,7 +1,10 @@
 package com.hebeu.ask.model.po;
 
+import lombok.ToString;
+
 import java.util.Date;
 
+@ToString
 public class User {
     /** 主键id*/
     private Integer id;

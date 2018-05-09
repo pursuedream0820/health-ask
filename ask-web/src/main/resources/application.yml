@@ -19,6 +19,7 @@ logging:
     com.hebeu.ask.seo.search: debug
     com.hebeu.ask.web.controller: debug
     com.hebeu.ask.service.view: debug
+    com.hebeu.ask.web.shiro: debug
 
 
 # 定时任务开关
