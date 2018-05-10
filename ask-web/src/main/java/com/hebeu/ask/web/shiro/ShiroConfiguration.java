@@ -106,14 +106,15 @@ public class ShiroConfiguration {
 
     /**
      * SecurityManager，权限管理，这个类组合了登陆，登出，权限，session的处理，是个比较重要的类。
-     //     */
+     */
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
         // 设置开启缓存
         securityManager.setCacheManager(ehCacheManager());
-//        securityManager.setRememberMeManager();
+        // 记住我
+        securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
 
@@ -129,8 +130,8 @@ public class ShiroConfiguration {
         Map<String, Filter> filters = new LinkedHashMap<>();
 
         LogoutFilter logoutFilter = new LogoutFilter();
-        logoutFilter.setRedirectUrl("/login");
-//        filters.put("logout",null); 5
+        logoutFilter.setRedirectUrl("/index");
+        filters.put("logout",logoutFilter);
         shiroFilterFactoryBean.setFilters(filters);
 
         // 过滤器链设置，优先级按先后顺序 依次 从高到低

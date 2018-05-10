@@ -1,5 +1,6 @@
 package com.hebeu.ask.service.view.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.hebeu.ask.dao.QuestionMapper;
 import com.hebeu.ask.dao.UserMapper;
 import com.hebeu.ask.model.po.Question;
@@ -29,15 +30,32 @@ public class QuestionServiceImpl implements QuestionService{
     private UserMapper userMapper;
 
     /**
-     * 查询所有的问题
+     * 查询最新问题
      *
-     * @return 返回所有的问题集合
+     * @return 返回最新问题集合
      */
     @Override
-    public List<Question> queryAllQuestion() {
+    public List<Question> queryNewQuestion(Integer queryNum) {
+        PageHelper.startPage(1, queryNum, "created_at desc");
         QuestionExample questionExample = new QuestionExample();
         QuestionExample.Criteria criteria = questionExample.createCriteria();
         criteria.andIdIsNotNull();
+        return questionMapper.selectByExample(questionExample);
+    }
+
+    /**
+     * 查询悬赏问题
+     *
+     * @param queryNum 查询数量
+     * @return 返回悬赏问题集合
+     */
+    @Override
+    public List<Question> queryAwardQuestion(Integer queryNum) {
+        PageHelper.startPage(1, queryNum, "created_at desc");
+        QuestionExample questionExample = new QuestionExample();
+        QuestionExample.Criteria criteria = questionExample.createCriteria();
+        criteria.andIdIsNotNull();
+        criteria.andPriceGreaterThan(Short.parseShort("0"));
         return questionMapper.selectByExample(questionExample);
     }
 
@@ -70,11 +88,29 @@ public class QuestionServiceImpl implements QuestionService{
         BeanUtils.copyProperties(question, questionVo);
         questionVo.setCreateTime(DateUtil.dateToString(DateUtil.yyyy_MM_dd_HH_mm_ss, question.getCreatedAt()));
 
-        // 设置用户姓名
+        // 设置用户姓名和id
         User user = userMapper.selectByPrimaryKey(question.getUserId());
         questionVo.setUserName(user.getName());
+        questionVo.setUserId(user.getId());
 
         return questionVo;
+    }
+
+    /**
+     * 更新问题回答数
+     *
+     * @param id 问题id
+     */
+    @Override
+    public void updateAnswers(Integer id) {
+        Question question = questionMapper.selectByPrimaryKey(id);
+        question.setAnswers(question.getAnswers() +1);
+
+        QuestionExample questionExample = new QuestionExample();
+        QuestionExample.Criteria criteria = questionExample.createCriteria();
+        criteria.andIdEqualTo(id);
+
+        questionMapper.updateByExampleSelective(question, questionExample);
     }
 
 }

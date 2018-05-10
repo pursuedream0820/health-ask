@@ -1,8 +1,9 @@
 package com.hebeu.ask.service.view.impl;
 
 import com.hebeu.ask.dao.AnswerMapper;
-import com.hebeu.ask.model.po.Answer;
-import com.hebeu.ask.model.po.AnswerExample;
+import com.hebeu.ask.dao.CategoryMapper;
+import com.hebeu.ask.dao.UserMapper;
+import com.hebeu.ask.model.po.*;
 import com.hebeu.ask.model.vo.AnswerVo;
 import com.hebeu.ask.service.view.AnswerService;
 import com.hebeu.ask.util.DateUtil;
@@ -25,6 +26,14 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Autowired
     private AnswerMapper answerMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+
     /**
      * 根据问题id查询对应的答案集合和最佳答案
      *
@@ -47,7 +56,7 @@ public class AnswerServiceImpl implements AnswerService {
         if (bestAnswer != null) {
             bestAnswerVo = answerToAnswerVo(bestAnswer);
             answerList.iterator().forEachRemaining(answer -> {
-                if (!answer.getId().equals(bestAnswer.getId())){
+                if (!answer.getId().equals(bestAnswer.getId())) {
                     otherAnswerList.add(answerToAnswerVo(answer));
                 }
             });
@@ -74,15 +83,53 @@ public class AnswerServiceImpl implements AnswerService {
         }
         AnswerVo answerVo = new AnswerVo();
         BeanUtils.copyProperties(answer, answerVo);
-        if (answer.getAdoptedAt() != null){
+        if (answer.getAdoptedAt() != null) {
             answerVo.setAdoptedTime(DateUtil.dateToString(DateUtil.yyyy_MM_dd_HH_mm_ss, answerVo.getAdoptedAt()));
         }
-        if (answer.getCreatedAt() != null){
+        if (answer.getCreatedAt() != null) {
             answerVo.setCreateTime(DateUtil.dateToString(DateUtil.yyyy_MM_dd_HH_mm_ss, answerVo.getCreatedAt()));
         }
-        if (answer.getUpdatedAt() != null){
+        if (answer.getUpdatedAt() != null) {
             answerVo.setUpdateTime(DateUtil.dateToString(DateUtil.yyyy_MM_dd_HH_mm_ss, answerVo.getUpdatedAt()));
         }
+
+        User user = userMapper.selectByPrimaryKey(answer.getUserId());
+        if (user != null) {
+            // 设置用户名
+            answerVo.setUsername(user.getName());
+        }
+        answerVo.setUser(user);
+
         return answerVo;
     }
+
+    /**
+     * 根据问题id查询分类
+     *
+     * @param id 分类id
+     * @return 返回分类对象
+     */
+    @Override
+    public Category queryCategoryById(Integer id) {
+        return categoryMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 保存回答
+     *
+     * @param content    回答内容
+     * @param questionId 问题id
+     * @param userId     回答用户id
+     * @return 返回操作结果
+     */
+    @Override
+    public boolean saveAnswer(String content, Integer questionId, Integer userId) {
+        Answer answer = new Answer();
+        answer.setContent(content);
+        answer.setQuestionId(questionId);
+        answer.setUserId(userId);
+        return answerMapper.insertSelective(answer) > 0;
+    }
+
+
 }

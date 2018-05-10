@@ -41,7 +41,7 @@ public class SpiderKeywordService {
      */
     public SpiderKeyword findNextUnCrawled() {
         //只查满足条件的第一条
-        PageHelper.startPage(0, 1);
+        PageHelper.startPage(1, 1);
         SpiderKeywordExample spiderKeywordExample = new SpiderKeywordExample();
         SpiderKeywordExample.Criteria criteria = spiderKeywordExample.createCriteria();
         criteria.andCrawlStatusEqualTo(0);

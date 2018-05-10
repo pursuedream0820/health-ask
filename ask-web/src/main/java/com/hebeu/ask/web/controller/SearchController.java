@@ -81,6 +81,7 @@ public class SearchController {
         log.debug("question:{}", question.toString());
 
         model.addAttribute("question", question);
+//        model.addAttribute("category", )
         model.addAttribute("otherAnswerList", answerPair.getLeft());
         model.addAttribute("otherAnswerSize", answerPair.getLeft().size());
         model.addAttribute("bestAnswer", answerPair.getRight());

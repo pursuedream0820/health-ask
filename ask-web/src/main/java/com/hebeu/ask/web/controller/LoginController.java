@@ -8,14 +8,17 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.ServletRequest;
 
 /**
  * @author : chenDeHua
@@ -43,22 +46,28 @@ public class LoginController {
             @RequestParam(value = "username", required = true) String userName,
             @RequestParam(value = "password", required = true) String password,
             @RequestParam(value = "rememberMe", required = true, defaultValue = "false") boolean rememberMe,
-            Model model) {
+            Model model, ServletRequest request) {
 
         log.info("登录参数username:{}, password:{},rememberMe:{}", userName, password, rememberMe);
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
         token.setRememberMe(rememberMe);
 
-        model.addAttribute("username",userName);
+        model.addAttribute("username", userName);
         try {
             subject.login(token);
         } catch (AuthenticationException e) {
             log.warn("账号密码错误，username：{}，password：{}", userName, password);
             return "/view/account/login";
         }
-        // 重定向到主页
-        return "redirect:/index";
+
+        SavedRequest savedRequest = WebUtils.getSavedRequest(request);
+        // 获取保存的URL
+        if (savedRequest == null || savedRequest.getRequestUrl() == null) {
+            return "redirect:/index";
+        }
+        log.info("上一个请求页面url:{}", savedRequest.getRequestUrl());
+        return "redirect:" + savedRequest.getRequestUrl();
     }
 
     /**
@@ -103,15 +112,25 @@ public class LoginController {
         user.setPassword(md5Password);
         user.setEmail(email);
         model.addAttribute("username", username);
-        model.addAttribute("password",password);
+        model.addAttribute("password", password);
 
-        if (accountService.saveUser(user)){
+        if (accountService.saveUser(user)) {
             return "redirect:/login";
-        }else {
+        } else {
             return "/view/account/register";
         }
     }
 
+    /**
+     * 退出登录
+     *
+     * @return 重定向到主页
+     */
+    @RequestMapping(path = "logout")
+    public String logout() {
+        log.info("退出登录");
+        return "redirect:/index";
+    }
 }
 
 

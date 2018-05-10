@@ -39,4 +39,7 @@ public class QuestionVo extends Question {
      */
     private String userName;
 
+    /** 提问者用户id*/
+    private Integer userId;
+
 }
