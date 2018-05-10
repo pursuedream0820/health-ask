@@ -141,6 +141,7 @@ public class ShiroConfiguration {
         //用户为ROLE_USER 角色可以访问。由用户角色控制用户行为。
         filterChainDefinitionManager.put("/user/**", "authc,roles[admin]");
         filterChainDefinitionManager.put("/events/**", "authc,roles[ROLE_ADMIN]");
+        filterChainDefinitionManager.put("/question/**", "authc");
 
         // 所有资源都匿名访问
         filterChainDefinitionManager.put("/**", "anon");

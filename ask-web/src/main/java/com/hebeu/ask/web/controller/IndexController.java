@@ -1,7 +1,9 @@
 package com.hebeu.ask.web.controller;
 
 import com.hebeu.ask.model.po.Question;
+import com.hebeu.ask.model.vo.CoinTop;
 import com.hebeu.ask.service.view.QuestionService;
+import com.hebeu.ask.service.view.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,9 @@ public class IndexController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 默认主页访问路径
      * @return 返回主页
@@ -44,8 +49,11 @@ public class IndexController {
 
         List<Question> awardQuestionList = questionService.queryAwardQuestion(20);
 
+        List<CoinTop> coinTopList = userService.queryCoinsTop(10);
+        log.debug("coinTopList.size:{}", coinTopList.size());
         model.addAttribute("newQuestionList", newQuestionList);
         model.addAttribute("awardQuestionList", awardQuestionList);
+        model.addAttribute("coinTopList", coinTopList);
 
         return "view/home/index";
     }

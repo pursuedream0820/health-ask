@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <title><th:block th:text="${question.title}"></th:block> - healthAsk问答社区</title>
     <th:block th:replace="view/layout/public :: public-css"/>
-    <link th:href="@{static/js/fancybox/jquery.fancybox.min.css}" rel="stylesheet">
-    <link th:href="@{static/js/summernote/summernote.css}" rel="stylesheet">
-    <link th:href="@{static/js/fancybox/jquery.fancybox.min.css}" rel="stylesheet">
+    <link th:href="@{/static/js/fancybox/jquery.fancybox.min.css}" rel="stylesheet">
+    <link th:href="@{/static/js/summernote/summernote.css}" rel="stylesheet">
+    <link th:href="@{/static/js/fancybox/jquery.fancybox.min.css}" rel="stylesheet">
 
 </head>
 
 <body>
-<th:block th:include="view/layout/public :: header"/>
+<th:block th:include="/view/layout/public :: header"/>
 
 <div class="wrap">
     <div class="container">
@@ -22,7 +22,7 @@
                         <span class="text-gold" th:if="${question.price>0}">
                             <i class="fa fa-database"></i> <th:block th:text="${question.price}"></th:block>
                         </span>
-                        <th:block th:text="${question.title}"></th:block>
+                        <th:block th:utext="${question.title}"></th:block>
                     </h4>
 
                     <!--问题标签模块,此模块暂不考虑-->
@@ -34,7 +34,7 @@
                     <!--</ul>-->
                     <!--@endif-->
                     <div class="description mt-10">
-                        <div class="text-fmt " th:text="${question.description}">
+                        <div class="text-fmt " th:utext="${question.description}">
                             {!! $question->description !!}
                         </div>
 
@@ -145,7 +145,7 @@
                         <a href="{{ route('ask.question.detail',['question_id'=>$question->id,'sort'=>'created_at']) }}" id="sortby-created" class="btn btn-default btn-xs @if(request()->input('sort','default')=='created_at') active @endif">时间排序</a>
                     </div>
 
-                    <h2 class="h4 post-title" th:if="${question.status == 2}">其它 <th:block th:text="${otherAnswerSize}"></th:block> 个回答</h2>
+                    <h2 class="h4 post-title">其它 <th:block th:text="${otherAnswerSize}"></th:block> 个回答</h2>
 
                     <div class="media" th:each="answer : ${otherAnswerList}">
                         <div class="media-left">
@@ -221,7 +221,7 @@
 
                     <!--@if(Auth()->guest())-->
                     <div class="answer_login_tips mb-20" th:unless="${session.authc}">
-                        您需要登录后才可以回答问题，<a href="/login" rel="nofollow" target="_blank">登录</a>&nbsp;或者&nbsp;<a rel="nofollow" href="/register" target="_blank">注册</a>
+                        您需要登录后才可以回答问题，<a th:href="@{'/login?path=/detail?id=' + ${question.id}}" rel="nofollow" target="_blank">登录</a>&nbsp;或者&nbsp;<a rel="nofollow" href="/register" target="_blank">注册</a>
                     </div>
                     <!--@elseif( Auth()->check() && ($question->user_id !== Auth()->user()->id && !Auth()->user()->isAnswered($question->id)) )-->
                     <form  name="answerForm" id="answer_form" action="/saveAnswer" method="post" class="editor-wrap" th:if="${session.authc} and ${session.user.id != question.userId}">
@@ -286,29 +286,25 @@
                         <li>
                             <i class="fa fa-clock-o"></i>
                             <!--@if($question->hide==0)-->
-                            <!--<a href="{{ route('auth.space.index',['user_id'=>$question->user_id]) }}" target="_blank">{{ $question->user->name }}</a>-->
+                            <a href="javascript:void(0)" target="_blank" th:text="${question.userName}">{{ $question->user->name }}</a>
                             <!--@endif-->
                             提出于 <th:block th:text="${question.createTime}">{{ timestamp_format($question->created_at) }}</th:block></li>
                     </ul>
                 </div>
 
                 <!--相似问题-->
-                <!--<div class="widget-box">-->
-                    <!--<h2 class="h4 widget-box__title">相似问题</h2>-->
-                    <!--<ul class="widget-links list-unstyled list-text">-->
-                        <!--@foreach($relatedQuestions as $relatedQuestion)-->
-                        <!--@if($relatedQuestion->id != $question->id)-->
-                        <!--<li class="widget-links-item">-->
-                            <!--<a title="{{ $relatedQuestion->title }}" href="{{ route('ask.question.detail',['question_id'=>$relatedQuestion->id]) }}">{{ $relatedQuestion->title }}</a>-->
-                            <!--<small class="text-muted">{{ $relatedQuestion->answers }} 回答</small>-->
-                        <!--</li>-->
-                        <!--@endif-->
-                        <!--@endforeach-->
-                    <!--</ul>-->
-                <!--</div>-->
+                <div class="widget-box">
+                    <h2 class="h4 widget-box__title">相似问题</h2>
+                    <ul class="widget-links list-unstyled list-text">
+                        <th:block th:each="similarques : ${similarQuestion}">
+                            <li class="widget-links-item" th:if="${similarques.id != question.id}">
+                                <a th:title="${similarques.title}" th:href="@{'/detail?id='+ ${similarques.id}}" th:text="${similarques.title}">{{ $relatedQuestion->title }}</a>
+                                <!--<small class="text-muted"><th:block th:text="${similarques.answers}"/> 回答</small>-->
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
             </div>
-
-
 
 
         </div>
@@ -422,9 +418,9 @@
     </div>
 </div>
 
-<th:block th:replace="view/layout/public :: public-js"/>
-<script th:src="@{static/js/summernote/summernote.min.js}"></script>
-<script th:src="@{static/js/summernote/lang/summernote-zh-CN.min.js}"></script>
+<th:block th:replace="/view/layout/public :: public-js"/>
+<script th:src="@{/static/js/summernote/summernote.min.js}"></script>
+<script th:src="@{/static/js/summernote/lang/summernote-zh-CN.min.js}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         /*回答编辑器初始化*/
@@ -448,7 +444,7 @@
 
 </script>
 
-<th:block th:replace="view/layout/public :: footer"/>
+<th:block th:replace="/view/layout/public :: footer"/>
 
 </body>
 </html>

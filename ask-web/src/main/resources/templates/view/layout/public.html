@@ -11,9 +11,9 @@
     <meta name="copyright" content="2016 tipask.com" />
     <!-- Bootstrap -->
     <th:block th:fragment="public-css">
-        <link th:href="@{static/css/bootstrap/css/bootstrap.css}" rel="stylesheet" />
-        <link th:href="@{static/css/font-awesome/css/font-awesome.css}" rel="stylesheet" />
-        <link th:href="@{css/default/global.css}" rel="stylesheet" />
+        <link th:href="@{/static/css/bootstrap/css/bootstrap.css}" rel="stylesheet" />
+        <link th:href="@{/static/css/font-awesome/css/font-awesome.css}" rel="stylesheet" />
+        <link th:href="@{/css/default/global.css}" rel="stylesheet" />
     </th:block>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,7 +43,7 @@
         <div class="collapse navbar-collapse" id="global-navbar">
             <form class="navbar-form navbar-left" role="search" id="top-search-form" action="/search" method="GET">
                 <div class="input-group">
-                    <input type="text" name="keywords" id="searchBox" class="form-control" placeholder="" />
+                    <input type="text" name="keywords" id="searchBox" class="form-control" placeholder="搜索您感兴趣的内容……" />
                     <span class="input-group-addon btn" ><span id="search-button" class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                 </div>
             </form>
@@ -64,7 +64,7 @@
                 <li><a href="javascript:void(0)" class="active" id="unread_messages"><i class="fa fa-envelope-o fa-lg"></i></a></li>
                 <li class="dropdown user-avatar">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <img class="avatar-32 mr-5"  th:src="@{static/images/default_avatar.jpg}" >
+                        <img class="avatar-32 mr-5"  th:src="@{/static/images/default_avatar.jpg}" >
                         <span th:text="${session.user.name}">{{ Auth()->user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
@@ -214,13 +214,13 @@
 
 <th:block th:fragment="public-js">
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script th:src="@{static/js/jquery.min.js}"></script>
+<script th:src="@{/static/js/jquery.min.js}"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script th:src="@{static/css/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/static/css/bootstrap/js/bootstrap.min.js}"></script>
 <script th:inline="javascript">
     var is_login = Boolean([[${session.authc}]]);
 </script>
-<script th:src="@{js/global.js}"></script>
+<script th:src="@{/js/global.js}"></script>
 </th:block>
 
 

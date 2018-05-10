@@ -1,6 +1,5 @@
 package com.hebeu.ask.web.controller;
 
-import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.vo.AnswerVo;
 import com.hebeu.ask.model.vo.QuestionVo;
 import com.hebeu.ask.service.view.AnswerService;
@@ -74,14 +73,14 @@ public class SearchController {
             return null;
         }
         QuestionVo question = questionService.queryDetailById(id);
-
+        Pair<List<QuestionVo>, Integer> pair = searchEnginesService.search(question.getTitle(),1, 10);
         // 更新浏览次数
         questionService.updateViews(id, question);
         Pair<List<AnswerVo>, AnswerVo> answerPair = answerService.queryAnswerListByQuestionId(id);
         log.debug("question:{}", question.toString());
 
         model.addAttribute("question", question);
-//        model.addAttribute("category", )
+        model.addAttribute("similarQuestion", pair.getLeft());
         model.addAttribute("otherAnswerList", answerPair.getLeft());
         model.addAttribute("otherAnswerSize", answerPair.getLeft().size());
         model.addAttribute("bestAnswer", answerPair.getRight());

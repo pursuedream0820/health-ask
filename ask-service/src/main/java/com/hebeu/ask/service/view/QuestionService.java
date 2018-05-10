@@ -1,5 +1,6 @@
 package com.hebeu.ask.service.view;
 
+import com.hebeu.ask.model.po.Category;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.vo.QuestionVo;
 
@@ -48,4 +49,33 @@ public interface QuestionService {
      * @param id 问题id
      */
     void updateAnswers(Integer id);
+
+    /**
+     * 查询所有的分类
+     *
+     * @return 返回分类集合
+     */
+    List<Category> queryCategory();
+
+    /**
+     * 保存问题
+     *
+     * @param question 问题对象
+     * @return 返回操作结果
+     */
+    boolean saveQuestion(Question question);
+
+    /**
+     * 查询未建立索引的问题
+     *
+     * @return 返回未建立索引的问题集合
+     */
+    List<Question> queryUnIndexQuestion();
+
+    /**
+     * 根据问题id更新问题索引状态
+     * @param questionIds 问题id集合
+     */
+    void updateIndexed(List<Integer> questionIds);
+
 }

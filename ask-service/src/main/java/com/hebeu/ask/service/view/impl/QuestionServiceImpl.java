@@ -1,11 +1,10 @@
 package com.hebeu.ask.service.view.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.hebeu.ask.dao.CategoryMapper;
 import com.hebeu.ask.dao.QuestionMapper;
 import com.hebeu.ask.dao.UserMapper;
-import com.hebeu.ask.model.po.Question;
-import com.hebeu.ask.model.po.QuestionExample;
-import com.hebeu.ask.model.po.User;
+import com.hebeu.ask.model.po.*;
 import com.hebeu.ask.model.vo.QuestionVo;
 import com.hebeu.ask.service.view.QuestionService;
 import com.hebeu.ask.util.DateUtil;
@@ -21,13 +20,16 @@ import java.util.List;
  * Desc   :
  **/
 @Service
-public class QuestionServiceImpl implements QuestionService{
+public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     /**
      * 查询最新问题
@@ -70,7 +72,7 @@ public class QuestionServiceImpl implements QuestionService{
         QuestionExample.Criteria criteria = questionExample.createCriteria();
         criteria.andIdEqualTo(id);
         question.setViews(question.getViews() + 1);
-        questionMapper.updateByExampleSelective(question,questionExample);
+        questionMapper.updateByExampleSelective(question, questionExample);
     }
 
 
@@ -104,13 +106,66 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public void updateAnswers(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
-        question.setAnswers(question.getAnswers() +1);
+        question.setAnswers(question.getAnswers() + 1);
 
         QuestionExample questionExample = new QuestionExample();
         QuestionExample.Criteria criteria = questionExample.createCriteria();
         criteria.andIdEqualTo(id);
 
         questionMapper.updateByExampleSelective(question, questionExample);
+    }
+
+    /**
+     * 查询所有的分类
+     *
+     * @return 返回分类集合
+     */
+    @Override
+    public List<Category> queryCategory() {
+        CategoryExample categoryExample = new CategoryExample();
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        criteria.andIdIsNotNull();
+        return categoryMapper.selectByExample(categoryExample);
+    }
+
+    /**
+     * 保存问题
+     *
+     * @param question 问题对象
+     * @return 返回操作结果
+     */
+    @Override
+    public boolean saveQuestion(Question question) {
+        return questionMapper.insertSelective(question) > 0;
+
+    }
+
+    /**
+     * 查询未建立索引的问题
+     *
+     * @return 返回未建立索引的问题集合
+     */
+    @Override
+    public List<Question> queryUnIndexQuestion() {
+        QuestionExample questionExample = new QuestionExample();
+        QuestionExample.Criteria criteria = questionExample.createCriteria();
+        criteria.andIndexedEqualTo(Byte.valueOf("0"));
+        return questionMapper.selectByExampleWithBLOBs(questionExample);
+    }
+
+    /**
+     * 根据问题id更新问题索引状态
+     *
+     * @param questionIds 问题id集合
+     */
+    @Override
+    public void updateIndexed(List<Integer> questionIds) {
+        QuestionExample questionExample = new QuestionExample();
+        QuestionExample.Criteria criteria = questionExample.createCriteria();
+        criteria.andIdIn(questionIds);
+        Question question = new Question();
+        question.setIndexed(Byte.valueOf("1"));
+        questionMapper.updateByExampleSelective(question,questionExample);
     }
 
 }

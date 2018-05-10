@@ -4,6 +4,7 @@ package com.hebeu.ask.web.controller;
 import com.hebeu.ask.model.po.User;
 import com.hebeu.ask.service.view.AccountService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : chenDeHua
@@ -46,9 +49,10 @@ public class LoginController {
             @RequestParam(value = "username", required = true) String userName,
             @RequestParam(value = "password", required = true) String password,
             @RequestParam(value = "rememberMe", required = true, defaultValue = "false") boolean rememberMe,
-            Model model, ServletRequest request) {
+            Model model, ServletRequest request,
+            String path) {
 
-        log.info("登录参数username:{}, password:{},rememberMe:{}", userName, password, rememberMe);
+        log.info("登录参数username:{}, password:{},rememberMe:{},path:{}", userName, password, rememberMe, path);
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
         token.setRememberMe(rememberMe);
@@ -59,6 +63,11 @@ public class LoginController {
         } catch (AuthenticationException e) {
             log.warn("账号密码错误，username：{}，password：{}", userName, password);
             return "/view/account/login";
+        }
+
+        if (StringUtils.isNotEmpty(path)) {
+            log.info("重定向到上一个页面地址，path:{}", path);
+            return "redirect:" + path;
         }
 
         SavedRequest savedRequest = WebUtils.getSavedRequest(request);
@@ -76,8 +85,10 @@ public class LoginController {
      * @return 跳转到登录页面
      */
     @RequestMapping(path = "login")
-    public String toLogin() {
+    public String toLogin(String path, Model model) {
         log.info("跳转登录页");
+        log.info("上一个页面地址path:{}", path);
+        model.addAttribute("path", path);
         return "/view/account/login";
     }
 
@@ -131,6 +142,7 @@ public class LoginController {
         log.info("退出登录");
         return "redirect:/index";
     }
+
 }
 
 

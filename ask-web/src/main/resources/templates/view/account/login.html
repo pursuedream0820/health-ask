@@ -29,6 +29,7 @@
             <!--<input type="hidden" name="_token" value="{{ csrf_token() }}">-->
             <div class="form-group">
                 <label class="required">用户名</label>
+                <input type="hidden" name="path" th:value="${path}">
                 <input type="text" class="form-control" name="username" required placeholder="注册用户名" th:value="${username}"/>
                 <!--@if ($errors->first('email'))-->
                 <!--<span class="help-block">{{ $errors->first('email') }}</span>-->

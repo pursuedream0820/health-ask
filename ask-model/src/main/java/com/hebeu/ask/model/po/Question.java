@@ -48,11 +48,11 @@ public class Question {
     /** 创建时间*/
     private Date createdAt;
 
-    /** 创建时间字符串**/
-    private String createTime;
-
     /** 更新时间*/
     private Date updatedAt;
+
+    /** 是否建立索引, 0表示未建立索引，1表示已建立索引*/
+    private Byte indexed;
 
     /** 问题描述*/
     private String description;
@@ -169,20 +169,20 @@ public class Question {
         this.createdAt = createdAt;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Byte getIndexed() {
+        return indexed;
+    }
+
+    public void setIndexed(Byte indexed) {
+        this.indexed = indexed;
     }
 
     public String getDescription() {

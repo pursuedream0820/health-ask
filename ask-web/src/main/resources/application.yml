@@ -24,7 +24,7 @@ logging:
 
 # 定时任务开关
 task:
-  switch: false
+  switch: true
 
 #数据库相关配置
 #spring:

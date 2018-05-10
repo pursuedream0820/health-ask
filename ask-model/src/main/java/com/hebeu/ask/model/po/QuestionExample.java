@@ -1014,6 +1014,66 @@ public class QuestionExample {
             addCriterion("updated_at not between", value1, value2, "updatedAt");
             return (Criteria) this;
         }
+
+        public Criteria andIndexedIsNull() {
+            addCriterion("indexed is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedIsNotNull() {
+            addCriterion("indexed is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedEqualTo(Byte value) {
+            addCriterion("indexed =", value, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedNotEqualTo(Byte value) {
+            addCriterion("indexed <>", value, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedGreaterThan(Byte value) {
+            addCriterion("indexed >", value, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedGreaterThanOrEqualTo(Byte value) {
+            addCriterion("indexed >=", value, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedLessThan(Byte value) {
+            addCriterion("indexed <", value, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedLessThanOrEqualTo(Byte value) {
+            addCriterion("indexed <=", value, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedIn(List<Byte> values) {
+            addCriterion("indexed in", values, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedNotIn(List<Byte> values) {
+            addCriterion("indexed not in", values, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedBetween(Byte value1, Byte value2) {
+            addCriterion("indexed between", value1, value2, "indexed");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexedNotBetween(Byte value1, Byte value2) {
+            addCriterion("indexed not between", value1, value2, "indexed");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

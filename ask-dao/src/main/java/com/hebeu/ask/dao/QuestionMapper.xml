@@ -17,6 +17,7 @@
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
     <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="indexed" property="indexed" jdbcType="TINYINT" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.hebeu.ask.model.po.Question" extends="BaseResultMap" >
     <result column="description" property="description" jdbcType="LONGVARCHAR" />
@@ -81,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, user_id, category_id, title, price, hide, answers, views, followers, collections, 
-    comments, device, status, created_at, updated_at
+    comments, device, status, created_at, updated_at, indexed
   </sql>
   <sql id="Blob_Column_List" >
     description
@@ -140,13 +141,13 @@
       answers, views, followers, 
       collections, comments, device, 
       status, created_at, updated_at, 
-      description)
+      indexed, description)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{price,jdbcType=SMALLINT}, #{hide,jdbcType=TINYINT}, 
       #{answers,jdbcType=INTEGER}, #{views,jdbcType=INTEGER}, #{followers,jdbcType=INTEGER}, 
       #{collections,jdbcType=INTEGER}, #{comments,jdbcType=INTEGER}, #{device,jdbcType=TINYINT}, 
       #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
-      #{description,jdbcType=LONGVARCHAR})
+      #{indexed,jdbcType=TINYINT}, #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hebeu.ask.model.po.Question" useGeneratedKeys="true" keyProperty="id">
     insert into ask_questions
@@ -195,6 +196,9 @@
       </if>
       <if test="updatedAt != null" >
         updated_at,
+      </if>
+      <if test="indexed != null" >
+        indexed,
       </if>
       <if test="description != null" >
         description,
@@ -245,6 +249,9 @@
       </if>
       <if test="updatedAt != null" >
         #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="indexed != null" >
+        #{indexed,jdbcType=TINYINT},
       </if>
       <if test="description != null" >
         #{description,jdbcType=LONGVARCHAR},
@@ -305,6 +312,9 @@
       <if test="record.updatedAt != null" >
         updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.indexed != null" >
+        indexed = #{record.indexed,jdbcType=TINYINT},
+      </if>
       <if test="record.description != null" >
         description = #{record.description,jdbcType=LONGVARCHAR},
       </if>
@@ -330,6 +340,7 @@
       status = #{record.status,jdbcType=TINYINT},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      indexed = #{record.indexed,jdbcType=TINYINT},
       description = #{record.description,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -351,7 +362,8 @@
       device = #{record.device,jdbcType=TINYINT},
       status = #{record.status,jdbcType=TINYINT},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      indexed = #{record.indexed,jdbcType=TINYINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -401,6 +413,9 @@
       <if test="updatedAt != null" >
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="indexed != null" >
+        indexed = #{indexed,jdbcType=TINYINT},
+      </if>
       <if test="description != null" >
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
@@ -423,6 +438,7 @@
       status = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      indexed = #{indexed,jdbcType=TINYINT},
       description = #{description,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -441,7 +457,8 @@
       device = #{device,jdbcType=TINYINT},
       status = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      indexed = #{indexed,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

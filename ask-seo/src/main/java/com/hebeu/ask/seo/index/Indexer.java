@@ -35,23 +35,15 @@ public class Indexer {
     private QuestionMapper questionMapper;
 
     /**
-     * 创建问题索引库
+     * 增量创建问题索引库
      */
-    public void createQuestionIndex() {
+    public void createQuestionIndex(List<Question> questionList) {
         IndexWriter indexWriter = getIndexWriter(IndexPathEnum.QUESTION_INDEX_PATH);
         if (indexWriter == null){
             log.warn("获取到IndexWriter对象为空，停止创建索引操作");
             return;
         }
         try {
-            // 清除以前的index
-            indexWriter.deleteAll();
-
-            QuestionExample questionExample = new QuestionExample();
-            QuestionExample.Criteria criteria = questionExample.createCriteria();
-            criteria.andIdIsNotNull();
-            List<Question> questionList = questionMapper.selectByExampleWithBLOBs(questionExample);
-
             for (Question question : questionList) {
                 Document document = new Document();
                 document.add(new Field("id", String.valueOf(question.getId()), TextField.TYPE_STORED));
@@ -70,7 +62,6 @@ public class Indexer {
             }
         }
     }
-
 
     /**
      * 清空索引
