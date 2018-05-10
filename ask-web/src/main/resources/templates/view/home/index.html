@@ -143,7 +143,7 @@
                     </h2>
                     <ol class="widget-top10">
                         <li class="text-muted" th:each="coinTop : ${coinTopList}">
-                            <img class="avatar-32" th:src="@{static/images/default_avatar.jpg}">
+                            <img class="avatar-32" th:src="@{/static/images/default_avatar.jpg}">
                             <a href="javascript:void(0)" class="ellipsis" target="_blank" th:text="${coinTop.user.name}"></a>
                             <span class="text-muted pull-right"><th:block th:text="${coinTop.userData.coins}"/>金币</span>
                         </li>

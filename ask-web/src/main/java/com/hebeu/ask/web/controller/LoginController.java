@@ -62,7 +62,7 @@ public class LoginController {
             subject.login(token);
         } catch (AuthenticationException e) {
             log.warn("账号密码错误，username：{}，password：{}", userName, password);
-            return "/view/account/login";
+            return "view/account/login";
         }
 
         if (StringUtils.isNotEmpty(path)) {
@@ -89,7 +89,7 @@ public class LoginController {
         log.info("跳转登录页");
         log.info("上一个页面地址path:{}", path);
         model.addAttribute("path", path);
-        return "/view/account/login";
+        return "view/account/login";
     }
 
 
@@ -101,7 +101,7 @@ public class LoginController {
     @RequestMapping(path = "register")
     public String toRegister() {
         log.info("跳转注册页");
-        return "/view/account/register";
+        return "view/account/register";
     }
 
 
@@ -128,7 +128,7 @@ public class LoginController {
         if (accountService.saveUser(user)) {
             return "redirect:/login";
         } else {
-            return "/view/account/register";
+            return "view/account/register";
         }
     }
 

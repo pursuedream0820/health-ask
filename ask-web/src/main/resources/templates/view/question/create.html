@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>发起提问 - healthAsk健康问答 </title>
-    <th:block th:replace="/view/layout/public :: public-css"/>
+    <th:block th:replace="view/layout/public :: public-css"/>
 
     <link th:href="@{/static/js/summernote/summernote.css}" rel="stylesheet">
     <link th:href="@{/static/js/select2/css/select2.min.css}" rel="stylesheet">
@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<th:block th:include="/view/layout/public :: header"/>
+<th:block th:include="view/layout/public :: header"/>
 
 <div class="wrap">
     <div class="container">
@@ -107,7 +107,7 @@
 </div>
 
 
-<th:block th:replace="/view/layout/public :: public-js"/>
+<th:block th:replace="view/layout/public :: public-js"/>
 <script th:src="@{/static/js/summernote/summernote.min.js}"></script>
 <script th:src="@{/static/js/summernote/lang/summernote-zh-CN.min.js}"></script>
 <script th:src="@{/static/js/select2/js/select2.min.js}"></script>
@@ -165,7 +165,7 @@
     });
 </script>
 
-<th:block th:replace="/view/layout/public :: footer"/>
+<th:block th:replace="view/layout/public :: footer"/>
 
 </body>
 </html>

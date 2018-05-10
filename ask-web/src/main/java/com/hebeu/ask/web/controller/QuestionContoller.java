@@ -47,7 +47,7 @@ public class QuestionContoller {
         return "redirect:/detail?id=" + questionId;
     }
 
-    @RequestMapping(path = "/question/save")
+    @RequestMapping(path = "question/save")
     public String saveQuestion(String title, String description, Integer categoryId, String price){
         // TODO 处理保存问题
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
@@ -66,7 +66,7 @@ public class QuestionContoller {
      * 跳转到提问页面
      * @return 返回到提问页面
      */
-    @RequestMapping(path = "/question/create")
+    @RequestMapping(path = "question/create")
     public String createAsk(Model model){
         log.info("跳转到提问页面");
         // TODO 待添加提问页面问题分类数据

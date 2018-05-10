@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<th:block th:include="/view/layout/public :: header"/>
+<th:block th:include="view/layout/public :: header"/>
 
 <div class="wrap">
     <div class="container">
@@ -151,7 +151,7 @@
                         <div class="media-left">
                             <a href="{{ route('auth.space.index',['user_id'=>$answer->user_id]) }}" class="avatar-link user-card" target="_blank">
                                 <!--用户图像-->
-                                <img class="avatar-40 hidden-xs"  th:src="@{static/images/default_avatar.jpg}" alt=""></a>
+                                <img class="avatar-40 hidden-xs"  th:src="@{/static/images/default_avatar.jpg}" alt=""></a>
                             </a>
                         </div>
                         <div class="media-body">
@@ -418,7 +418,7 @@
     </div>
 </div>
 
-<th:block th:replace="/view/layout/public :: public-js"/>
+<th:block th:replace="view/layout/public :: public-js"/>
 <script th:src="@{/static/js/summernote/summernote.min.js}"></script>
 <script th:src="@{/static/js/summernote/lang/summernote-zh-CN.min.js}"></script>
 <script type="text/javascript">
@@ -444,7 +444,7 @@
 
 </script>
 
-<th:block th:replace="/view/layout/public :: footer"/>
+<th:block th:replace="view/layout/public :: footer"/>
 
 </body>
 </html>
