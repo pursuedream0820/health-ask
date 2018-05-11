@@ -3,6 +3,8 @@ package com.hebeu.ask.dao;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.po.QuestionExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -38,4 +40,6 @@ public interface QuestionMapper {
     int updateByPrimaryKeyWithBLOBs(Question record);
 
     int updateByPrimaryKey(Question record);
+
+    Integer count(Map<String, Object> conditionMap);
 }

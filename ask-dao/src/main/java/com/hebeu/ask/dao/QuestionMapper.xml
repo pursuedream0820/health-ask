@@ -461,4 +461,19 @@
       indexed = #{indexed,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from  ask_questions
+    <where>
+      <if test="categoryId!=null">
+        category_id = #{categoryId}
+      </if>
+      <if test="price!=null">
+        and price &gt; #{price}
+      </if>
+      <if test="status!=null">
+        and status = #{status}
+      </if>
+    </where>
+  </select>
 </mapper>

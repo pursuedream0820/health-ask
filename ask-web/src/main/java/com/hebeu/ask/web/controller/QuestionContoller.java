@@ -3,9 +3,13 @@ package com.hebeu.ask.web.controller;
 import com.hebeu.ask.model.po.Category;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.po.User;
+import com.hebeu.ask.model.vo.QuestionVo;
 import com.hebeu.ask.service.view.AnswerService;
 import com.hebeu.ask.service.view.QuestionService;
+import com.hebeu.ask.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,5 +78,31 @@ public class QuestionContoller {
         log.info("categoryList.size:{}", categoryList.size());
         model.addAttribute("categoryList", categoryList);
         return "view/question/create";
+    }
+
+
+    @RequestMapping(path = "questions")
+    public String questions(String type,Integer categoryId,Integer pageNum, Integer pageSize, Model model){
+        // 设置默认分类 和分页参数,
+        // categoryId = 0 时表示查看全部问题
+        categoryId = categoryId == null ? 0: categoryId;
+        pageNum = pageNum == null ? 1 : pageNum;
+        pageSize = pageSize == null ? 20 :pageSize;
+        // newest 最新的， hottest 热门的， reward 悬赏的， unAnswered 未回答的
+        type = StringUtils.isEmpty(type) ? "newest" : type;
+
+        // TODO 按不同类型查询问题
+        List<Category> categoryList = questionService.queryCategory();
+        log.info("categoryList.size:{}", categoryList.size());
+
+        Pair<List<QuestionVo>, Integer> questionPair = questionService.queryByCondition(type, categoryId, pageNum, pageSize);
+
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("type",type);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("questionList",questionPair.getLeft());
+        model.addAttribute("pageHtml", PageUtil.getPageHtml(pageNum, pageSize, questionPair.getRight(), "/questions?type="+ type +"&categoryId=" +categoryId));
+        return "view/home/ask";
     }
 }

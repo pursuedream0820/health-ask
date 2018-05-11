@@ -1,5 +1,8 @@
 package com.hebeu.ask.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author : chenDeHua
  * Time   : 2018/5/8 下午7:55
@@ -35,7 +38,10 @@ public class PageUtil {
             pageHtml.append("<li ><a href=\"").append(path).append("&pageNum=").append(prePage).append("\" rel=\"prev\">&laquo;</a></li>");
         }
 
-        for (int i = 1; i <= pageCount; i++) {
+        Map<String, Integer> indexMap = getStartAndEnd(pageNum, pageCount);
+        Integer start = indexMap.get("start");
+        Integer end = indexMap.get("end");
+        for (int i = start; i <= end; i++) {
             if (pageNum == i) {
                 pageHtml.append("<li class=\"active\"><span>").append(i).append("</span></li>");
             } else {
@@ -53,4 +59,34 @@ public class PageUtil {
         pageHtml.append(pageHtmlSuffix);
         return pageHtml.toString();
     }
+
+    /**
+     * @param pageNum 当前页码值
+     * @param count   总页码数
+     * @return 返回页码起始值和结束值
+     */
+    private static Map<String, Integer> getStartAndEnd(Integer pageNum, Integer count) {
+
+        Map<String, Integer> indexMap = new HashMap<>();
+
+        Integer startIndex = 1;
+        Integer endIndex = 1;
+        // 显示页码数 15个
+        Integer totalPage = 15;
+
+        Integer midle = totalPage / 2;
+        if (pageNum < midle) {
+            startIndex = (pageNum - midle) > 0 ? (pageNum - midle) : 1;
+            endIndex = (totalPage + startIndex - 1) > count ? count : (totalPage + startIndex - 1);
+        } else {
+            endIndex = pageNum + midle > count ? count : (pageNum + midle);
+            startIndex = (endIndex - totalPage + 1) > 0 ? (endIndex - totalPage + 1) : 1;
+        }
+
+        indexMap.put("start", startIndex);
+        indexMap.put("end", endIndex);
+        return indexMap;
+    }
+
+
 }

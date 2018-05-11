@@ -3,6 +3,7 @@ package com.hebeu.ask.service.view;
 import com.hebeu.ask.model.po.Category;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.vo.QuestionVo;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
@@ -77,5 +78,15 @@ public interface QuestionService {
      * @param questionIds 问题id集合
      */
     void updateIndexed(List<Integer> questionIds);
+
+    /**
+     * 根据条件查询问题
+     * @param type 问题类型
+     * @param categoryId 分类
+     * @param pageNum 第几页
+     * @param pageSize 每页大小
+     * @return 返回满足条件的集合 和集合大小
+     */
+    Pair<List<QuestionVo>,Integer> queryByCondition(String type, Integer categoryId, Integer pageNum, Integer pageSize);
 
 }

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>最新的问题 - 第<th:block th:text="${pageNum}"></th:block>页</title>
+    <th:block th:replace="view/layout/public :: public-css"/>
+</head>
+<body>
+<th:block th:replace="view/layout/public :: header"/>
+
+<!--@section('seo_title') @if($filter === 'newest')最新的 @elseif($filter === 'hottest')热门的 @elseif($filter === 'reward')悬赏的 @elseif($filter==='unAnswered')未回答的 @endif 问题 @if( $questions->currentPage()>1 ) - 第{{ $questions->currentPage() }}页 @endif - {{ Setting()->get('website_name') }}@endsection-->
+
+<div class="wrap">
+    <div class="container">
+        <div class="row mt-10">
+
+            <div class="col-xs-12 col-md-9 main">
+                <!--@if( $categories )-->
+                <div class="widget-category clearfix">
+                    <div class="col-sm-12">
+                        <ul class="list">
+                            <li th:class="${categoryId == 0} ? active : ''"><a th:href="@{'/questions?type='+${type}}">全部</a></li>
+                            <!--@foreach( $categories as $category )-->
+                            <th:block th:each="category : ${categoryList}">
+                            <li th:class="${category.id == categoryId} ? active : ''"><a th:href="@{'/questions?type='+${type}+'&categoryId='+${category.id}}" th:text="${category.name}">{{ $category->name }}</a></li>
+                            <!--@endforeach-->
+                            </th:block>
+                        </ul>
+                    </div>
+                </div>
+                <!--@endif-->
+                <ul class="nav nav-tabs mb-10 mt-20">
+                    <li th:class="${type == 'newest' ? 'active' : ''}"><a th:href="@{'/questions?type=newest&categoryId='+${categoryId}}">最新的</a></li>
+                    <li th:class="${type == 'hottest' ? 'active' : ''}"><a th:href="@{'/questions?type=hottest&categoryId='+${categoryId}}">热门的</a></li>
+                    <li th:class="${type == 'reward' ? 'active' : ''}"><a th:href="@{'/questions?type=reward&categoryId='+${categoryId}}">悬赏的</a></li>
+                    <li th:class="${type == 'unAnswered' ? 'active' : ''}"><a th:href="@{'/questions?type=unAnswered&categoryId='+${categoryId}}">未回答的</a></li>
+                </ul>
+                <th:block th:each="question : ${questionList}">
+                <div class="stream-list question-stream">
+                    <!--@foreach($questions as $question)-->
+
+
+                    <section class="stream-list-item">
+                        <div class="qa-rank">
+                            <div th:class="@{'answers ' + ${question.status == 2 ? 'solved' : (question.answers >0 ? 'answered' : '')}}">
+                                <th:block th:text="${question.answers}"/><small><th:block th:text="${question.status == 2 ? '解决' : '回答'}"/></small>
+                            </div>
+                            <div class="views hidden-xs">
+                                <th:block th:text="${question.views}"/><small>浏览</small>
+                            </div>
+                        </div>
+                        <div class="summary">
+                            <ul class="author list-inline">
+                                <li>
+                                    <a href="{{ route('auth.space.index',['user_id'=>$question->user->id]) }}" target="_blank" th:text="${question.user.name}">{{ $question->user->name }}</a>
+                                    <span class="split"></span>
+                                    <span class="askDate" th:text="${question.createTime}">{{ timestamp_format($question->created_at) }}</span>
+                                </li>
+                            </ul>
+                            <h2 class="title">
+                                <!--@if($question->price>0)-->
+                                <span class="text-gold" th:if="${question.price > 0}"><i class="fa fa-database"></i> <th:block th:text="${question.price}">{{ $question->price }}</th:block></span>
+                                <!--@endif-->
+                                <a th:href="@{'/detail?id='+ ${question.id}}" th:text="${question.title}" target="_blank" >{{ $question->title }}</a>
+                            </h2>
+
+                            <!--问题标签集-->
+                            <!--@if($question->tags)-->
+                            <!--<ul class="taglist-inline ib">-->
+                                <!--@foreach($question->tags as $tag)-->
+                                <!--<li class="tagPopup"><a class="tag" target="_blank" href="{{ route('ask.tag.index',['id'=>$tag->id]) }}">{{ $tag->name }}</a></li>-->
+                                <!--@endforeach-->
+                            <!--</ul>-->
+                            <!--@endif-->
+                        </div>
+                    </section>
+
+                    <!--@endforeach-->
+
+                </div><!-- /.stream-list -->
+                </th:block>
+                <th:block th:utext="${pageHtml}"></th:block>
+                <!--<div class="text-center">-->
+                    <!--{!! str_replace('/?', '?', $questions->render()) !!}-->
+                <!--</div>-->
+            </div><!-- /.main -->
+
+            <!--右侧-->
+            <div class="col-xs-12 col-md-3 side">
+                <div class="side-alert alert alert-warning">
+                    <p>今天，你的网站遇到什么问题呢？</p>
+                    <a href="{{ route('ask.question.create') }}" class="btn btn-primary btn-block mt-10">立即提问</a>
+                </div>
+                @include('theme::layout.auth_menu')
+                <div class="widget-box">
+                    <h2 class="h4 widget-box-title">热议话题 <a href="{{ route('website.topic') }}" title="更多">»</a></h2>
+                    <ul class="taglist-inline multi">
+                        @foreach($hotTags as $hotTag)
+                        <li class="tagPopup"><a class="tag" data-toggle="popover"  href="{{ route('ask.tag.index',['id'=>$hotTag->tag_id]) }}">{{ $hotTag->name }}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div class="widget-box mt30">
+                    <h2 class="widget-box-title">
+                        活跃用户
+                        <a href="{{ route('website.user') }}" title="更多">»</a>
+                    </h2>
+                    <ol class="widget-top10">
+                        @foreach($hotUsers as $index => $hotUser)
+                        <li class="text-muted">
+                            <img class="avatar-32" src="{{ get_user_avatar($hotUser['id']) }}">
+                            <a href="{{ route('auth.space.index',['user_id'=>$hotUser['id']]) }}" class="ellipsis">{{ $hotUser['name'] }}</a>
+                            <span class="text-muted pull-right">{{ $hotUser['credits'] }} 经验</span>
+                        </li>
+                        @endforeach
+
+                    </ol>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="view/layout/public :: public-js"/>
+<th:block th:replace="view/layout/public :: footer"/>
+</body>
+</html>

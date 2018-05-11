@@ -1,6 +1,7 @@
 package com.hebeu.ask.model.vo;
 
 import com.hebeu.ask.model.po.Question;
+import com.hebeu.ask.model.po.User;
 import lombok.*;
 
 /**
@@ -41,5 +42,10 @@ public class QuestionVo extends Question {
 
     /** 提问者用户id*/
     private Integer userId;
+
+    /**
+     * 问题用户
+     */
+    private User user;
 
 }
