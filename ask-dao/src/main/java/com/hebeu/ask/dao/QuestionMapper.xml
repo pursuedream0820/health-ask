@@ -474,6 +474,9 @@
       <if test="status!=null">
         and status = #{status}
       </if>
+      <if test="views!=null">
+        and views &gt; #{price}
+      </if>
     </where>
   </select>
 </mapper>

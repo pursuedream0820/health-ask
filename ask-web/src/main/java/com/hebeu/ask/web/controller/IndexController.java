@@ -1,7 +1,7 @@
 package com.hebeu.ask.web.controller;
 
 import com.hebeu.ask.model.po.Question;
-import com.hebeu.ask.model.vo.CoinTop;
+import com.hebeu.ask.model.vo.UserTop;
 import com.hebeu.ask.service.view.QuestionService;
 import com.hebeu.ask.service.view.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class IndexController {
 
         List<Question> awardQuestionList = questionService.queryAwardQuestion(20);
 
-        List<CoinTop> coinTopList = userService.queryCoinsTop(10);
+        List<UserTop> coinTopList = userService.queryUserTop(10, "coins");
         log.debug("coinTopList.size:{}", coinTopList.size());
         model.addAttribute("newQuestionList", newQuestionList);
         model.addAttribute("awardQuestionList", awardQuestionList);

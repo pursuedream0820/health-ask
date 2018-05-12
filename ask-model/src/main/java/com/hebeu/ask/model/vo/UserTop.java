@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CoinTop {
+public class UserTop {
 
     /**
      * 用户数据

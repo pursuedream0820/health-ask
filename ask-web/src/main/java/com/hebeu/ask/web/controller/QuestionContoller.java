@@ -4,8 +4,10 @@ import com.hebeu.ask.model.po.Category;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.po.User;
 import com.hebeu.ask.model.vo.QuestionVo;
+import com.hebeu.ask.model.vo.UserTop;
 import com.hebeu.ask.service.view.AnswerService;
 import com.hebeu.ask.service.view.QuestionService;
+import com.hebeu.ask.service.view.UserService;
 import com.hebeu.ask.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -34,6 +36,9 @@ public class QuestionContoller {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private UserService userService;
 
 
     /**
@@ -96,12 +101,14 @@ public class QuestionContoller {
         log.info("categoryList.size:{}", categoryList.size());
 
         Pair<List<QuestionVo>, Integer> questionPair = questionService.queryByCondition(type, categoryId, pageNum, pageSize);
+        List<UserTop> creditsTopList = userService.queryUserTop(10, "credits");
 
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("pageNum", pageNum);
         model.addAttribute("type",type);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("questionList",questionPair.getLeft());
+        model.addAttribute("creditsTopList", creditsTopList);
         model.addAttribute("pageHtml", PageUtil.getPageHtml(pageNum, pageSize, questionPair.getRight(), "/questions?type="+ type +"&categoryId=" +categoryId));
         return "view/home/ask";
     }

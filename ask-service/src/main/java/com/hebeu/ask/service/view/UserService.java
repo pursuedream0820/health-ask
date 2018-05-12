@@ -1,6 +1,7 @@
 package com.hebeu.ask.service.view;
 
-import com.hebeu.ask.model.vo.CoinTop;
+import com.hebeu.ask.model.po.UserData;
+import com.hebeu.ask.model.vo.UserTop;
 
 import java.util.List;
 
@@ -12,9 +13,11 @@ import java.util.List;
 public interface UserService {
 
     /**
-     * 查询财富榜
+     * 用户排行榜
      * @param queryNum 查询数量
-     * @return 返回财富榜用户
+     * @param topType 排行榜类型
+     * @return 返回用户排行榜
      */
-    List<CoinTop> queryCoinsTop(Integer queryNum);
+    List<UserTop> queryUserTop(Integer queryNum, String topType);
+
 }

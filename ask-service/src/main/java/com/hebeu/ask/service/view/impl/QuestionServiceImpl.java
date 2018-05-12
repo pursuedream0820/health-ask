@@ -195,7 +195,11 @@ public class QuestionServiceImpl implements QuestionService {
 
         if (QuestionTypeEnum.NEWEST.getSlug().equals(type)) {
             PageHelper.startPage(pageNum, pageSize, "created_at desc");
-        } else if (QuestionTypeEnum.REWARD.getSlug().equals(type)) {
+        }else if (QuestionTypeEnum.HOTTEST.getSlug().equals(type)){
+            PageHelper.startPage(pageNum, pageSize, "views desc");
+            criteria.andViewsGreaterThan(0);
+            conditionMap.put("views", 0);
+        }else if (QuestionTypeEnum.REWARD.getSlug().equals(type)) {
             criteria.andPriceGreaterThan(Short.valueOf("0"));
             conditionMap.put("price", 0);
             PageHelper.startPage(pageNum, pageSize, "price desc");

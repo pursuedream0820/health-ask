@@ -6,7 +6,7 @@ import com.hebeu.ask.dao.UserMapper;
 import com.hebeu.ask.model.po.User;
 import com.hebeu.ask.model.po.UserData;
 import com.hebeu.ask.model.po.UserDataExample;
-import com.hebeu.ask.model.vo.CoinTop;
+import com.hebeu.ask.model.vo.UserTop;
 import com.hebeu.ask.service.view.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,28 +30,31 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     /**
-     * 查询财富榜
-     *
+     * 用户排行榜
      * @param queryNum 查询数量
-     * @return 返回财富榜用户
+     * @return 返回用户排行榜
      */
     @Override
-    public List<CoinTop> queryCoinsTop(Integer queryNum) {
-        PageHelper.startPage(1, queryNum, "coins desc");
+    public List<UserTop> queryUserTop(Integer queryNum, String topType) {
+        if ("coins".equals(topType)){
+            PageHelper.startPage(1, queryNum, "coins desc");
+        }else if ("credits".equals(topType)){
+            PageHelper.startPage(1, queryNum, "credits desc");
+        }
         UserDataExample userDataExample = new UserDataExample();
         UserDataExample.Criteria criteria = userDataExample.createCriteria();
         criteria.andUserIdIsNotNull();
         List<UserData> userDataList = userDataMapper.selectByExample(userDataExample);
 
-        List<CoinTop> coinTops = new ArrayList<>();
+        List<UserTop> userTops = new ArrayList<>();
         userDataList.iterator().forEachRemaining(userData -> {
             User user = userMapper.selectByPrimaryKey(userData.getUserId());
-            CoinTop coinTop = new CoinTop();
+            UserTop coinTop = new UserTop();
             coinTop.setUserData(userData);
             coinTop.setUser(user);
-            coinTops.add(coinTop);
+            userTops.add(coinTop);
         });
 
-        return coinTops;
+        return userTops;
     }
 }

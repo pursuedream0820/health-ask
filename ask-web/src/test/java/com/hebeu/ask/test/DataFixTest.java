@@ -1,5 +1,7 @@
 package com.hebeu.ask.test;
 
+import com.hebeu.ask.dao.AnswerMapper;
+import com.hebeu.ask.dao.QuestionMapper;
 import com.hebeu.ask.dao.UserDataMapper;
 import com.hebeu.ask.dao.UserMapper;
 import com.hebeu.ask.model.po.User;
@@ -25,6 +27,12 @@ public class DataFixTest extends BaseApplicationTest {
     @Autowired
     private UserDataMapper userDataMapper;
 
+    @Autowired
+    private QuestionMapper questionMapper;
+
+    @Autowired
+    private AnswerMapper answerMapper;
+
     @Test
     public void fixUserData() {
         UserExample userExample = new UserExample();
@@ -42,5 +50,11 @@ public class DataFixTest extends BaseApplicationTest {
                 log.error("插入数据异常", e);
             }
         });
+    }
+
+    public void fixQuestionStatus(){
+
+
+
     }
 }
