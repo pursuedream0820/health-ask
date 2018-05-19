@@ -1,5 +1,7 @@
 package com.hebeu.ask.web.controller;
 
+import com.hebeu.ask.model.enums.QuestionStatusEnum;
+import com.hebeu.ask.model.enums.QuestionTypeEnum;
 import com.hebeu.ask.model.po.Category;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.po.User;
@@ -66,6 +68,9 @@ public class QuestionContoller {
         question.setDescription(description);
         question.setCategoryId(categoryId);
         question.setPrice(Short.valueOf(price));
+        if (!"0".equals(price)){
+            question.setStatus(QuestionStatusEnum.REWARD.getCode());
+        }
         questionService.saveQuestion(question);
 
         return "redirect:/index";

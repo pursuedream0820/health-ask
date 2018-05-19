@@ -4,14 +4,14 @@ import com.hebeu.ask.dao.AnswerMapper;
 import com.hebeu.ask.dao.QuestionMapper;
 import com.hebeu.ask.dao.UserDataMapper;
 import com.hebeu.ask.dao.UserMapper;
-import com.hebeu.ask.model.po.User;
-import com.hebeu.ask.model.po.UserData;
-import com.hebeu.ask.model.po.UserExample;
+import com.hebeu.ask.model.po.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author : chenDeHua
@@ -52,8 +52,38 @@ public class DataFixTest extends BaseApplicationTest {
         });
     }
 
+    @Test
     public void fixQuestionStatus(){
 
+//        QuestionExample questionExample = new QuestionExample();
+//        QuestionExample.Criteria criteria = questionExample.createCriteria();
+//        criteria.andIdIsNotNull();
+//        List<Question> questionList = questionMapper.selectByExample(questionExample);
+
+
+        AnswerExample answerExample = new AnswerExample();
+        AnswerExample.Criteria criteria1 = answerExample.createCriteria();
+        criteria1.andIdIsNotNull();
+
+
+        List<Answer> answerList = answerMapper.selectByExample(answerExample);
+
+        log.info("查询数据完成");
+        Map<Integer , Integer> countMap = new HashMap<>();
+        answerList.iterator().forEachRemaining(answer -> {
+            countMap.merge(answer.getQuestionId(), 1, (a, b) -> a + b);
+        });
+
+        for (Integer qid: countMap.keySet()){
+            QuestionExample questionExample = new QuestionExample();
+            QuestionExample.Criteria criteria = questionExample.createCriteria();
+            criteria.andIdEqualTo(qid);
+            Question question = new Question();
+            question.setStatus(2);
+            question.setAnswers(countMap.get(qid));
+            questionMapper.updateByExampleSelective(question,questionExample);
+        }
+        log.info("数据修复完成");
 
 
     }
