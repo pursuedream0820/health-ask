@@ -2,10 +2,11 @@ package com.hebeu.ask.model.po;
 
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @ToString
-public class Question {
+public class Question implements Serializable {
     /** 主键id*/
     private Integer id;
 
