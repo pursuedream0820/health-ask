@@ -2,6 +2,7 @@ package com.hebeu.ask.web.controller;
 
 import com.hebeu.ask.model.enums.QuestionStatusEnum;
 import com.hebeu.ask.model.enums.QuestionTypeEnum;
+import com.hebeu.ask.model.enums.RedisKeyEnum;
 import com.hebeu.ask.model.po.Category;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.po.User;
@@ -11,7 +12,9 @@ import com.hebeu.ask.service.view.AnswerService;
 import com.hebeu.ask.service.view.QuestionService;
 import com.hebeu.ask.service.view.UserService;
 import com.hebeu.ask.util.PageUtil;
+import com.hebeu.ask.web.redis.JedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.shiro.SecurityUtils;
@@ -106,7 +109,13 @@ public class QuestionContoller {
         log.info("categoryList.size:{}", categoryList.size());
 
         Pair<List<QuestionVo>, Integer> questionPair = questionService.queryByCondition(type, categoryId, pageNum, pageSize);
-        List<UserTop> creditsTopList = userService.queryUserTop(10, "credits");
+        List<UserTop> creditsTopList = JedisUtil.getList(RedisKeyEnum.CREDITS_TOP_LIST_KEY.getValue(),UserTop.class);
+
+        if (CollectionUtils.isEmpty(creditsTopList)){
+            log.info("开始设置活跃用户排行榜");
+            creditsTopList =  userService.queryUserTop(10, "credits");
+            JedisUtil.setList(RedisKeyEnum.CREDITS_TOP_LIST_KEY.getValue(), categoryList);
+        }
 
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("pageNum", pageNum);

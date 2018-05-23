@@ -1,5 +1,6 @@
 package com.hebeu.ask.web.task;
 
+import com.hebeu.ask.model.enums.RedisKeyEnum;
 import com.hebeu.ask.service.view.QuestionService;
 import com.hebeu.ask.service.view.UserService;
 import com.hebeu.ask.web.redis.JedisUtil;
@@ -24,13 +25,6 @@ public class IndexFlushTask {
     @Autowired
     private UserService userService;
 
-
-    private static final String NEW_QUESTION_LIST_KEY = "new:question:list";
-
-    private static final String AWARD_QUESTION_LIST_KEY = "award:question:list";
-
-    private static final String COIN_TOP_LIST_KEY = "coin:top:list";
-
     /**
      * 每天零点更新主页内容
      */
@@ -39,12 +33,13 @@ public class IndexFlushTask {
 
         log.info("开始更新主页内容");
 
-        JedisUtil.setList(NEW_QUESTION_LIST_KEY, questionService.queryNewQuestion(20));
+        JedisUtil.setList(RedisKeyEnum.NEW_QUESTION_LIST_KEY.getValue(), questionService.queryNewQuestion(20));
 
-        JedisUtil.setList(AWARD_QUESTION_LIST_KEY, questionService.queryAwardQuestion(20));
+        JedisUtil.setList(RedisKeyEnum.AWARD_QUESTION_LIST_KEY.getValue(), questionService.queryAwardQuestion(20));
 
-        JedisUtil.setList(COIN_TOP_LIST_KEY, userService.queryUserTop(10, "coins"));
+        JedisUtil.setList(RedisKeyEnum.COIN_TOP_LIST_KEY.getValue(), userService.queryUserTop(10, "coins"));
 
+        JedisUtil.setList(RedisKeyEnum.CREDITS_TOP_LIST_KEY.getValue(), userService.queryUserTop(10, "credits"));
         log.info("主页内容更新结束");
 
     }

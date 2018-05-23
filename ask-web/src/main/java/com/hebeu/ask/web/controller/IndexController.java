@@ -1,5 +1,6 @@
 package com.hebeu.ask.web.controller;
 
+import com.hebeu.ask.model.enums.RedisKeyEnum;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.vo.UserTop;
 import com.hebeu.ask.service.view.QuestionService;
@@ -32,13 +33,6 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
-    private static final String NEW_QUESTION_LIST_KEY = "new:question:list";
-
-    private static final String AWARD_QUESTION_LIST_KEY = "award:question:list";
-
-    private static final String COIN_TOP_LIST_KEY = "coin:top:list";
-
-
     /**
      * 默认主页访问路径
      *
@@ -56,25 +50,25 @@ public class IndexController {
         // TODO 获取主页信息
 
         // 从Redis缓存获取主页信息
-        List<Question> newQuestionList = JedisUtil.getList(NEW_QUESTION_LIST_KEY, Question.class);
-        List<Question> awardQuestionList = JedisUtil.getList(AWARD_QUESTION_LIST_KEY, Question.class);
-        List<UserTop> coinTopList = JedisUtil.getList(COIN_TOP_LIST_KEY, UserTop.class);
+        List<Question> newQuestionList = JedisUtil.getList(RedisKeyEnum.NEW_QUESTION_LIST_KEY.getValue(), Question.class);
+        List<Question> awardQuestionList = JedisUtil.getList(RedisKeyEnum.AWARD_QUESTION_LIST_KEY.getValue(), Question.class);
+        List<UserTop> coinTopList = JedisUtil.getList(RedisKeyEnum.COIN_TOP_LIST_KEY.getValue(), UserTop.class);
 
         if (CollectionUtils.isEmpty(newQuestionList)) {
             log.info("设置最新问题");
             newQuestionList = questionService.queryNewQuestion(20);
-            JedisUtil.setList(NEW_QUESTION_LIST_KEY, newQuestionList);
+            JedisUtil.setList(RedisKeyEnum.NEW_QUESTION_LIST_KEY.getValue(), newQuestionList);
         }
 
         if (CollectionUtils.isEmpty(awardQuestionList)) {
             log.info("设置悬赏问题");
             awardQuestionList = questionService.queryAwardQuestion(20);
-            JedisUtil.setList(AWARD_QUESTION_LIST_KEY, awardQuestionList);
+            JedisUtil.setList(RedisKeyEnum.AWARD_QUESTION_LIST_KEY.getValue(), awardQuestionList);
         }
         if (CollectionUtils.isEmpty(coinTopList)) {
             log.info("设置财富排行榜");
             coinTopList = userService.queryUserTop(10, "coins");
-            JedisUtil.setList(COIN_TOP_LIST_KEY, coinTopList);
+            JedisUtil.setList(RedisKeyEnum.COIN_TOP_LIST_KEY.getValue(), coinTopList);
         }
 
         model.addAttribute("newQuestionList", newQuestionList);
