@@ -111,7 +111,7 @@
                         <!--@foreach($hotUsers as $index => $hotUser)-->
                         <li class="text-muted">
                             <img class="avatar-32" th:src="@{/static/images/default_avatar.jpg}">
-                            <a href="javascript:void(0)" class="ellipsis" th:text="${creditsTop.user.name}">{{ $hotUser['name'] }}</a>
+                            <a th:href="@{'/space/index?userId='+${creditsTop.user.id}}" target="_blank" class="ellipsis" th:text="${creditsTop.user.name}">{{ $hotUser['name'] }}</a>
                             <span class="text-muted pull-right" th:text="@{${creditsTop.userData.credits} + '经验'}">{{ $hotUser['credits'] }} 经验</span>
                         </li>
                         <!--@endforeach-->

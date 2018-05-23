@@ -131,5 +131,29 @@ public class AnswerServiceImpl implements AnswerService {
         return answerMapper.insertSelective(answer) > 0;
     }
 
+    /**
+     * 根据用户id查询回答
+     *
+     * @param userId 用户id
+     * @return 返回用户的回答
+     */
+    @Override
+    public List<AnswerVo> queryAnswerByUserId(Integer userId) {
+        AnswerExample answerExample = new AnswerExample();
+        AnswerExample.Criteria criteria = answerExample.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+
+        List<Answer> answerList = answerMapper.selectByExampleWithBLOBs(answerExample);
+
+        List<AnswerVo> answerVos = new ArrayList<>();
+
+        answerList.iterator().forEachRemaining(answer -> {
+            AnswerVo answerVo = answerToAnswerVo(answer);
+            answerVos.add(answerVo);
+        });
+
+        return answerVos;
+    }
+
 
 }

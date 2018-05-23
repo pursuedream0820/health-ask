@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <th:block th:if="${session.authc} and ${session.user.id == userInfo.user.id}">我</th:block>
+        <th:block th:unless="${session.authc} and ${session.user.id == userInfo.user.id}" th:text="${userInfo.user.name}"></th:block>的提问</title>
+    <th:block th:replace="view/layout/public :: public-css"/>
+    <link th:href="@{/css/default/space.css}" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="view/layout/public :: header"/>
+
+<div class="wrap">
+    <th:block th:replace="view/layout/space :: space-header"/>
+    <div class="container">
+        <div class="row mt-30">
+            <th:block th:replace="view/layout/space :: left-menu"/>
+            <!-- Nav tabs -->
+            <div class="col-md-10">
+                <h4 class="space-stream-heading"><th:block th:text="${size}"></th:block> 个问题</h4>
+                <ul class="space-stream-list">
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8 space-stream-item-title-warp">
+                                <strong>标题</strong>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>回答/浏览</strong>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>发布日期</strong>
+                            </div>
+                        </div>
+                    </li>
+                    <th:block th:each="question : ${questionVoList}">
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8 space-stream-item-title-warp">
+                                <span class="text-gold" th:if="${question.price > 0}"><i class="fa fa-database"></i> <th:block th:text="${question.price}"></th:block></span>
+                                <a class="space-stream-item-title" th:href="@{'/detail?id='+ ${question.id}}" target="_blank"  th:text="${question.title}">{{ $question->title }}</a>
+                                <span class="label label-success ml-5" th:if="${question.status == 2}">已解决</span>
+                            </div>
+                            <div class="col-md-2"><span class="text-muted" th:text="@{${question.answers} + '/' +${question.views}}"></span></div>
+                            <div class="col-md-2">
+                                <span class="space-stream-item-date" th:text="${question.createTime}">{{ timestamp_format($question->created_at) }}</span>
+                            </div>
+                        </div>
+                    </li>
+                    </th:block>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="view/layout/public :: public-js"/>
+<th:block th:replace="view/layout/public :: footer"/>
+
+</body>
+</html>
+
+

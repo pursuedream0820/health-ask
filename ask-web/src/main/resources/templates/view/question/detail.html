@@ -15,7 +15,7 @@
 
 <div class="wrap">
     <div class="container">
-        <div class="row mt-10">
+        <div class="row mt-10">yu
             <div class="col-xs-12 col-md-9 main">
                 <div class="widget-question">
                     <h4 class="title">
@@ -149,7 +149,7 @@
 
                     <div class="media" th:each="answer : ${otherAnswerList}">
                         <div class="media-left">
-                            <a href="{{ route('auth.space.index',['user_id'=>$answer->user_id]) }}" class="avatar-link user-card" target="_blank">
+                            <a th:href="@{'/space/index?userId='+${answer.userId}}" class="avatar-link user-card" target="_blank">
                                 <!--用户图像-->
                                 <img class="avatar-40 hidden-xs"  th:src="@{/static/images/default_avatar.jpg}" alt=""></a>
                             </a>
@@ -159,7 +159,7 @@
 
                                 <!--用户认证-->
                                 <!--<strong>-->
-                                    <a href="{{ route('auth.space.index',['user_id'=>$answer->user_id]) }}" class="mr-5 user-card" th:text="${answer.username}">{{ $answer->user['name'] }}</a>
+                                    <a th:href="@{'/space/index?userId='+${answer.userId}}" class="mr-5 user-card" th:text="${answer.username}">{{ $answer->user['name'] }}</a>
                                     <!--<span class="text-gold">@if($answer->user->authentication && $answer->user->authentication->status === 1)<i class="fa fa-graduation-cap" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="已通过行家认证"></i>@endif-->
                                 <!--</span>-->
                                 <!--</strong>-->
@@ -286,7 +286,7 @@
                         <li>
                             <i class="fa fa-clock-o"></i>
                             <!--@if($question->hide==0)-->
-                            <a href="javascript:void(0)" target="_blank" th:text="${question.userName}">{{ $question->user->name }}</a>
+                            <a th:href="@{'/space/index?userId='+${question.userId}}" target="_blank" th:text="${question.userName}">{{ $question->user->name }}</a>
                             <!--@endif-->
                             提出于 <th:block th:text="${question.createTime}">{{ timestamp_format($question->created_at) }}</th:block></li>
                     </ul>

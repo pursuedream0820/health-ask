@@ -46,4 +46,12 @@ public interface AnswerService {
      * @return 返回操作结果
      */
     boolean saveAnswer(String content,Integer questionId, Integer userId);
+
+
+    /**
+     * 根据用户id查询回答
+     * @param userId 用户id
+     * @return 返回用户的回答
+     */
+    List<AnswerVo> queryAnswerByUserId(Integer userId);
 }

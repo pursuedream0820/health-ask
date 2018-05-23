@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <th:block th:if="${session.authc} and ${session.user.id == userInfo.user.id}">我</th:block>
+        <th:block th:unless="${session.authc} and ${session.user.id == userInfo.user.id}" th:text="${userInfo.user.name}"></th:block>的回答</title>
+    <th:block th:replace="view/layout/public :: public-css"/>
+    <link th:href="@{/css/default/space.css}" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="view/layout/public :: header"/>
+
+<div class="wrap">
+    <th:block th:replace="view/layout/space :: space-header"/>
+    <div class="container">
+        <div class="row mt-30">
+
+            <th:block th:replace="view/layout/space :: left-menu"/>
+
+            <!-- Nav tabs -->
+            <div class="col-md-10">
+                <h2 class="h4"><th:block th:text="${size}"></th:block> 个回答</h2>
+                <div class="stream-list board border-top">
+                    <th:block th:each="answer : ${answerVoList}">
+                    <section class="stream-list-item">
+                        <div class="qa-rank">
+                            <div class="answers answered ">
+                                <th:block th:text="${answer.supports}"></th:block> <small> 赞同 </small>
+                            </div>
+                        </div>
+                        <div class="summary">
+                            <h2 class="title">
+                                <a th:href="@{'/detail?id='+ ${answer.questionId}}" target="_blank" th:title="${answer.questionTitle}" th:text="${answer.questionTitle}">{{ str_limit($answer->question_title,60) }}</a>
+                                @if($answer->adopted_at>0) <label class="label label-warning ml-5">已采纳</label> @endif
+                            </h2>
+                            <p class="text-muted mt-10" th:text="${answer.content}">{{ str_limit(strip_tags($answer->content),300) }}</p>
+                            <p class="text-muted">回答于 <th:block th:text="${answer.createTime}"></th:block></p>
+
+                        </div>
+                    </section>
+                    </th:block>
+                </div>
+                <!--<div class="text-center">-->
+                    <!--{!! str_replace('/?', '?', $answers->render()) !!}-->
+                <!--</div>           -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="view/layout/public :: public-js"/>
+<th:block th:replace="view/layout/public :: footer"/>
+
+</body>
+</html>
+
+

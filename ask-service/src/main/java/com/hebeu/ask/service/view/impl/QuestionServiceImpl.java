@@ -219,6 +219,28 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     /**
+     * 根据用户id查询问题
+     *
+     * @param userId 用户id
+     * @return 返回问题集合
+     */
+    @Override
+    public List<QuestionVo> queryByUserId(Integer userId) {
+
+        QuestionExample questionExample  = new QuestionExample();
+        QuestionExample.Criteria criteria = questionExample.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+
+        List<Question> questionList = questionMapper.selectByExampleWithBLOBs(questionExample);
+        List<QuestionVo> questionVoList = new ArrayList<>();
+
+        questionList.iterator().forEachRemaining(question -> {
+            questionVoList.add(questionToQuestionVo(question));
+        });
+        return questionVoList;
+    }
+
+    /**
      * 将question转成questionVo
      *
      * @param question question对象

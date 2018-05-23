@@ -1,5 +1,7 @@
 package com.hebeu.ask.service.view;
 
+import com.hebeu.ask.model.po.Doing;
+import com.hebeu.ask.model.po.User;
 import com.hebeu.ask.model.po.UserData;
 import com.hebeu.ask.model.vo.UserTop;
 
@@ -19,5 +21,32 @@ public interface UserService {
      * @return 返回用户排行榜
      */
     List<UserTop> queryUserTop(Integer queryNum, String topType);
+
+    /**
+     * 根据用户id查询动态信息
+     * @param userId 用户id
+     * @return 返回动态集合
+     */
+    List<Doing> queryDoingByUserId(Integer userId);
+
+    /**
+     * 根据用户id查询用户信息
+     * @param userId 用户id
+     * @return 返回用户信息
+     */
+    User queryUserById(Integer userId);
+
+    /**
+     * 根据用户id查询用户信息
+     * @param userId 用户id
+     * @return 返回用户数据
+     */
+    UserData queryUserDataByUserId(Integer userId);
+
+    /**
+     * 更新用户数据
+     * @param userData
+     */
+    void updateUserData(UserData userData);
 
 }

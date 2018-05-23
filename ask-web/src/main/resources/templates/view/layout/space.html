@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心模板页</title>
+    <th:block th:replace="view/layout/public :: public-css"/>
+    <link th:href="@{/css/default/space.css}" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="view/layout/public :: header"/>
+
+<div class="wrap">
+    <header class="space-header" th:fragment="space-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <a class="text-left" href="javascript:void(0)"><img class="avatar-128" th:src="@{/static/images/default_avatar.jpg}" th:alt="${userInfo.user.name}"></a>
+                </div>
+                <div class="col-md-7">
+                    <div class="space-header-name h3">
+                        <th:block th:text="${userInfo.user.name}"></th:block> <small th:text="${userInfo.user.title}"> - {{ $userInfo->title }}</small>
+                        <!--@if($userInfo->userData->authentication_status === 1)-->
+                        <!--<div class="space-header-authentication pull-right">-->
+                            <!--<span class="space-header-item"><i class="fa fa-user fa-border text-blue" aria-hidden="true"></i> 实名认证</span>-->
+                            <!--<span class="space-header-item"><i class="fa fa-graduation-cap fa-border" aria-hidden="true"></i> 专业认证</span>-->
+                        <!--</div>-->
+                        <!--@endif-->
+                    </div>
+                    <hr />
+                    <div class="space-header-social">
+                        <span class="space-header-item">性别：<th:block th:if="${userInfo.user.gender == 1}"><i class="fa fa-mars"></i></th:block>
+                            <th:block th:if="${userInfo.user.gender == 2}"><i class="fa fa-venus"></i></th:block>
+                            <th:block th:unless="${userInfo.user.gender == 1 || userInfo.user.gender == 2}"><i class="fa fa-genderless"></i></th:block></span>
+                        <!--<span class="space-header-item"><i class="fa fa-map-marker"></i> {{ Area()->getName($userInfo->province) }} @if($userInfo->city>0 &&  Area()->getName($userInfo->province)!=Area()->getName($userInfo->city)) - {{ Area()->getName($userInfo->city) }} @endif</span>-->
+                        <span class="space-header-item"><i class="fa fa-calendar"></i> 注册于<th:block th:text="${userInfo.registerTime}"/></span>
+                    </div>
+                    <!--@if($userInfo->userData->authentication_status === 1)-->
+                    <!--<div class="space-authentication-skill mt-15"><p>擅长：{{ $userInfo->authentication->skill }}</p></div>-->
+                    <!--@endif-->
+                    <div class="space-header-desc mt-15"><p th:text="${userInfo.user.description}">{{ $userInfo->description }}</p></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mt-10">
+                        <th:block th:if="${session.authc} and ${session.user.id == userInfo.user.id}">
+                        <a href="{{ route('auth.profile.base') }}" class="btn mr-10 btn-primary">编辑个人资料</a>
+                        </th:block>
+                        <!--@else-->
+                        <!--@if(Auth()->check() && Auth()->user()->isFollowed(get_class($userInfo),$userInfo->id))-->
+                        <button type="button" id="follow-button" class="btn mr-10 btn-success active" data-source_type = "user" data-source_id = "{{ $userInfo->id }}"  data-show_num="true"  data-toggle="tooltip" data-placement="right" title="" data-original-title="关注后将获得更新提醒">已关注</button>
+                        <!--@else-->
+                        <button type="button" id="follow-button" class="btn mr-10 btn-success" data-source_type = "user" data-source_id = "{{ $userInfo->id }}"  data-show_num="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="关注后将获得更新提醒">关注</button>
+                    </div>
+                    <div class="space-header-info row mt-30">
+                        <div class="col-md-4">
+                            <span class="h3"><a href="{{ route('auth.space.coins',['user_id'=>$userInfo->id]) }}" th:text="${userInfo.userData.coins}">{{ $userInfo->userData->coins }}</a></span><span>金币数</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="h3"><a href="{{ route('auth.space.credits',['user_id'=>$userInfo->id]) }}" th:text="${userInfo.userData.credits}">{{ $userInfo->userData->credits }}</a></span>
+                            <span>经验值</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="h3"><a id="follower-num" href="{{ route('auth.space.followers',['user_id'=>$userInfo->id]) }}" th:text="${userInfo.userData.followers}">{{ $userInfo->userData->followers }}</a></span><span>个粉丝</span>
+                        </div>
+                    </div>
+                    <div class="mt-10 border-top" style="color:#999;padding-top:10px; ">
+                        <i class="fa fa-paw"></i> 主页被访问 <th:block th:text="${userInfo.userData.views}"></th:block>次
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row mt-30">
+
+            <div class="col-md-2" th:fragment="left-menu">
+                <ul class="nav nav-pills nav-stacked space-nav">
+                    <th:block th:if="${session.authc} and ${session.user.id == userInfo.user.id}">
+                    <li th:class="${type=='index' ?'active':''}"><a th:href="@{'/space/index?userId='+${userId}}">我的主页</a></li>
+                    <li th:class="${type=='answer' ?'active':''}"><a th:href="@{'/space/answer?userId='+${userId}}">我的回答</a></li>
+                    <li th:class="${type=='question' ?'active':''}"><a th:href="@{'/space/question?userId='+${userId}}">我的提问</a></li>
+                    </th:block>
+                    <th:block th:unless="${session.authc} and ${session.user.id == userInfo.user.id}">
+                    <li th:class="${type=='index' ?'active':''}"><a th:href="@{'/space/index?userId='+${userId}}">TA的主页</a></li>
+                    <li th:class="${type=='answer' ?'active':''}"><a th:href="@{'/space/answer?userId='+${userId}}">TA的回答</a></li>
+                    <li th:class="${type=='question' ?'active':''}"><a th:href="@{'/space/question?userId='+${userId}}">TA的提问</a></li>
+                    <!--<li @if(request()->route()->getName() == 'auth.space.index') class="active" @endif ><a href="{{ route('auth.space.index',['user_id'=>$userInfo->id]) }}">TA的主页</a></li>-->
+                    <!--<li @if(request()->route()->getName() == 'auth.space.answers') class="active" @endif ><a href="{{ route('auth.space.answers',['user_id'=>$userInfo->id]) }}">TA的回答</a></li>-->
+                    <!--<li @if(request()->route()->getName() == 'auth.space.questions') class="active" @endif ><a href="{{ route('auth.space.questions',['user_id'=>$userInfo->id]) }}">TA的提问</a></li>-->
+                    <!--<li @if(request()->route()->getName() == 'auth.space.articles') class="active" @endif ><a href="{{ route('auth.space.articles',['user_id'=>$userInfo->id]) }}">TA的文章</a></li>-->
+                    <!--<li role="separator" class="divider"><a></a></li>-->
+                    <!--<li @if(request()->route()->getName() == 'auth.space.coins') class="active" @endif ><a href="{{ route('auth.space.coins',['user_id'=>$userInfo->id]) }}">TA的金币</a></li>-->
+                    <!--<li @if(request()->route()->getName() == 'auth.space.credits') class="active" @endif ><a href="{{ route('auth.space.credits',['user_id'=>$userInfo->id]) }}">TA的经验</a></li>-->
+                    <!--<li @if(request()->route()->getName() == 'auth.space.followers') class="active" @endif ><a href="{{ route('auth.space.followers',['user_id'=>$userInfo->id]) }}">TA的粉丝</a></li>-->
+                    </th:block>
+                </ul>
+            </div>
+
+            <!-- Nav tabs -->
+            <div class="col-md-10">
+                @yield('space_content')
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="view/layout/public :: public-js"/>
+<th:block th:replace="view/layout/public :: footer"/>
+
+</body>
+</html>

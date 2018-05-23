@@ -1,11 +1,10 @@
 package com.hebeu.ask.service.view.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.hebeu.ask.dao.DoingMapper;
 import com.hebeu.ask.dao.UserDataMapper;
 import com.hebeu.ask.dao.UserMapper;
-import com.hebeu.ask.model.po.User;
-import com.hebeu.ask.model.po.UserData;
-import com.hebeu.ask.model.po.UserDataExample;
+import com.hebeu.ask.model.po.*;
 import com.hebeu.ask.model.vo.UserTop;
 import com.hebeu.ask.service.view.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private DoingMapper doingMapper;
 
     /**
      * 用户排行榜
@@ -57,4 +59,53 @@ public class UserServiceImpl implements UserService {
 
         return userTops;
     }
+
+    /**
+     * 根据用户id查询动态信息
+     *
+     * @param userId 用户id
+     * @return 返回动态集合
+     */
+    @Override
+    public List<Doing> queryDoingByUserId(Integer userId) {
+        DoingExample doingExample = new DoingExample();
+        DoingExample.Criteria criteria = doingExample.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        return doingMapper.selectByExample(doingExample);
+    }
+
+    /**
+     * 根据用户id查询用户信息
+     *
+     * @param userId 用户id
+     * @return 返回用户信息
+     */
+    @Override
+    public User queryUserById(Integer userId) {
+        return userMapper.selectByPrimaryKey(userId);
+    }
+
+    /**
+     * 根据用户id查询用户信息
+     *
+     * @param userId 用户id
+     * @return 返回用户数据
+     */
+    @Override
+    public UserData queryUserDataByUserId(Integer userId) {
+        return userDataMapper.selectByPrimaryKey(userId);
+    }
+
+    /**
+     * 更新用户数据
+     *
+     * @param userData
+     */
+    @Override
+    public void updateUserData(UserData userData) {
+        userData.setViews(userData.getViews() +1);
+        userDataMapper.updateByPrimaryKeySelective(userData);
+    }
+
+
 }

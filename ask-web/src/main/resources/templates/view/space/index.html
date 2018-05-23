@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <th:block th:if="${session.authc} and ${session.user.id == userInfo.user.id}">我</th:block>
+        <th:block th:unless="${session.authc} and ${session.user.id == userInfo.user.id}" th:text="${userInfo.user.name}"></th:block>的个人主页</title>
+    <th:block th:replace="view/layout/public :: public-css"/>
+    <link th:href="@{/css/default/space.css}" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="view/layout/public :: header"/>
+
+<div class="wrap">
+    <th:block th:replace="view/layout/space :: space-header"/>
+    <div class="container">
+        <div class="row mt-30">
+            <th:block th:replace="view/layout/space :: left-menu"/>
+            <!-- Nav tabs -->
+            <div class="col-md-10">
+                <h2 class="h4">最近动态</h2>
+                <div class="stream-doing clearfix">
+                    <th:block th:each="doing : ${doings}">
+                    <section class="stream-doing-item">
+                        <p class="stream-doing-item-info"><th:block th:text="${doing.createTime}"></th:block><th:block th:text="${doing.action}"></th:block></p>
+                        <div class="stream-doing-item-title">
+                            @if(in_array($doing->action,['follow_question','answer','ask','append_reward','answer_adopted']))
+                            <h4><a href="{{ route('ask.question.detail',['id'=>$doing->source_id]) }}">{{ $doing->subject }}</a></h4>
+                            @elseif(in_array($doing->action,['create_article']))
+                            <h4><a href="{{ route('blog.article.detail',['id'=>$doing->source_id]) }}">{{ $doing->subject }}</a></h4>
+                            @elseif(in_array($doing->action,['exchange']))
+                            <h4><a href="{{ route('shop.goods.detail',['id'=>$doing->source_id]) }}">{{ $doing->subject }}</a></h4>
+                            @endif
+                        </div>
+                        @if(in_array($doing->action,['answer']))
+                        <p class="stream-doing-item-quote">
+                            {{ $doing->content }}
+                        </p>
+                        @endif
+                    </section>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="view/layout/public :: public-js"/>
+<th:block th:replace="view/layout/public :: footer"/>
+
+</body>
+</html>
+
+

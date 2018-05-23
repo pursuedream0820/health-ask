@@ -75,18 +75,28 @@ public interface QuestionService {
 
     /**
      * 根据问题id更新问题索引状态
+     *
      * @param questionIds 问题id集合
      */
     void updateIndexed(List<Integer> questionIds);
 
     /**
      * 根据条件查询问题
-     * @param type 问题类型
+     *
+     * @param type       问题类型
      * @param categoryId 分类
-     * @param pageNum 第几页
-     * @param pageSize 每页大小
+     * @param pageNum    第几页
+     * @param pageSize   每页大小
      * @return 返回满足条件的集合 和集合大小
      */
-    Pair<List<QuestionVo>,Integer> queryByCondition(String type, Integer categoryId, Integer pageNum, Integer pageSize);
+    Pair<List<QuestionVo>, Integer> queryByCondition(String type, Integer categoryId, Integer pageNum, Integer pageSize);
+
+    /**
+     * 根据用户id查询问题
+     *
+     * @param userId 用户id
+     * @return 返回问题集合
+     */
+    List<QuestionVo> queryByUserId(Integer userId);
 
 }
