@@ -1,7 +1,9 @@
 package com.hebeu.ask.spider.service;
 
+import com.hebeu.ask.dao.UserDataMapper;
 import com.hebeu.ask.dao.UserMapper;
 import com.hebeu.ask.model.po.User;
+import com.hebeu.ask.model.po.UserData;
 import com.hebeu.ask.model.po.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserDataMapper userDataMapper;
 
 
     /**
@@ -55,6 +60,11 @@ public class UserService {
         User askUser = new User();
         askUser.setName(username);
         userMapper.insertSelective(askUser);
+
+        UserData userData = new UserData();
+        userData.setUserId(askUser.getId());
+        userDataMapper.insertSelective(userData);
+
         return askUser.getId();
     }
 

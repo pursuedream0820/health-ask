@@ -1,11 +1,10 @@
 package com.hebeu.ask.service.view.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.hebeu.ask.dao.CategoryMapper;
-import com.hebeu.ask.dao.QuestionMapper;
-import com.hebeu.ask.dao.UserMapper;
+import com.hebeu.ask.dao.*;
 import com.hebeu.ask.model.enums.QuestionTypeEnum;
 import com.hebeu.ask.model.po.*;
+import com.hebeu.ask.model.po.Collections;
 import com.hebeu.ask.model.vo.QuestionVo;
 import com.hebeu.ask.service.view.QuestionService;
 import com.hebeu.ask.util.DateUtil;
@@ -14,10 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author : chenDeHua
@@ -35,6 +31,22 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private DoingMapper doingMapper;
+
+    @Autowired
+    private AnswerMapper answerMapper;
+
+    @Autowired
+    private UserDataMapper userDataMapper;
+
+    @Autowired
+    private CollectionsMapper collectionsMapper;
+
+    @Autowired
+    private AttentionMapper attentionMapper;
+
 
     /**
      * 查询最新问题
@@ -141,7 +153,15 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public boolean saveQuestion(Question question) {
-        return questionMapper.insertSelective(question) > 0;
+        Integer result = questionMapper.insertSelective(question);
+        Doing doing = new Doing();
+        doing.setUserId(question.getUserId());
+        doing.setAction("发起提问");
+        doing.setSourceId(question.getId());
+        doing.setSourceType("question");
+        doing.setContent(question.getTitle());
+        doingMapper.insertSelective(doing);
+        return result > 0;
 
     }
 
@@ -241,6 +261,106 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     /**
+     * 根据回答id更新回答采纳状态
+     *
+     * @param answerId 回答id
+     */
+    @Override
+    public Integer adoptAnswer(Integer answerId) {
+        Answer answer = answerMapper.selectByPrimaryKey(answerId);
+
+        Question question = questionMapper.selectByPrimaryKey(answer.getQuestionId());
+
+        UserData userData = userDataMapper.selectByPrimaryKey(answer.getUserId());
+        userData.setCoins(userData.getCoins() + question.getPrice());
+        userDataMapper.updateByPrimaryKeySelective(userData);
+
+        answer.setAdoptedAt(new Date());
+        answerMapper.updateByPrimaryKeySelective(answer);
+
+        return question.getId();
+    }
+
+    /**
+     * 收藏问题
+     *
+     * @param questionId 问题id
+     * @param userId     用户id
+     */
+    @Override
+    public void collectionQuestion(Integer questionId, Integer userId) {
+        Collections collections = new Collections();
+        collections.setUserId(userId);
+        collections.setSourceId(questionId);
+        collections.setSourceType("question");
+
+        Question question = questionMapper.selectByPrimaryKey(questionId);
+        question.setCollections(question.getCollections() +1);
+        questionMapper.updateByPrimaryKeySelective(question);
+
+        collectionsMapper.insertSelective(collections);
+    }
+
+    /**
+     * 关注问题
+     *
+     * @param questionId 问题id
+     * @param userId     用户id
+     */
+    @Override
+    public void followQuestion(Integer questionId, Integer userId) {
+        Attention attention = new Attention();
+        attention.setUserId(userId);
+        attention.setSourceId(questionId);
+        attention.setSourceType("question");
+
+        Question question = questionMapper.selectByPrimaryKey(questionId);
+        question.setFollowers(question.getFollowers() +1);
+        questionMapper.updateByPrimaryKeySelective(question);
+
+        attentionMapper.insertSelective(attention);
+    }
+
+    /**
+     * 查询用户的收藏
+     *
+     * @param userId 用户id
+     * @return 返回收藏集合
+     */
+    @Override
+    public List<Collections> queryCollection(Integer userId, Integer questionId) {
+        CollectionsExample collectionsExample = new CollectionsExample();
+        CollectionsExample.Criteria criteria = collectionsExample.createCriteria();
+        if (userId != null){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if (questionId != null){
+            criteria.andSourceIdEqualTo(questionId);
+        }
+        return collectionsMapper.selectByExample(collectionsExample);
+    }
+
+    /**
+     * 查询关注问题
+     *
+     * @param userId     用户id
+     * @param questionId 问题id
+     * @return 返回关注问题集合s
+     */
+    @Override
+    public List<Attention> queryAttention(Integer userId, Integer questionId) {
+        AttentionExample attentionExample = new AttentionExample();
+        AttentionExample.Criteria criteria = attentionExample.createCriteria();
+        if (userId != null){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if (questionId != null){
+            criteria.andSourceIdEqualTo(questionId);
+        }
+        return attentionMapper.selectByExample(attentionExample);
+    }
+
+    /**
      * 将question转成questionVo
      *
      * @param question question对象
@@ -262,5 +382,6 @@ public class QuestionServiceImpl implements QuestionService {
 
         return questionVo;
     }
+
 
 }

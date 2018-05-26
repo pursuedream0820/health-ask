@@ -131,7 +131,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hebeu.ask.model.po.Answer" >
+  <insert id="insert" parameterType="com.hebeu.ask.model.po.Answer" useGeneratedKeys="true" keyProperty="id">
     insert into ask_answers (id, question_title, question_id, 
       user_id, supports, oppositions, 
       comments, device, status, 
@@ -143,7 +143,7 @@
       #{adoptedAt,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
       #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.hebeu.ask.model.po.Answer" >
+  <insert id="insertSelective" parameterType="com.hebeu.ask.model.po.Answer" useGeneratedKeys="true" keyProperty="id">
     insert into ask_answers
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

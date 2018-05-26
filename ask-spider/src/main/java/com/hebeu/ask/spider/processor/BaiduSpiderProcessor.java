@@ -221,9 +221,8 @@ public class BaiduSpiderProcessor implements PageProcessor {
             if (!exists) {
                 log.debug("开始保存问题，questionTitle：{}", title);
                 questionId = questionService.saveQuestion(title, content, answers, categoryId, price, authorId);
-
                 //向 ask_doing表插入数据
-//                this.increaseQuestionCount(authorId);
+                this.questionService.saveAskDoing(authorId,"发起提问",questionId,"question",title,null,null,null);
             }
             // Step 3: 存文章——url——记录
             if (!exists) {
@@ -234,7 +233,7 @@ public class BaiduSpiderProcessor implements PageProcessor {
 
             //Step 5: 存回答
             if (!exists) {
-                this.saveAnswers(questionId, page);
+                this.saveAnswers(questionId, page,title, authorId);
             }
 //
 //            //Step 6: 存相关问题（文章ID对应title) 并继续爬取相关问题
@@ -254,7 +253,7 @@ public class BaiduSpiderProcessor implements PageProcessor {
      * @param questionId 问题id
      * @param page       问题网页
      */
-    private void saveAnswers(Integer questionId, Page page) {
+    private void saveAnswers(Integer questionId, Page page,String questionTitle, Integer questionUserId) {
         List<Selectable> selectables = page.getHtml().xpath("//*/div[contains(@class, \"bd answer\")]").nodes();
         if (CollectionUtils.isEmpty(selectables)) {
             return;
@@ -278,7 +277,11 @@ public class BaiduSpiderProcessor implements PageProcessor {
                 answer.setQuestionId(questionId);
                 answer.setUserId(authorId);
                 answer.setContent(content);
+                answer.setQuestionTitle(questionTitle);
+                // 存回答
                 answerService.saveAnswer(answer);
+                // 存回答动态
+                questionService.saveAskDoing(authorId,"回答问题",answer.getId(),"answer",content,questionId,questionUserId,questionTitle);
             }
         }
 

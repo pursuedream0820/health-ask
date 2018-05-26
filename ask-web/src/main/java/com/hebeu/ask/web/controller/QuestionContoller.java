@@ -18,10 +18,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -126,4 +128,45 @@ public class QuestionContoller {
         model.addAttribute("pageHtml", PageUtil.getPageHtml(pageNum, pageSize, questionPair.getRight(), "/questions?type="+ type +"&categoryId=" +categoryId));
         return "view/home/ask";
     }
+
+    /**
+     * 采纳回答
+     * @param id 回答id
+     * @return 返回详情页
+     */
+    @RequestMapping(path = "answer/adopt")
+    public String adoptAnswer(Integer id){
+        Integer questionId = questionService.adoptAnswer(id);
+        return "redirect:/detail?id=" + questionId;
+    }
+
+
+    /**
+     * 收藏问题
+     * @param sourceId 问题id
+     * @return 返回问题详情页
+     */
+    @RequestMapping(path = "question/collect")
+    @ResponseBody
+    public String collectionQuestion(Integer sourceId){
+        log.info("关注问题，questionId:{}",sourceId);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+        questionService.collectionQuestion(sourceId,user.getId());
+        return "collected";
+    }
+
+    /**
+     * 关注问题
+     * @param sourceId 问题id
+     * @return
+     */
+    @RequestMapping(path = "question/follow")
+    @ResponseBody
+    public String followQuestion(Integer sourceId){
+        log.info("关注问题，questionId:{}",sourceId);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+        questionService.followQuestion(sourceId,user.getId());
+        return "followed";
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.hebeu.ask.service.view.impl;
 
+import com.hebeu.ask.dao.UserDataMapper;
 import com.hebeu.ask.dao.UserMapper;
 import com.hebeu.ask.model.po.User;
+import com.hebeu.ask.model.po.UserData;
 import com.hebeu.ask.model.po.UserExample;
 import com.hebeu.ask.service.view.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserDataMapper userDataMapper;
+
     /**
      * 保存用户信息
      *
@@ -28,7 +33,14 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public boolean saveUser(User user) {
-        return userMapper.insertSelective(user) > 0;
+
+        Integer result = userMapper.insertSelective(user);
+
+        UserData userData = new UserData();
+        userData.setUserId(user.getId());
+        userDataMapper.insertSelective(userData);
+
+        return result > 0;
     }
 
 

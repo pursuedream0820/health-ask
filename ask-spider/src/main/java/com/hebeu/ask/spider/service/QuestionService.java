@@ -1,6 +1,8 @@
 package com.hebeu.ask.spider.service;
 
+import com.hebeu.ask.dao.DoingMapper;
 import com.hebeu.ask.dao.QuestionMapper;
+import com.hebeu.ask.model.po.Doing;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.po.QuestionExample;
 import org.apache.commons.collections.CollectionUtils;
@@ -20,6 +22,9 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private DoingMapper doingMapper;
+
     /**
      * 通过文章标题判断是否存在文章
      *
@@ -36,8 +41,8 @@ public class QuestionService {
             return null;
         }
         return questionList.get(0).getId();
-
     }
+
 
 
     /**
@@ -64,5 +69,21 @@ public class QuestionService {
         return question.getId();
     }
 
+
+    /**
+     *  保存动态
+     */
+    public void  saveAskDoing(Integer userId,String action, Integer sourceId, String sourceType,String content,Integer referId, Integer referUserId,String referContent){
+        Doing doing = new Doing();
+        doing.setUserId(userId);
+        doing.setAction(action);
+        doing.setSourceId(sourceId);
+        doing.setSourceType(sourceType);
+        doing.setContent(content);
+        doing.setReferId(referId);
+        doing.setReferUserId(referUserId);
+        doing.setReferContent(referContent);
+        doingMapper.insertSelective(doing);
+    }
 
 }

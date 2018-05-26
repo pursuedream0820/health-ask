@@ -32,9 +32,9 @@
                         <div class="summary">
                             <h2 class="title">
                                 <a th:href="@{'/detail?id='+ ${answer.questionId}}" target="_blank" th:title="${answer.questionTitle}" th:text="${answer.questionTitle}">{{ str_limit($answer->question_title,60) }}</a>
-                                @if($answer->adopted_at>0) <label class="label label-warning ml-5">已采纳</label> @endif
+                                <label class="label label-warning ml-5" th:if="${answer.adoptedAt != null}">已采纳</label>
                             </h2>
-                            <p class="text-muted mt-10" th:text="${answer.content}">{{ str_limit(strip_tags($answer->content),300) }}</p>
+                            <p class="text-muted mt-10" th:utext="${answer.content}">{{ str_limit(strip_tags($answer->content),300) }}</p>
                             <p class="text-muted">回答于 <th:block th:text="${answer.createTime}"></th:block></p>
 
                         </div>

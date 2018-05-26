@@ -22,21 +22,18 @@
                 <div class="stream-doing clearfix">
                     <th:block th:each="doing : ${doings}">
                     <section class="stream-doing-item">
-                        <p class="stream-doing-item-info"><th:block th:text="${doing.createTime}"></th:block><th:block th:text="${doing.action}"></th:block></p>
+                        <p class="stream-doing-item-info"><th:block th:text="${doing.createTime}"/>&nbsp;&nbsp;<th:block th:text="${doing.action}"/></p>
                         <div class="stream-doing-item-title">
-                            @if(in_array($doing->action,['follow_question','answer','ask','append_reward','answer_adopted']))
-                            <h4><a href="{{ route('ask.question.detail',['id'=>$doing->source_id]) }}">{{ $doing->subject }}</a></h4>
-                            @elseif(in_array($doing->action,['create_article']))
-                            <h4><a href="{{ route('blog.article.detail',['id'=>$doing->source_id]) }}">{{ $doing->subject }}</a></h4>
-                            @elseif(in_array($doing->action,['exchange']))
-                            <h4><a href="{{ route('shop.goods.detail',['id'=>$doing->source_id]) }}">{{ $doing->subject }}</a></h4>
-                            @endif
+                            <th:block th:if="${doing.sourceType == 'question'}">
+                                <h4><a th:href="@{'/detail?id='+ ${doing.sourceId}}" th:text="${doing.content}"></a></h4>
+                            </th:block>
+                            <th:block th:if="${doing.sourceType == 'answer'}">
+                                <h4><a th:href="@{'/detail?id='+ ${doing.referId}}" th:text="${doing.referContent}"></a></h4>
+                            </th:block>
                         </div>
-                        @if(in_array($doing->action,['answer']))
-                        <p class="stream-doing-item-quote">
-                            {{ $doing->content }}
-                        </p>
-                        @endif
+                        <th:block th:if="${doing.sourceType == 'answer'}">
+                            <p class="stream-doing-item-quote" th:utext="${doing.content}"></p>
+                        </th:block>
                     </section>
                     </th:block>
                 </div>

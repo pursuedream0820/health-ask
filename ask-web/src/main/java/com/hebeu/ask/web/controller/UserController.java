@@ -61,6 +61,7 @@ public class UserController {
             DoingVo doingVo = new DoingVo();
             BeanUtils.copyProperties(doing, doingVo);
             doingVo.setCreateTime(DateUtil.dateToString(DateUtil.yyyy_MM_dd_HH_mm_ss, doing.getCreatedAt()));
+            doingVoList.add(doingVo);
         });
 
         model.addAttribute("doings", doingVoList);
@@ -114,4 +115,8 @@ public class UserController {
 
         return userInfo;
     }
+
+//    public String attentionUser(){
+//
+//    }
 }

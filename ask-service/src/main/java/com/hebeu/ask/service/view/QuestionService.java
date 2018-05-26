@@ -1,6 +1,8 @@
 package com.hebeu.ask.service.view;
 
+import com.hebeu.ask.model.po.Attention;
 import com.hebeu.ask.model.po.Category;
+import com.hebeu.ask.model.po.Collections;
 import com.hebeu.ask.model.po.Question;
 import com.hebeu.ask.model.vo.QuestionVo;
 import org.apache.commons.lang3.tuple.Pair;
@@ -98,5 +100,40 @@ public interface QuestionService {
      * @return 返回问题集合
      */
     List<QuestionVo> queryByUserId(Integer userId);
+
+    /**
+     * 根据回答id更新回答采纳状态
+     * @param answerId 回答id
+     */
+    Integer adoptAnswer(Integer answerId);
+
+    /**
+     * 收藏问题
+     * @param questionId 问题id
+     * @param userId 用户id
+     */
+    void collectionQuestion(Integer questionId, Integer userId);
+
+    /**
+     * 关注问题
+     * @param questionId 问题id
+     * @param userId 用户id
+     */
+    void followQuestion(Integer questionId, Integer userId);
+
+    /**
+     * 查询用户的收藏
+     * @param userId 用户id
+     * @return 返回收藏集合
+     */
+    List<Collections> queryCollection(Integer userId, Integer questionId);
+
+    /**
+     * 查询关注问题
+     * @param userId 用户id
+     * @param questionId 问题id
+     * @return 返回关注问题集合
+     */
+    List<Attention> queryAttention(Integer userId, Integer questionId);
 
 }

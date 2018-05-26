@@ -1,8 +1,6 @@
 package com.hebeu.ask.service.view.impl;
 
-import com.hebeu.ask.dao.AnswerMapper;
-import com.hebeu.ask.dao.CategoryMapper;
-import com.hebeu.ask.dao.UserMapper;
+import com.hebeu.ask.dao.*;
 import com.hebeu.ask.model.po.*;
 import com.hebeu.ask.model.vo.AnswerVo;
 import com.hebeu.ask.service.view.AnswerService;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +31,12 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private QuestionMapper questionMapper;
+
+    @Autowired
+    private DoingMapper doingMapper;
 
 
     /**
@@ -124,11 +129,27 @@ public class AnswerServiceImpl implements AnswerService {
      */
     @Override
     public boolean saveAnswer(String content, Integer questionId, Integer userId) {
+        Question question = questionMapper.selectByPrimaryKey(questionId);
         Answer answer = new Answer();
         answer.setContent(content);
+        answer.setQuestionTitle(question.getTitle());
         answer.setQuestionId(questionId);
         answer.setUserId(userId);
-        return answerMapper.insertSelective(answer) > 0;
+
+        Integer result = answerMapper.insertSelective(answer);
+
+        Doing doing = new Doing();
+        doing.setUserId(userId);
+        doing.setAction("回答问题");
+        doing.setSourceId(answer.getId());
+        doing.setSourceType("answer");
+        doing.setContent(content);
+        doing.setReferId(questionId);
+        doing.setReferUserId(question.getUserId());
+        doing.setReferContent(question.getTitle());
+
+        doingMapper.insertSelective(doing);
+        return result > 0;
     }
 
     /**
@@ -154,6 +175,4 @@ public class AnswerServiceImpl implements AnswerService {
 
         return answerVos;
     }
-
-
-}
+    }
