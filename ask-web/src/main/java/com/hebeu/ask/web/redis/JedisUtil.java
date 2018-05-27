@@ -40,6 +40,10 @@ public class JedisUtil {
         return jedis;
     }
 
+    public static void del(String key){
+        jedis.del(key);
+    }
+
     public static String set(String key, String value) {
         return jedis.set(key, value);
     }

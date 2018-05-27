@@ -477,18 +477,17 @@
             var source_type = $(this).data('source_type');
             var source_id = $(this).data('source_id');
             var follower_num = $("#follower-num").html();
-            $.get('/question/follow?sourceId='+source_id,function(msg){
+            $.get('/follow/question?sourceId='+source_id,function(msg){
                 if(msg=='followed'){
                     $("#follow-button").html('已关注');
                     $("#follower-num").html(parseInt(follower_num)+1);
                 }else{
-                    window.location.href="/login?path=/detail?id="+source_id;
+                    document.location="/login?path=/detail?id="+source_id;
                     $("#follow-button").html('关注');
                     $("#follower-num").html(parseInt(follower_num)-1);
                 }
             });
         });
-
     });
 
 </script>

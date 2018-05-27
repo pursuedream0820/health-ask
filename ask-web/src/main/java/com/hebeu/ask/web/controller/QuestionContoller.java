@@ -18,6 +18,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -160,9 +161,12 @@ public class QuestionContoller {
      * @param sourceId 问题id
      * @return
      */
-    @RequestMapping(path = "question/follow")
+    @RequestMapping(path = "follow/question")
     @ResponseBody
     public String followQuestion(Integer sourceId){
+        if(!SecurityUtils.getSubject().isAuthenticated()){
+            return "false";
+        }
         log.info("关注问题，questionId:{}",sourceId);
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
         questionService.followQuestion(sourceId,user.getId());

@@ -9,6 +9,7 @@ import com.hebeu.ask.model.vo.QuestionVo;
 import com.hebeu.ask.service.view.QuestionService;
 import com.hebeu.ask.util.DateUtil;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.lucene.util.CollectionUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public List<Question> queryAwardQuestion(Integer queryNum) {
-        PageHelper.startPage(1, queryNum, "created_at desc");
+        PageHelper.startPage(1, queryNum, "price desc");
         QuestionExample questionExample = new QuestionExample();
         QuestionExample.Criteria criteria = questionExample.createCriteria();
         criteria.andIdIsNotNull();
@@ -187,9 +188,14 @@ public class QuestionServiceImpl implements QuestionService {
     public void updateIndexed(List<Integer> questionIds) {
         QuestionExample questionExample = new QuestionExample();
         QuestionExample.Criteria criteria = questionExample.createCriteria();
-        criteria.andIdIn(questionIds);
         Question question = new Question();
-        question.setIndexed(Byte.valueOf("1"));
+        if (questionIds == null){
+            criteria.andIdIsNull();
+            question.setIndexed(Byte.valueOf("0"));
+        }else {
+            criteria.andIdIn(questionIds);
+            question.setIndexed(Byte.valueOf("1"));
+        }
         questionMapper.updateByExampleSelective(question, questionExample);
     }
 

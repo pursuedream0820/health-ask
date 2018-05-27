@@ -142,6 +142,8 @@ public class ShiroConfiguration {
         filterChainDefinitionManager.put("/user/**", "authc,roles[admin]");
         filterChainDefinitionManager.put("/events/**", "authc,roles[ROLE_ADMIN]");
         filterChainDefinitionManager.put("/question/**", "authc");
+        filterChainDefinitionManager.put("/admin/**", "authc,roles[admin]");
+
 
         // 所有资源都匿名访问
         filterChainDefinitionManager.put("/**", "anon");
