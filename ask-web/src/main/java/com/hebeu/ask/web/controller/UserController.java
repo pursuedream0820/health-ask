@@ -1,8 +1,6 @@
 package com.hebeu.ask.web.controller;
 
-import com.hebeu.ask.model.po.Doing;
-import com.hebeu.ask.model.po.User;
-import com.hebeu.ask.model.po.UserData;
+import com.hebeu.ask.model.po.*;
 import com.hebeu.ask.model.vo.AnswerVo;
 import com.hebeu.ask.model.vo.DoingVo;
 import com.hebeu.ask.model.vo.QuestionVo;
@@ -12,11 +10,14 @@ import com.hebeu.ask.service.view.QuestionService;
 import com.hebeu.ask.service.view.UserService;
 import com.hebeu.ask.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,10 +65,20 @@ public class UserController {
             doingVoList.add(doingVo);
         });
 
+        boolean isFollowed = false;
+        if (SecurityUtils.getSubject().isAuthenticated()){
+            User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+            List<Attention> attentions = questionService.queryAttention(user.getId(), userId);
+            if (CollectionUtils.isNotEmpty(attentions)){
+                isFollowed = true;
+            }
+        }
+
         model.addAttribute("doings", doingVoList);
         model.addAttribute("userInfo", userInfo);
         model.addAttribute("userId", userId);
         model.addAttribute("type", "index");
+        model.addAttribute("isFollowed",isFollowed);
         model.addAttribute("size",doingVoList.size());
 
         return "view/space/index";
@@ -116,7 +127,21 @@ public class UserController {
         return userInfo;
     }
 
-//    public String attentionUser(){
-//
-//    }
+    /**
+     * 关注用户
+     * @param sourceId 用户id
+     * @return 返回操作结果
+     */
+    @RequestMapping(path = "follow/user")
+    @ResponseBody
+    public String followQuestion(Integer sourceId){
+        if(!SecurityUtils.getSubject().isAuthenticated()){
+            return "false";
+        }
+        log.info("关注用户，userId:{}",sourceId);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+        userService.followUser(sourceId,user.getId());
+        return "followed";
+    }
+
 }

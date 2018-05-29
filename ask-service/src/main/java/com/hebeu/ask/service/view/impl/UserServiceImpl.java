@@ -1,6 +1,7 @@
 package com.hebeu.ask.service.view.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.hebeu.ask.dao.AttentionMapper;
 import com.hebeu.ask.dao.DoingMapper;
 import com.hebeu.ask.dao.UserDataMapper;
 import com.hebeu.ask.dao.UserMapper;
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private DoingMapper doingMapper;
+
+    @Autowired
+    private AttentionMapper attentionMapper;
 
     /**
      * 用户排行榜
@@ -105,6 +109,47 @@ public class UserServiceImpl implements UserService {
     public void updateUserData(UserData userData) {
         userData.setViews(userData.getViews() +1);
         userDataMapper.updateByPrimaryKeySelective(userData);
+    }
+
+    /**
+     * 关注用户
+     *
+     * @param sourceId 被关注用户id
+     * @param userId   关注用户id
+     */
+    @Override
+    public void followUser(Integer sourceId, Integer userId) {
+        Attention attention = new Attention();
+        attention.setUserId(userId);
+        attention.setSourceId(sourceId);
+        attention.setSourceType("user");
+
+        UserData userData = userDataMapper.selectByPrimaryKey(sourceId);
+        userData.setFollowers(userData.getFollowers() +1);
+        userDataMapper.updateByPrimaryKeySelective(userData);
+
+        attentionMapper.insertSelective(attention);
+    }
+
+    /**
+     * 查询关注用户
+     *
+     * @param userId   用户id
+     * @param sourceId 源用户id
+     * @return 返回关注用户集合
+     */
+    @Override
+    public List<Attention> queryAttention(Integer userId, Integer sourceId) {
+        AttentionExample attentionExample = new AttentionExample();
+        AttentionExample.Criteria criteria = attentionExample.createCriteria();
+        if (userId != null){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if (sourceId != null){
+            criteria.andSourceIdEqualTo(sourceId);
+        }
+        criteria.andSourceTypeEqualTo("user");
+        return attentionMapper.selectByExample(attentionExample);
     }
 
 

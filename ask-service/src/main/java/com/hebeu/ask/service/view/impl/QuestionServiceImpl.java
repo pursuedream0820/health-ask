@@ -363,6 +363,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (questionId != null){
             criteria.andSourceIdEqualTo(questionId);
         }
+        criteria.andSourceTypeEqualTo("question");
         return attentionMapper.selectByExample(attentionExample);
     }
 
