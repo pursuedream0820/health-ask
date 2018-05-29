@@ -77,7 +77,7 @@
                     <li th:class="${type=='index' ?'active':''}"><a th:href="@{'/space/index?userId='+${userId}}">我的主页</a></li>
                     <li th:class="${type=='answer' ?'active':''}"><a th:href="@{'/space/answer?userId='+${userId}}">我的回答</a></li>
                     <li th:class="${type=='question' ?'active':''}"><a th:href="@{'/space/question?userId='+${userId}}">我的提问</a></li>
-                    <li role="separator" class="divider"><a></a></li>
+                    <!--<li role="separator" class="divider"><a></a></li>-->
                     <!--<li @if(request()->route()->getName() == 'auth.space.attentions') class="active" @endif ><a href="{{ route('auth.space.attentions',['user_id'=>$userInfo->id,'source_type'=>'questions']) }}">我的关注</a></li>-->
                     <!--<li @if(request()->route()->getName() == 'auth.space.collections') class="active" @endif ><a href="{{ route('auth.space.collections',['user_id'=>$userInfo->id,'source_type'=>'questions']) }}">我的收藏</a></li>-->
                     </th:block>
