@@ -190,7 +190,7 @@ public class QuestionServiceImpl implements QuestionService {
         QuestionExample.Criteria criteria = questionExample.createCriteria();
         Question question = new Question();
         if (questionIds == null){
-            criteria.andIdIsNull();
+            criteria.andIdIsNotNull();
             question.setIndexed(Byte.valueOf("0"));
         }else {
             criteria.andIdIn(questionIds);
