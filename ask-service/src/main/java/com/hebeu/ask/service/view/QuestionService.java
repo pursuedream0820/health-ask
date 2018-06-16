@@ -136,5 +136,12 @@ public interface QuestionService {
      */
     List<Attention> queryAttention(Integer userId, Integer questionId);
 
+    /**
+     * 查询推荐问题
+     * @param queryNum 查询数量
+     * @return 返回推荐问题集合
+     */
+    List<Question> queryRecommendQuestion(Integer queryNum);
+
 
 }

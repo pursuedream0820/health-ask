@@ -37,6 +37,8 @@ public class IndexFlushTask {
 
         JedisUtil.setList(RedisKeyEnum.AWARD_QUESTION_LIST_KEY.getValue(), questionService.queryAwardQuestion(20));
 
+        JedisUtil.setList(RedisKeyEnum.RECOMMEND_QUESTION_KEY.getValue(), questionService.queryRecommendQuestion(8));
+
         JedisUtil.setList(RedisKeyEnum.COIN_TOP_LIST_KEY.getValue(), userService.queryUserTop(10, "coins"));
 
         JedisUtil.setList(RedisKeyEnum.CREDITS_TOP_LIST_KEY.getValue(), userService.queryUserTop(10, "credits"));

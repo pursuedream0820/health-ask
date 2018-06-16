@@ -19,7 +19,8 @@ public enum RedisKeyEnum {
     NEW_QUESTION_LIST_KEY(1, "new:question:list"),
     AWARD_QUESTION_LIST_KEY(2, "award:question:list"),
     COIN_TOP_LIST_KEY(3, "coin:top:list"),
-    CREDITS_TOP_LIST_KEY(4, "credits:top:list");
+    CREDITS_TOP_LIST_KEY(4, "credits:top:list"),
+    RECOMMEND_QUESTION_KEY(5, "recommend:question:list");
 
     private Integer code;
     private String value;

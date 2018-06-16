@@ -368,6 +368,21 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     /**
+     * 查询推荐问题
+     *
+     * @param queryNum 查询数量
+     * @return 返回推荐问题集合
+     */
+    @Override
+    public List<Question> queryRecommendQuestion(Integer queryNum) {
+        PageHelper.startPage(1, queryNum, "views desc");
+        QuestionExample questionExample = new QuestionExample();
+        QuestionExample.Criteria criteria = questionExample.createCriteria();
+        criteria.andIdIsNotNull();
+        return questionMapper.selectByExample(questionExample);
+    }
+
+    /**
      * 将question转成questionVo
      *
      * @param question question对象

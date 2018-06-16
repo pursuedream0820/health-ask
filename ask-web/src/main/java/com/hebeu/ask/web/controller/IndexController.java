@@ -54,6 +54,14 @@ public class IndexController {
         List<Question> awardQuestionList = JedisUtil.getList(RedisKeyEnum.AWARD_QUESTION_LIST_KEY.getValue(), Question.class);
         List<UserTop> coinTopList = JedisUtil.getList(RedisKeyEnum.COIN_TOP_LIST_KEY.getValue(), UserTop.class);
 
+        List<Question> recommendQuestionList = JedisUtil.getList(RedisKeyEnum.RECOMMEND_QUESTION_KEY.getValue(), Question.class);
+
+        if (CollectionUtils.isEmpty(recommendQuestionList)){
+            log.info("设置推荐问题");
+            recommendQuestionList = questionService.queryRecommendQuestion(8);
+            JedisUtil.setList(RedisKeyEnum.RECOMMEND_QUESTION_KEY.getValue(), recommendQuestionList);
+        }
+
         if (CollectionUtils.isEmpty(newQuestionList)) {
             log.info("设置最新问题");
             newQuestionList = questionService.queryNewQuestion(20);
@@ -74,6 +82,7 @@ public class IndexController {
         model.addAttribute("newQuestionList", newQuestionList);
         model.addAttribute("awardQuestionList", awardQuestionList);
         model.addAttribute("coinTopList", coinTopList);
+        model.addAttribute("recommendQuestionList", recommendQuestionList);
 
         return "view/home/index";
     }
