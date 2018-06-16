@@ -6060,6 +6060,8 @@ button.close {
   -webkit-transition: .6s ease-in-out left;
        -o-transition: .6s ease-in-out left;
           transition: .6s ease-in-out left;
+  width: 410px;
+  height: 220px;
 }
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
