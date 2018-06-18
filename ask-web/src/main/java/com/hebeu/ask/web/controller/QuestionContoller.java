@@ -117,7 +117,7 @@ public class QuestionContoller {
         if (CollectionUtils.isEmpty(creditsTopList)){
             log.info("开始设置活跃用户排行榜");
             creditsTopList =  userService.queryUserTop(10, "credits");
-            JedisUtil.setList(RedisKeyEnum.CREDITS_TOP_LIST_KEY.getValue(), categoryList);
+            JedisUtil.setList(RedisKeyEnum.CREDITS_TOP_LIST_KEY.getValue(), creditsTopList);
         }
 
         model.addAttribute("categoryId", categoryId);
