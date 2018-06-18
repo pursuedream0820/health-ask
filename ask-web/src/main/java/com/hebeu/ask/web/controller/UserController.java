@@ -88,11 +88,21 @@ public class UserController {
     public String userAnswer(Model model, Integer userId) {
         UserVo userInfo = getUserInfo(userId);
         List<AnswerVo> answerVoList = answerService.queryAnswerByUserId(userId);
+
+        boolean isFollowed = false;
+        if (SecurityUtils.getSubject().isAuthenticated()){
+            User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+            List<Attention> attentions = questionService.queryAttention(user.getId(), userId);
+            if (CollectionUtils.isNotEmpty(attentions)){
+                isFollowed = true;
+            }
+        }
         model.addAttribute("type", "answer");
         model.addAttribute("userId", userId);
         model.addAttribute("answerVoList", answerVoList);
         model.addAttribute("userInfo", userInfo);
         model.addAttribute("size", answerVoList.size());
+        model.addAttribute("isFollowed",isFollowed);
         return "view/space/answers";
     }
 
@@ -100,12 +110,22 @@ public class UserController {
     @RequestMapping(path = "question")
     public String userQuestion(Model model, Integer userId) {
         List<QuestionVo> questionVoList = questionService.queryByUserId(userId);
+        boolean isFollowed = false;
+        if (SecurityUtils.getSubject().isAuthenticated()){
+            User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+            List<Attention> attentions = questionService.queryAttention(user.getId(), userId);
+            if (CollectionUtils.isNotEmpty(attentions)){
+                isFollowed = true;
+            }
+        }
         UserVo userInfo = getUserInfo(userId);
         model.addAttribute("type", "question");
         model.addAttribute("userId", userId);
         model.addAttribute("questionVoList", questionVoList);
         model.addAttribute("userInfo", userInfo);
         model.addAttribute("size",questionVoList.size());
+        model.addAttribute("isFollowed",isFollowed);
+
         return "view/space/questions";
     }
 
